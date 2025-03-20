@@ -54,5 +54,14 @@ class ReviewRepository {
         $this->db->close();
         return $reviews;
     }
+
+    // Methode zum Hinzufügen einer neuen Bewertung
+    public function addReview($artworkId, $customerId, $rating, $comment) {
+        $this->db->connect();
+        $sql = "INSERT INTO reviews (ArtWorkID, CustomerID, Rating, Comment, ReviewDate) VALUES (?, ?, ?, ?, NOW())";
+        $stmt = $this->db->prepareStatement($sql);
+        $stmt->execute([$artworkId, $customerId, $rating, $comment]);
+        $this->db->close();
+    }
 }
 ?>

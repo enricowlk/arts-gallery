@@ -90,32 +90,68 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
 
         <!-- Reviews -->
         <h2 class="mt-5 mb-4">Reviews</h2>
-        <?php if (!empty($reviews)){ ?>
-            <div class="table-responsive">
-                <table class="review-table">
-                    <thead>
-                        <tr>
-                            <th>Customer</th>
-                            <th>Rating</th>
-                            <th>Comment</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($reviews as $review){ ?>
+
+        <!-- Add Review Form -->
+        <div>
+            <div>
+                <h5 class="card-title">Add Your Review</h5>
+                <form action="add_review.php" method="post">
+                    <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="rating" class="form-label">Rating</label>
+                            <select class="form-control" id="rating" name="rating" required>
+                                <option value="1">1 - Poor</option>
+                                <option value="2">2 - Fair</option>
+                                <option value="3">3 - Good</option>
+                                <option value="4">4 - Very Good</option>
+                                <option value="5">5 - Excellent</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="comment" class="form-label">Comment</label>
+                            <textarea class="form-control" id="comment" name="comment" rows="2" required></textarea>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="submit" class="btn btn-secondary w-100">Submit Review</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Reviews Table -->
+        <div class="table-responsive">
+            <table class="table table-hover review-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>Customer</th>
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (!empty($reviews)) { ?>
+                        <?php foreach ($reviews as $review) { ?>
                             <tr>
                                 <td><?php echo $customerRepo->getCustomerNameById($review->getCustomerId()); ?></td>
-                                <td class="rating"><?php echo $review->getRating(); ?>/5 <img src="images/icon_gelberStern.png" alt="Star" style="position: relative; top: -2px;"></td>
+                                <td class="rating">
+                                    <?php echo $review->getRating(); ?>/5 
+                                    <img src="images/icon_gelberStern.png" alt="Star" class="star-icon">
+                                </td>
                                 <td class="comment"><?php echo $review->getComment(); ?></td>
                                 <td class="date"><?php echo $review->getReviewDate(); ?></td>
                             </tr>
                         <?php } ?>
-                    </tbody>
-                </table>
-            </div>
-        <?php }else{ ?>
-            <p class="text-center">No reviews found for this artwork.</p>
-        <?php } ?>
+                    <?php } else { ?>
+                        <tr>
+                            <td colspan="4" class="text-center">No reviews found for this artwork.</td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Modal für das größere Bild -->

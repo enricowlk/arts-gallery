@@ -236,6 +236,7 @@ html, body {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0 10px; /* Abstand zwischen den Zeilen */
+    margin-top: 20px; /* Abstand nach oben */
 }
 
 .review-table th,
@@ -272,6 +273,13 @@ html, body {
 .review-table .date {
     font-size: 0.875rem; /* Kleinere Schrift für das Datum */
     color: #999; /* Graue Schriftfarbe */
+}
+
+.star-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-left: 5px; /* Abstand zwischen Text und Stern */
 }
 
 /* Top Artists und Top Artworks Container */
