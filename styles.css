@@ -75,7 +75,6 @@ p {
 .btn-secondary {
     background-color: #6c757d; /* Standardfarbe für Buttons */
     border: none;
-    padding: 10px 20px; /* Größere Buttons */
     border-radius: 5px; /* Abgerundete Ecken */
     transition: background-color 0.3s ease; /* Sanfter Übergang */
 }

@@ -21,7 +21,7 @@ $artwork = $artworkRepo->getArtworkById($artworkId);
 $artist = $artistRepo->getArtistById($artwork->getArtistID());
 $reviews = $reviewRepo->getAllReviewsForOneArtworkByArtworkId($artworkId);
 
-$isFavorite = isset($_SESSION['favorites']) && in_array($artworkId, $_SESSION['favorites']);
+$isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkId, $_SESSION['favorite_artworks']);
 ?>
 
 <!DOCTYPE html>
@@ -53,6 +53,26 @@ $isFavorite = isset($_SESSION['favorites']) && in_array($artworkId, $_SESSION['f
                 <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal">
                     <img src="images/works/medium/<?php echo $artwork->getImageFileName(); ?>.jpg" class="artwork-image" alt="<?php echo $artwork->getTitle(); ?>">
                 </a>
+                <!-- Add to Favorite/Remove Button -->
+                <form action="favorites_process.php" method="post" class="mt-3">
+                    <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
+                    <button type="submit" class="btn 
+                        <?php
+                            if ($isFavoriteArtwork) {
+                                echo 'btn-danger';
+                            } else {
+                                echo 'btn-secondary';
+                            }
+                        ?>">
+                        <?php
+                            if ($isFavoriteArtwork) {
+                                echo 'Remove from Favorites';
+                            } else {
+                                echo 'Add to Favorites';
+                            }
+                        ?>
+                    </button>
+                </form>
             </div>
             <div class="col-md-6">
                 <div class="info">

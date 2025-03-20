@@ -16,6 +16,9 @@ $artworkRepo = new ArtworkRepository(new Database());
 
 $artist = $artistRepo->getArtistById($artistId);
 $artworks = $artworkRepo->getAllArtworksForOneArtistByArtistId($artistId);
+
+// Prüfen, ob der Künstler in den Favoriten ist
+$isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, $_SESSION['favorite_artists']);
 ?>
 
 <!DOCTYPE html>
@@ -35,6 +38,26 @@ $artworks = $artworkRepo->getAllArtworksForOneArtistByArtistId($artistId);
             <div class="col-md-4">
                 <!-- Künstlerbild -->
                 <img src="images/artists/medium/<?php echo $artist->getArtistID(); ?>.jpg" class="artist-image" alt="<?php echo $artist->getLastName(); ?>">
+                <!-- Add to Favorites/Remove Button für den Künstler -->
+                <form action="favorites_process.php" method="post" class="mt-3">
+                        <input type="hidden" name="artist_id" value="<?php echo $artistId; ?>">
+                        <button type="submit" class="btn 
+                            <?php
+                                if ($isFavoriteArtist) {
+                                    echo 'btn-danger';
+                                } else {
+                                    echo 'btn-secondary';
+                                }
+                            ?>">
+                            <?php
+                                if ($isFavoriteArtist) {
+                                    echo 'Remove Artist from Favorites';
+                                } else {
+                                    echo 'Add Artist to Favorites';
+                                }
+                            ?>
+                        </button>
+                    </form>
             </div>
             <div class="col-md-8">
                 <div class="info">

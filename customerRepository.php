@@ -136,7 +136,12 @@ class CustomerRepository {
         $row = $stmt->fetch();
 
         $this->db->close();
-        return $row ? $row['FirstName'] . ' ' . $row['LastName'] : 'Unknown';
+        
+        if ($row) {
+            return $row['FirstName'] . ' ' . $row['LastName'];
+        } else {
+            return 'Unknown';
+        }
     }
 
     public function getCustomerByEmail($db, $email) {

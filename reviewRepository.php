@@ -34,7 +34,12 @@ class ReviewRepository {
         $stmt->execute([$artistId]);
         $row = $stmt->fetch();
         $this->db->close();
-        return $row['ReviewCount'] ?? 0; // Falls keine Bewertungen vorhanden sind, geben wir 0 zurück
+        
+        if (isset($row['ReviewCount']) && $row['ReviewCount'] !== null) {
+            return $row['ReviewCount'];
+        } else {
+            return 0;
+        }
     }
 
     public function getAllReviewsForOneArtworkByArtworkId($artworkId) {

@@ -172,8 +172,12 @@ class ArtworkRepository {
         $row = $stmt->fetch();
 
         $this->db->close();
-        
-        return $row['AverageRating'] ?? 0; // Falls keine Bewertungen vorhanden sind, geben wir 0 zurück
+
+        if (isset($row['AverageRating']) && $row['AverageRating'] !== null) {
+            return $row['AverageRating'];
+        } else {
+            return 0;
+        }
     }
 }
 ?>

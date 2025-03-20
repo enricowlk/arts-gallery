@@ -4,13 +4,21 @@ session_start();
 require_once 'ArtworkRepository.php';
 require_once 'ArtistRepository.php';
 
-$artworkRepo = new ArtworkRepository(new Database());	
+$artworkRepo = new ArtworkRepository(new Database());
 $artistRepo = new ArtistRepository(new Database());
 
-if (isset($_SESSION['favorites'])) {
-    $favorites = $_SESSION['favorites'];
+// Favoriten für Kunstwerke aus der Session holen
+if (isset($_SESSION['favorite_artworks'])) {
+    $favoriteArtworks = $_SESSION['favorite_artworks'];
 } else {
-    $favorites = [];
+    $favoriteArtworks = [];
+}
+
+// Favoriten für Künstler aus der Session holen
+if (isset($_SESSION['favorite_artists'])) {
+    $favoriteArtists = $_SESSION['favorite_artists'];
+} else {
+    $favoriteArtists = [];
 }
 ?>
 
@@ -26,9 +34,36 @@ if (isset($_SESSION['favorites'])) {
 
     <div class="container mt-3">
         <h1>My Favorites</h1>
-        <?php if (!empty($favorites)){ ?>
+
+        <!-- Favorisierte Künstler -->
+        <h2 class="mt-4">Favorite Artists</h2>
+        <?php if (!empty($favoriteArtists)){ ?>
             <div class="row">
-                <?php foreach ($favorites as $artworkId){ 
+                <?php foreach ($favoriteArtists as $artistId){ 
+                    $artist = $artistRepo->getArtistById($artistId);
+                ?>
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
+                                <img src="images/artists/medium/<?php echo $artist->getArtistID(); ?>.jpg" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h5>
+                                <p class="card-text"><?php echo $artist->getNationality(); ?></p>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+        <?php }else{ ?>
+            <p>You have no favorite artists yet.</p>
+        <?php } ?>
+
+        <!-- Favorisierte Kunstwerke -->
+        <h2 class="mt-4">Favorite Artworks</h2>
+        <?php if (!empty($favoriteArtworks)){ ?>
+            <div class="row">
+                <?php foreach ($favoriteArtworks as $artworkId){ 
                     $artwork = $artworkRepo->getArtworkById($artworkId);
                     $artist = $artistRepo->getArtistById($artwork->getArtistID());
                 ?>
@@ -46,7 +81,7 @@ if (isset($_SESSION['favorites'])) {
                 <?php } ?>
             </div>
         <?php }else{ ?>
-            <p>You have no favorites yet.</p>
+            <p>You have no favorite artworks yet.</p>
         <?php } ?>
     </div>
 
