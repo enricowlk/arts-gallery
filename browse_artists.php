@@ -25,16 +25,16 @@ $artists = $artistRepo->getAllArtists(); // Ruft alle Künstler aus der Datenban
         <div class="row">
             <?php foreach ($artists as $artist) { ?> <!-- Schleife durch alle Künstler -->
                 <div class="col-md-3 mb-4">
+                    <!-- Link zur Künstlerseite mit Bild -->
+                    <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
                     <div class="card">
-                        <!-- Link zur Künstlerseite mit Bild -->
-                        <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
-                            <img src="images/artists/medium/<?php echo $artist->getArtistID(); ?>.jpg" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
-                        </a>
+                        <img src="images/artists/medium/<?php echo $artist->getArtistID(); ?>.jpg" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
                         <div class="card-body">
                             <!-- Künstlername -->
                             <h5 class="card-title"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h5>
                         </div>
                     </div>
+                    </a>
                 </div>
             <?php } ?>
         </div>

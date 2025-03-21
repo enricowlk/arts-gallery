@@ -94,11 +94,11 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
                     $averageRating = $artworkRepo->getAverageRatingForArtwork($artwork->getArtWorkID());
                 ?>
                     <div class="col-md-4 mb-4">
+                        <!-- Link zur Kunstwerkseite -->
+                        <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                         <div class="card artwork-card">
                             <!-- Kunstwerkbild -->
-                            <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
-                                <img src="images/works/medium/<?php echo $artwork->getImageFileName(); ?>.jpg" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
-                            </a>
+                            <img src="images/works/medium/<?php echo $artwork->getImageFileName(); ?>.jpg" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
                             <div class="card-body">
                                 <!-- Titel des Kunstwerks -->
                                 <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>
@@ -110,6 +110,7 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
                                 </p>
                             </div>
                         </div>
+                        </a>
                     </div>
                 <?php } ?>
             </div>

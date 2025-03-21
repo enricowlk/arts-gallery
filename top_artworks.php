@@ -29,12 +29,11 @@ $topArtworks = $artworkRepo->get3TopArtworks();
                     $averageRating = $artworkData['averageRating'];
                 ?>
                     <div class="col-md-4">
+                        <!-- Link zur Kunstwerk-Detailseite -->
+                        <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                         <div class="card">
-                            <!-- Link zur Kunstwerk-Detailseite -->
-                            <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                                 <!-- Kunstwerkbild anzeigen -->
                                 <img src="images/works/small/<?php echo $artwork->getImageFileName(); ?>.jpg" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
-                            </a>
                             <div class="card-body">
                                 <!-- Titel des Kunstwerks anzeigen -->
                                 <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>
@@ -44,6 +43,7 @@ $topArtworks = $artworkRepo->get3TopArtworks();
                                 </p>
                             </div>
                         </div>
+                        </a>
                     </div>
                 <?php } ?>
             </div>

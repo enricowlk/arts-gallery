@@ -27,8 +27,8 @@
                     <h5>Quick Links</h5>
                     <ul class="list-unstyled">
                         <li><a href="index.php" class="text-white text-decoration-none">Home</a></li>
-                        <li><a href="site_artist.php" class="text-white text-decoration-none">Artists</a></li>
-                        <li><a href="site_artwork.php" class="text-white text-decoration-none">Artworks</a></li>
+                        <li><a href="browse_artists.php" class="text-white text-decoration-none">Artists</a></li>
+                        <li><a href="browse_artworks.php" class="text-white text-decoration-none">Artworks</a></li>
                         <li><a href="site_favorites.php" class="text-white text-decoration-none">Favorites</a></li>
                     </ul>
                 </div>

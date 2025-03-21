@@ -65,5 +65,57 @@ class Database {
     public function isConnected() {
         return $this->pdo !== null; // Überprüft, ob das PDO-Objekt existiert
     }
+
+    /**
+     * Startet eine Transaktion.
+     * 
+     * Aktion: Startet eine neue Transaktion.
+     * Wirft eine Exception, wenn keine Verbindung besteht.
+     */
+    public function beginTransaction() {
+        if (!$this->isConnected()) {
+            throw new Exception("Database is not connected.");
+        }
+        $this->pdo->beginTransaction();
+    }
+
+    /**
+     * Bestätigt eine Transaktion.
+     * 
+     * Aktion: Bestätigt die aktuelle Transaktion.
+     * Wirft eine Exception, wenn keine Verbindung besteht.
+     */
+    public function commit() {
+        if (!$this->isConnected()) {
+            throw new Exception("Database is not connected.");
+        }
+        $this->pdo->commit();
+    }
+
+    /**
+     * Macht eine Transaktion rückgängig.
+     * 
+     * Aktion: Macht die aktuelle Transaktion rückgängig.
+     * Wirft eine Exception, wenn keine Verbindung besteht.
+     */
+    public function rollBack() {
+        if (!$this->isConnected()) {
+            throw new Exception("Database is not connected.");
+        }
+        $this->pdo->rollBack();
+    }
+
+    /**
+     * Gibt die ID des zuletzt eingefügten Datensatzes zurück.
+     * 
+     * Ausgabe: Die ID des zuletzt eingefügten Datensatzes.
+     * Wirft eine Exception, wenn keine Verbindung besteht.
+     */
+    public function lastInsertId() {
+        if (!$this->isConnected()) {
+            throw new Exception("Database is not connected.");
+        }
+        return $this->pdo->lastInsertId();
+    }
 }
 ?>

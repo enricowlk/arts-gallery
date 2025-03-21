@@ -29,12 +29,11 @@ $recentReviews = $reviewRepo->get3RecentReviews(3);
                     // Holt den Namen des Kunden anhand der CustomerID
                     $customerName = $customerRepo->getCustomerNameById($review->getCustomerId());
                 ?>
+                    <a href="site_artwork.php?id=<?php echo $review->getArtWorkId(); ?>">
                     <li class="mb-3">
                         <!-- Kundenname und Bewertungstext -->
                         <strong><?php echo $customerName; ?></strong> wrote:
-                        <a href="site_artwork.php?id=<?php echo $review->getArtWorkId(); ?>">
                             <?php echo substr($review->getComment(), 0, 100); ?>...
-                        </a>
                         <br>
                         <!-- Bewertungsdetails (Rating und Datum) -->
                         <small>
@@ -43,6 +42,7 @@ $recentReviews = $reviewRepo->get3RecentReviews(3);
                             | Date: <?php echo $review->getReviewDate(); ?>
                         </small>
                     </li>
+                    </a>
                 <?php } ?>
             </ul>
         <?php }else{ ?>

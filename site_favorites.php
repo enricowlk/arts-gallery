@@ -47,12 +47,11 @@ if (isset($_SESSION['favorite_artists'])) {
                     $artist = $artistRepo->getArtistById($artistId);
                 ?>
                     <div class="col-md-4 mb-4">
+                        <!-- Link zur Künstlerseite -->
+                        <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
                         <div class="card">
-                            <!-- Link zur Künstlerseite -->
-                            <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
-                                <!-- Künstlerbild -->
-                                <img src="images/artists/medium/<?php echo $artist->getArtistID(); ?>.jpg" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
-                            </a>
+                            <!-- Künstlerbild -->
+                            <img src="images/artists/medium/<?php echo $artist->getArtistID(); ?>.jpg" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
                             <div class="card-body">
                                 <!-- Künstlername -->
                                 <h5 class="card-title"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h5>
@@ -60,6 +59,7 @@ if (isset($_SESSION['favorite_artists'])) {
                                 <p class="card-text"><?php echo $artist->getNationality(); ?></p>
                             </div>
                         </div>
+                        </a>
                     </div>
                 <?php } ?>
             </div>
@@ -79,12 +79,11 @@ if (isset($_SESSION['favorite_artists'])) {
                     $artist = $artistRepo->getArtistById($artwork->getArtistID());
                 ?>
                     <div class="col-md-4 mb-4">
+                        <!-- Link zur Kunstwerkseite -->
+                        <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                         <div class="card">
-                            <!-- Link zur Kunstwerkseite -->
-                            <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
-                                <!-- Kunstwerkbild -->
-                                <img src="images/works/medium/<?php echo $artwork->getImageFileName(); ?>.jpg" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
-                            </a>
+                            <!-- Kunstwerkbild -->
+                            <img src="images/works/medium/<?php echo $artwork->getImageFileName(); ?>.jpg" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
                             <div class="card-body">
                                 <!-- Titel des Kunstwerks -->
                                 <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>
@@ -92,6 +91,7 @@ if (isset($_SESSION['favorite_artists'])) {
                                 <p class="card-text">By <?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></p>
                             </div>
                         </div>
+                        </a>
                     </div>
                 <?php } ?>
             </div>

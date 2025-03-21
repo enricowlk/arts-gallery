@@ -25,16 +25,16 @@ $subjects = $subjectRepo->getAllSubjects(); // Ruft alle Themen (Subjects) aus d
         <div class="row">
             <?php foreach ($subjects as $subject) { ?> <!-- Schleife durch alle Themen -->
                 <div class="col-md-3 mb-4">
+                    <!-- Link zur Themen-Detailseite mit Bild -->
+                    <a href="site_subject.php?id=<?php echo $subject->getSubjectID(); ?>">
                     <div class="card">
-                        <!-- Link zur Themen-Detailseite mit Bild -->
-                        <a href="site_subject.php?id=<?php echo $subject->getSubjectID(); ?>">
-                            <img src="images/subjects/square-medium/<?php echo $subject->getSubjectID(); ?>.jpg" class="card-img-top" alt="<?php echo $subject->getSubjectName(); ?>">
-                        </a>
+                        <img src="images/subjects/square-medium/<?php echo $subject->getSubjectID(); ?>.jpg" class="card-img-top" alt="<?php echo $subject->getSubjectName(); ?>">
                         <div class="card-body">
                             <!-- Name des Themas -->
                             <h5 class="card-title"><?php echo $subject->getSubjectName(); ?></h5>
                         </div>
                     </div>
+                    </a>
                 </div>
             <?php } ?>
         </div>

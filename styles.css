@@ -22,6 +22,11 @@
             line-height: 1.6; /* Bessere Lesbarkeit durch größeren Zeilenabstand */
         }
 
+        a {
+            text-decoration: none; /* Entfernt die Unterstreichung */
+            color: inherit; /* Übernimmt die Farbe des übergeordneten Elements */
+        }
+
         .text-center {
             text-align: center; /* Zentrierter Text */
         }
@@ -217,11 +222,6 @@
         .recent-reviews-container strong {
             font-size: 1.1rem; /* Größere Schrift für den Kundennamen */
             color: #333; /* Dunkle Schriftfarbe */
-        }
-
-        .recent-reviews-container a {
-            color: #007bff; /* Blaue Schriftfarbe für Links */
-            text-decoration: none; /* Keine Unterstreichung */
         }
 
         .recent-reviews-container a:hover {

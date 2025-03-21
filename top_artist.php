@@ -29,12 +29,11 @@ $topArtists = $artistRepo->getTop3Artists();
                     $reviewCount = $artistData['reviewCount'];
                 ?>
                     <div class="col-md-4">
+                        <!-- Link zur Künstler-Detailseite -->
+                        <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
                         <div class="card">
-                            <!-- Link zur Künstler-Detailseite -->
-                            <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
-                                <!-- Künstlerbild anzeigen -->
-                                <img src="images/artists/medium/<?php echo $artist->getArtistID(); ?>.jpg" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
-                            </a>
+                            <!-- Künstlerbild anzeigen -->
+                            <img src="images/artists/medium/<?php echo $artist->getArtistID(); ?>.jpg" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
                             <div class="card-body">
                                 <!-- Künstlername anzeigen -->
                                 <h5 class="card-title"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h5>
@@ -42,6 +41,7 @@ $topArtists = $artistRepo->getTop3Artists();
                                 <p class="card-text">(<?php echo $reviewCount; ?> reviews)</p>
                             </div>
                         </div>
+                        </a>
                     </div>
                 <?php } ?>
             </div>

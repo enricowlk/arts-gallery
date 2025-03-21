@@ -20,7 +20,7 @@ unset($_SESSION['error'], $_SESSION['success']); // Löscht die Session-Variable
 ?>
 
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
