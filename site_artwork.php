@@ -91,7 +91,7 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
         </div>
 
         <!-- Reviews -->
-        <h2 class="mt-5 mb-4">Reviews</h2>
+        <h2 class="mt-5">Reviews</h2>
 
         <!-- Add Review Form -->
         <?php if($isLoggedIn){ ?>
