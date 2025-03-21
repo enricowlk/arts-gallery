@@ -36,7 +36,7 @@ $topArtists = $artistRepo->getTop3Artists();
                             </div>
                         </div>
                     </div>
-                <?php }; ?>
+                <?php } ?>
             </div>
         <?php }else{ ?>
             <p class="text-center">No top artists found.</p>
