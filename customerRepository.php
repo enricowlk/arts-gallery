@@ -120,13 +120,29 @@ class CustomerRepository {
      * Holt die Kundendaten anhand der CustomerID.
      */
     public function getCustomerByID($customerID) {
-        $this->db->connect();
-        $stmt = $this->db->prepareStatement("SELECT * FROM customers WHERE CustomerID = :customerID");
-        $stmt->execute(['customerID' => $customerID]);
+    $this->db->connect();
+    $stmt = $this->db->prepareStatement("SELECT * FROM customers WHERE CustomerID = :customerID");
+    $stmt->execute(['customerID' => $customerID]);
+    $row = $stmt->fetch();
 
-        $this->db->close();
-        return $stmt->fetch();
+    $this->db->close();
+
+    if ($row) {
+        return new Customer(
+            $row['CustomerID'],
+            $row['FirstName'],
+            $row['LastName'],
+            $row['Address'],
+            $row['City'],
+            $row['Country'],
+            $row['Postal'],
+            $row['Phone'],
+            $row['Email']
+        );
+    } else {
+        return null; // oder ein Standard-Customer-Objekt zurückgeben
     }
+}
 
 
     public function getCustomerNameById($customerId) {

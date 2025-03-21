@@ -41,25 +41,25 @@ unset($_SESSION['error'], $_SESSION['success']);
 
     <div class="container mt-3">
         <h1 class="text-center">My Account</h1>
-        <?php if ($error){ ?>
+        <?php if ($error) { ?>
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php } ?>
-        <?php if ($success){ ?>
+        <?php if ($success) { ?>
             <div class="alert alert-success"><?php echo $success; ?></div>
         <?php } ?>
 
         <form action="myAccount_process.php" method="POST">
             <div class="mb-3">
                 <label for="firstName" class="form-label">Firstname:</label>
-                <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo $customer['FirstName']; ?>" required>
+                <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo $customer->getFirstName(); ?>" required>
             </div>
             <div class="mb-3">
                 <label for="lastName" class="form-label">Lastname:</label>
-                <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo $customer['LastName']; ?>" required>
+                <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo $customer->getLastName(); ?>" required>
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">E-Mail:</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?php echo $customer['Email']; ?>" required>
+                <input type="email" class="form-control" id="email" name="email" value="<?php echo $customer->getEmail(); ?>" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">New Password (optional):</label>

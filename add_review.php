@@ -10,8 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $comment = $_POST['comment'];
 
     // Annahme: Der eingeloggte Benutzer ist in der Session gespeichert
-    if (isset($_SESSION['customer_id'])) {
-        $customerId = $_SESSION['customer_id'];
+    if (isset($_SESSION['user'])) {
+        $customerId = $_SESSION['user']['CustomerID'];
 
         $reviewRepo = new ReviewRepository(new Database());
         $reviewRepo->addReview($artworkId, $customerId, $rating, $comment);

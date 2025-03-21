@@ -22,7 +22,6 @@ $isAdmin = isset($_SESSION['user']['is_admin']) && $_SESSION['user']['is_admin']
                         <li><a class="dropdown-item" href="browse_subjects.php">Subjects</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="site_favorites.php">Favorites</a></li>
             </ul>
             <form class="d-flex" action="site_search_results.php" method="GET">
                 <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
@@ -36,6 +35,7 @@ $isAdmin = isset($_SESSION['user']['is_admin']) && $_SESSION['user']['is_admin']
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="site_myAccount.php">My Account</a></li>
+                            <li> <a class="dropdown-item" href="site_favorites.php">Favorites</a></li>
                             <?php if ($isAdmin){ ?>
                                 <li><a class="dropdown-item" href="site_manage_users.php">Manage Users</a></li>
                             <?php } ?>

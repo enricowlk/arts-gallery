@@ -129,24 +129,29 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                         <th>Rating</th>
                         <th>Comment</th>
                         <th>Date</th>
+                        <th>City (Country)</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (!empty($reviews)) { ?>
                         <?php foreach ($reviews as $review) { ?>
+                            <?php
+                                $customer = $customerRepo->getCustomerByID($review->getCustomerId());
+                            ?>
                             <tr>
-                                <td><?php echo $customerRepo->getCustomerNameById($review->getCustomerId()); ?></td>
+                                <td><?php echo $customer->getFirstName() . ' ' . $customer->getLastName(); ?></td>
                                 <td class="rating">
                                     <?php echo $review->getRating(); ?>/5 
                                     <img src="images/icon_gelberStern.png" alt="Star" class="star-icon">
                                 </td>
                                 <td class="comment"><?php echo $review->getComment(); ?></td>
                                 <td class="date"><?php echo $review->getReviewDate(); ?></td>
+                                <td class="city(country)"><?php echo $customer->getCity(); ?> (<?php echo $customer->getCountry(); ?>)</td>
                             </tr>
                         <?php } ?>
                     <?php } else { ?>
                         <tr>
-                            <td colspan="4" class="text-center">No reviews found for this artwork.</td>
+                            <td colspan="5" class="text-center">No reviews found for this artwork.</td>
                         </tr>
                     <?php } ?>
                 </tbody>

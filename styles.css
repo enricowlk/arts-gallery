@@ -1,371 +1,372 @@
-/* Allgemeine Stile */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa; /* Heller Hintergrund */
-    color: #333; /* Dunkle Schriftfarbe */
-}
 
-.container {
-    max-width: 1200px; /* Begrenzte Breite für bessere Lesbarkeit */
-    margin: 0 auto; /* Zentrieren des Containers */
-    padding: 20px; /* Innenabstand */
-}
+        body {
+            font-family: 'Jaini', sans-serif;
+            background-color: #f8f9fa; /* Heller Hintergrund */
+            color: #333; /* Dunkle Schriftfarbe */
+        }
 
-h1, h2 {
-    color: #333; /* Dunkle Schriftfarbe für Überschriften */
-    margin-bottom: 20px; /* Abstand nach unten */
-}
+        .container {
+            max-width: 1200px; /* Begrenzte Breite für bessere Lesbarkeit */
+            margin: 0 auto; /* Zentrieren des Containers */
+            padding: 20px; /* Innenabstand */
+        }
 
-p {
-    font-size: 1.1rem; /* Größere Schrift für bessere Lesbarkeit */
-    line-height: 1.6; /* Bessere Lesbarkeit durch größeren Zeilenabstand */
-}
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Roboto', sans-serif; /* Unterschiedliche Schriftart für Überschriften */
+            color: #333; /* Dunkle Schriftfarbe für Überschriften */
+            margin-bottom: 20px; /* Abstand nach unten */
+        }
 
-.text-center {
-    text-align: center; /* Zentrierter Text */
-}
+        p {
+            font-size: 1.1rem; /* Größere Schrift für bessere Lesbarkeit */
+            line-height: 1.6; /* Bessere Lesbarkeit durch größeren Zeilenabstand */
+        }
 
-/* Feste Größe für die Bilder */
-.card-img-top {
-    width: 132px;
-    height: 132px;
-    object-fit: cover; /* Bild wird zugeschnitten, um den Container zu füllen */
-    margin: 0 auto; /* Bild zentrieren */
-    display: block; /* Block-Element für margin: auto */
-    border-radius: 3%; /* Runde Bilder */
-    margin-top: 10px; /* Abstand nach oben */
-}
+        .text-center {
+            text-align: center; /* Zentrierter Text */
+        }
 
-/* Stile für die Cards */
-.card {
-    padding: 10px; /* Abstand zwischen Bild und Card-Rand */
-    height: 100%; /* Volle Höhe des Containers */
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Inhalt zentrieren */
-    text-align: center; /* Text zentrieren */
-    border: 1px solid #ddd; /* Rahmen hinzufügen */
-    border-radius: 20px; /* Abgerundete Ecken */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Sanfte Übergänge */
-}
+        /* Feste Größe für die Bilder */
+        .card-img-top {
+            width: 132px;
+            height: 132px;
+            object-fit: cover; /* Bild wird zugeschnitten, um den Container zu füllen */
+            margin: 0 auto; /* Bild zentrieren */
+            display: block; /* Block-Element für margin: auto */
+            border-radius: 3%; /* Runde Bilder */
+            margin-top: 10px; /* Abstand nach oben */
+        }
 
-/* Hover-Effekt für die Cards */
-.card:hover {
-    transform: translateY(-5px); /* Leichter Anstieg beim Hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Größerer Schatten beim Hover */
-}
+        /* Stile für die Cards */
+        .card {
+            padding: 10px; /* Abstand zwischen Bild und Card-Rand */
+            height: 100%; /* Volle Höhe des Containers */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Inhalt zentrieren */
+            text-align: center; /* Text zentrieren */
+            border: 1px solid #ddd; /* Rahmen hinzufügen */
+            border-radius: 20px; /* Abgerundete Ecken */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Sanfte Übergänge */
+        }
 
-/* Card-Body nimmt den restlichen Platz ein */
-.card-body {
-    flex: 1; /* Nimmt den verfügbaren Platz ein */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Verteilt den Inhalt gleichmäßig */
-}
+        /* Hover-Effekt für die Cards */
+        .card:hover {
+            transform: translateY(-5px); /* Leichter Anstieg beim Hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Größerer Schatten beim Hover */
+        }
 
-/* Stil für den Card-Titel */
-.card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-top: 10px; /* Abstand nach oben */
-}
+        /* Card-Body nimmt den restlichen Platz ein */
+        .card-body {
+            flex: 1; /* Nimmt den verfügbaren Platz ein */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Verteilt den Inhalt gleichmäßig */
+        }
 
-/* Buttons */
-.btn-secondary {
-    background-color: #6c757d; /* Standardfarbe für Buttons */
-    border: none;
-    border-radius: 5px; /* Abgerundete Ecken */
-    transition: background-color 0.3s ease; /* Sanfter Übergang */
-}
+        /* Stil für den Card-Titel */
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-top: 10px; /* Abstand nach oben */
+        }
 
-.btn-secondary:hover {
-    background-color: #5a6268; /* Dunklere Farbe beim Hover */
-}
+        /* Buttons */
+        .btn-secondary {
+            background-color: #6c757d; /* Standardfarbe für Buttons */
+            border: none;
+            border-radius: 5px; /* Abgerundete Ecken */
+            transition: background-color 0.3s ease; /* Sanfter Übergang */
+        }
 
-/* Artworks-Cards */
-.artwork-card {
-    border: 1px solid #ddd; /* Rahmen hinzufügen */
-    border-radius: 10px; /* Abgerundete Ecken */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Sanfte Übergänge */
-    background-color: #fff; /* Weißer Hintergrund */
-}
+        .btn-secondary:hover {
+            background-color: #5a6268; /* Dunklere Farbe beim Hover */
+        }
 
-.artwork-card:hover {
-    transform: translateY(-5px); /* Leichter Anstieg beim Hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Größerer Schatten beim Hover */
-}
+        /* Artworks-Cards */
+        .artwork-card {
+            border: 1px solid #ddd; /* Rahmen hinzufügen */
+            border-radius: 10px; /* Abgerundete Ecken */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Sanfte Übergänge */
+            background-color: #fff; /* Weißer Hintergrund */
+        }
 
-.artwork-card .card-img-top {
-    width: 100%; /* Volle Breite der Card */
-    height: 200px; /* Feste Höhe für die Bilder */
-    object-fit: cover; /* Bild wird zugeschnitten, um den Container zu füllen */
-    border-radius: 10px 10px 0 0; /* Abgerundete Ecken oben */
-}
+        .artwork-card:hover {
+            transform: translateY(-5px); /* Leichter Anstieg beim Hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Größerer Schatten beim Hover */
+        }
 
-.artwork-card .card-body {
-    padding: 15px; /* Innenabstand */
-}
+        .artwork-card .card-img-top {
+            width: 100%; /* Volle Breite der Card */
+            height: 200px; /* Feste Höhe für die Bilder */
+            object-fit: cover; /* Bild wird zugeschnitten, um den Container zu füllen */
+            border-radius: 10px 10px 0 0; /* Abgerundete Ecken oben */
+        }
 
-.artwork-card .card-title {
-    font-size: 1.25rem; /* Größere Schrift für den Titel */
-    font-weight: bold;
-    margin-bottom: 10px; /* Abstand nach unten */
-}
+        .artwork-card .card-body {
+            padding: 15px; /* Innenabstand */
+        }
 
-.artwork-card .card-text {
-    font-size: 0.875rem; /* Kleinere Schrift für sekundären Text */
-    color: #666; /* Sekundäre Schriftfarbe */
-}
+        .artwork-card .card-title {
+            font-size: 1.25rem; /* Größere Schrift für den Titel */
+            font-weight: bold;
+            margin-bottom: 10px; /* Abstand nach unten */
+        }
 
-/* Flexbox-Layout für die gesamte Seite */
-html, body {
-    height: 100%; /* Volle Höhe des Viewports */
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-}
+        .artwork-card .card-text {
+            font-size: 0.875rem; /* Kleinere Schrift für sekundären Text */
+            color: #666; /* Sekundäre Schriftfarbe */
+        }
 
-.content {
-    flex: 1; /* Nimmt den verfügbaren Platz ein */
-}
+        /* Flexbox-Layout für die gesamte Seite */
+        html, body {
+            height: 100%; /* Volle Höhe des Viewports */
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
 
-.footer {
-    background-color: #343a40;
-    color: white;
-    padding: 2rem 0;
-    margin-top: auto; /* Footer bleibt unten */
-}
+        .content {
+            flex: 1; /* Nimmt den verfügbaren Platz ein */
+        }
 
-/* Carousel-Stile */
-.carousel-container {
-    max-width: 1200px; /* Maximale Breite des Carousels */
-    margin: 0 auto; /* Zentrieren des Carousels */
-    padding: 20px; /* Innenabstand */
-    background-color: #f8f9fa; /* Heller Hintergrund */
-    border-radius: 10px; /* Abgerundete Ecken */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
-}
+        .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 2rem 0;
+            margin-top: auto; /* Footer bleibt unten */
+        }
 
-.carousel-item img {
-    width: 100%; /* Volle Breite des Carousels */
-    height: 400px; /* Feste Höhe für die Bilder */
-    object-fit: cover; /* Bild wird zugeschnitten, um den Container zu füllen */
-    border-radius: 10px; /* Abgerundete Ecken */
-}
+        /* Carousel-Stile */
+        .carousel-container {
+            max-width: 1200px; /* Maximale Breite des Carousels */
+            margin: 0 auto; /* Zentrieren des Carousels */
+            padding: 20px; /* Innenabstand */
+            background-color: #f8f9fa; /* Heller Hintergrund */
+            border-radius: 10px; /* Abgerundete Ecken */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
+        }
 
-.carousel-caption {
-    background-color: rgba(0, 0, 0, 0.5); /* Halbtransparenter Hintergrund */
-    padding: 10px; /* Innenabstand */
-    border-radius: 5px; /* Abgerundete Ecken */
-}
+        .carousel-item img {
+            width: 100%; /* Volle Breite des Carousels */
+            height: 400px; /* Feste Höhe für die Bilder */
+            object-fit: cover; /* Bild wird zugeschnitten, um den Container zu füllen */
+            border-radius: 10px; /* Abgerundete Ecken */
+        }
 
-.carousel-caption h5 {
-    font-size: 1.5rem; /* Größere Schrift für den Titel */
-    font-weight: bold;
-    color: #fff; /* Weiße Schriftfarbe */
-}
+        .carousel-caption {
+            background-color: rgba(0, 0, 0, 0.5); /* Halbtransparenter Hintergrund */
+            padding: 10px; /* Innenabstand */
+            border-radius: 5px; /* Abgerundete Ecken */
+        }
 
-.carousel-control-prev,
-.carousel-control-next {
-    width: 5%; /* Breite der Controls */
-    background-color: rgba(0, 0, 0, 0); /* Halbtransparenter Hintergrund */
-    border-radius: 50%; /* Runde Buttons */
-}
+        .carousel-caption h5 {
+            font-size: 1.5rem; /* Größere Schrift für den Titel */
+            font-weight: bold;
+            color: #fff; /* Weiße Schriftfarbe */
+        }
 
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    color: #fff;
-}
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 5%; /* Breite der Controls */
+            background-color: rgba(0, 0, 0, 0); /* Halbtransparenter Hintergrund */
+            border-radius: 50%; /* Runde Buttons */
+        }
 
-/* Recent Reviews Stile */
-.recent-reviews-container {
-    background-color: #fff; /* Weißer Hintergrund */
-    padding: 20px; /* Innenabstand */
-    border-radius: 10px; /* Abgerundete Ecken */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
-    margin-top: 20px; /* Abstand nach oben */
-}
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            color: #fff;
+        }
 
-.recent-reviews-container ul {
-    list-style: none; /* Entfernt die Aufzählungspunkte */
-    padding-left: 0; /* Entfernt den Standard-Padding */
-}
+        /* Recent Reviews Stile */
+        .recent-reviews-container {
+            background-color: #fff; /* Weißer Hintergrund */
+            padding: 20px; /* Innenabstand */
+            border-radius: 10px; /* Abgerundete Ecken */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
+            margin-top: 20px; /* Abstand nach oben */
+        }
 
-.recent-reviews-container li {
-    padding: 15px; /* Innenabstand */
-    border-bottom: 1px solid #eee; /* Trennlinie zwischen den Bewertungen */
-    transition: background-color 0.3s ease; /* Sanfter Übergang */
-}
+        .recent-reviews-container ul {
+            list-style: none; /* Entfernt die Aufzählungspunkte */
+            padding-left: 0; /* Entfernt den Standard-Padding */
+        }
 
-.recent-reviews-container li:hover {
-    background-color: #f8f9fa; /* Heller Hintergrund beim Hover */
-}
+        .recent-reviews-container li {
+            padding: 15px; /* Innenabstand */
+            border-bottom: 1px solid #eee; /* Trennlinie zwischen den Bewertungen */
+            transition: background-color 0.3s ease; /* Sanfter Übergang */
+        }
 
-.recent-reviews-container li:last-child {
-    border-bottom: none; /* Keine Trennlinie beim letzten Element */
-}
+        .recent-reviews-container li:hover {
+            background-color: #f8f9fa; /* Heller Hintergrund beim Hover */
+        }
 
-.recent-reviews-container strong {
-    font-size: 1.1rem; /* Größere Schrift für den Kundennamen */
-    color: #333; /* Dunkle Schriftfarbe */
-}
+        .recent-reviews-container li:last-child {
+            border-bottom: none; /* Keine Trennlinie beim letzten Element */
+        }
 
-.recent-reviews-container a {
-    color: #007bff; /* Blaue Schriftfarbe für Links */
-    text-decoration: none; /* Keine Unterstreichung */
-}
+        .recent-reviews-container strong {
+            font-size: 1.1rem; /* Größere Schrift für den Kundennamen */
+            color: #333; /* Dunkle Schriftfarbe */
+        }
 
-.recent-reviews-container a:hover {
-    text-decoration: underline; /* Unterstreichung beim Hover */
-}
+        .recent-reviews-container a {
+            color: #007bff; /* Blaue Schriftfarbe für Links */
+            text-decoration: none; /* Keine Unterstreichung */
+        }
 
-.recent-reviews-container small {
-    font-size: 0.875rem; /* Kleinere Schrift für sekundären Text */
-    color: #666; /* Sekundäre Schriftfarbe */
-}
+        .recent-reviews-container a:hover {
+            text-decoration: underline; /* Unterstreichung beim Hover */
+        }
 
-.recent-reviews-container img {
-    position: relative;
-    top: -2px; /* Stern leicht nach oben verschieben */
-}
+        .recent-reviews-container small {
+            font-size: 0.875rem; /* Kleinere Schrift für sekundären Text */
+            color: #666; /* Sekundäre Schriftfarbe */
+        }
 
-/* Review-Tabelle */
-.review-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0 10px; /* Abstand zwischen den Zeilen */
-    margin-top: 20px; /* Abstand nach oben */
-}
+        .recent-reviews-container img {
+            position: relative;
+            top: -2px; /* Stern leicht nach oben verschieben */
+        }
 
-.review-table th,
-.review-table td {
-    padding: 12px; /* Innenabstand */
-    text-align: left;
-    background-color: #fff; /* Weißer Hintergrund */
-    border-bottom: 1px solid #ddd; /* Untere Linie */
-}
+        /* Review-Tabelle */
+        .review-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 10px; /* Abstand zwischen den Zeilen */
+            margin-top: 20px; /* Abstand nach oben */
+        }
 
-.review-table th {
-    background-color: #f8f9fa; /* Heller Hintergrund für den Header */
-    font-weight: bold;
-    color: #333; /* Dunkle Schriftfarbe */
-}
+        .review-table th,
+        .review-table td {
+            padding: 12px; /* Innenabstand */
+            text-align: left;
+            background-color: #fff; /* Weißer Hintergrund */
+            border-bottom: 1px solid #ddd; /* Untere Linie */
+        }
 
-.review-table tr {
-    transition: background-color 0.3s ease; /* Sanfter Übergang */
-}
+        .review-table th {
+            background-color: #f8f9fa; /* Heller Hintergrund für den Header */
+            font-weight: bold;
+            color: #333; /* Dunkle Schriftfarbe */
+        }
 
-.review-table tr:hover {
-    background-color: #f1f1f1; /* Heller Hintergrund beim Hover */
-}
+        .review-table tr {
+            transition: background-color 0.3s ease; /* Sanfter Übergang */
+        }
 
-.review-table .rating {
-    font-weight: bold;
-    color: #ffc107; /* Gelbe Farbe für die Bewertung */
-}
+        .review-table tr:hover {
+            background-color: #f1f1f1; /* Heller Hintergrund beim Hover */
+        }
 
-.review-table .comment {
-    color: #666; /* Sekundäre Schriftfarbe für Kommentare */
-}
+        .review-table .rating {
+            font-weight: bold;
+            color: #ffc107; /* Gelbe Farbe für die Bewertung */
+        }
 
-.review-table .date {
-    font-size: 0.875rem; /* Kleinere Schrift für das Datum */
-    color: #999; /* Graue Schriftfarbe */
-}
+        .review-table .comment {
+            color: #666; /* Sekundäre Schriftfarbe für Kommentare */
+        }
 
-.star-icon {
-    width: 16px;
-    height: 16px;
-    vertical-align: middle;
-    margin-left: 5px; /* Abstand zwischen Text und Stern */
-}
+        .review-table .date {
+            font-size: 0.875rem; /* Kleinere Schrift für das Datum */
+            color: #999; /* Graue Schriftfarbe */
+        }
 
-/* Top Artists und Top Artworks Container */
-.top-artist-container,
-.top-artworks-container {
-    width: 100%; /* Volle Breite des Eltern-Elements */
-    padding: 20px; /* Innenabstand */
-    background-color: #f8f9fa; /* Heller Hintergrund */
-}
+        .star-icon {
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+            margin-left: 5px; /* Abstand zwischen Text und Stern */
+        }
 
-.top-artist-container .row,
-.top-artworks-container .row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Abstand zwischen den Karten */
-    justify-content: center; /* Zentriert die Karten */
-}
+        /* Top Artists und Top Artworks Container */
+        .top-artist-container,
+        .top-artworks-container {
+            width: 100%; /* Volle Breite des Eltern-Elements */
+            padding: 20px; /* Innenabstand */
+            background-color: #f8f9fa; /* Heller Hintergrund */
+        }
 
-.top-artist-container .col-md-4,
-.top-artworks-container .col-md-4 {
-    flex: 1 1 300px; /* Flexibles Layout mit Mindestbreite */
-    max-width: 350px; /* Maximale Breite der Karten */
-}
+        .top-artist-container .row,
+        .top-artworks-container .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Abstand zwischen den Karten */
+            justify-content: center; /* Zentriert die Karten */
+        }
 
-.top-artist-container .card,
-.top-artworks-container .card {
-    border: 1px solid #ddd; /* Rahmen hinzufügen */
-    border-radius: 10px; /* Abgerundete Ecken */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Sanfte Übergänge */
-    background-color: #fff; /* Weißer Hintergrund */
-}
+        .top-artist-container .col-md-4,
+        .top-artworks-container .col-md-4 {
+            flex: 1 1 300px; /* Flexibles Layout mit Mindestbreite */
+            max-width: 350px; /* Maximale Breite der Karten */
+        }
 
-.top-artist-container .card:hover,
-.top-artworks-container .card:hover {
-    transform: translateY(-5px); /* Leichter Anstieg beim Hover */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Größerer Schatten beim Hover */
-}
+        .top-artist-container .card,
+        .top-artworks-container .card {
+            border: 1px solid #ddd; /* Rahmen hinzufügen */
+            border-radius: 10px; /* Abgerundete Ecken */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Sanfte Übergänge */
+            background-color: #fff; /* Weißer Hintergrund */
+        }
 
-.top-artist-container .card-img-top,
-.top-artworks-container .card-img-top {
-    width: 100%; /* Volle Breite der Card */
-    height: 400px; /* Feste Höhe für die Bilder */
-    object-fit: cover; /* Bild wird zugeschnitten, um den Container zu füllen */
-    border-radius: 10px 10px 0 0; /* Abgerundete Ecken oben */
-}
+        .top-artist-container .card:hover,
+        .top-artworks-container .card:hover {
+            transform: translateY(-5px); /* Leichter Anstieg beim Hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Größerer Schatten beim Hover */
+        }
 
-.top-artist-container .card-body,
-.top-artworks-container .card-body {
-    padding: 15px; /* Innenabstand */
-    text-align: center; /* Zentrierter Text */
-}
+        .top-artist-container .card-img-top,
+        .top-artworks-container .card-img-top {
+            width: 100%; /* Volle Breite der Card */
+            height: 400px; /* Feste Höhe für die Bilder */
+            object-fit: cover; /* Bild wird zugeschnitten, um den Container zu füllen */
+            border-radius: 10px 10px 0 0; /* Abgerundete Ecken oben */
+        }
 
-.top-artist-container .card-title,
-.top-artworks-container .card-title {
-    font-size: 1.25rem; /* Größere Schrift für den Titel */
-    font-weight: bold;
-    margin-bottom: 10px; /* Abstand nach unten */
-}
+        .top-artist-container .card-body,
+        .top-artworks-container .card-body {
+            padding: 15px; /* Innenabstand */
+            text-align: center; /* Zentrierter Text */
+        }
 
-.top-artist-container .card-text,
-.top-artworks-container .card-text {
-    font-size: 0.875rem; /* Kleinere Schrift für sekundären Text */
-    color: #666; /* Sekundäre Schriftfarbe */
-}
+        .top-artist-container .card-title,
+        .top-artworks-container .card-title {
+            font-size: 1.25rem; /* Größere Schrift für den Titel */
+            font-weight: bold;
+            margin-bottom: 10px; /* Abstand nach unten */
+        }
 
-/* Kunstwerkinformationen */
-.info {
-    background-color: #fff; /* Weißer Hintergrund */
-    padding: 20px; /* Innenabstand */
-    border-radius: 10px; /* Abgerundete Ecken */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
-}
+        .top-artist-container .card-text,
+        .top-artworks-container .card-text {
+            font-size: 0.875rem; /* Kleinere Schrift für sekundären Text */
+            color: #666; /* Sekundäre Schriftfarbe */
+        }
 
-.info h1 {
-    font-size: 2.5rem; /* Größere Schrift für den Titel */
-    font-weight: bold;
-    margin-bottom: 10px; /* Abstand nach unten */
-}
+        /* Kunstwerkinformationen */
+        .info {
+            background-color: #fff; /* Weißer Hintergrund */
+            padding: 20px; /* Innenabstand */
+            border-radius: 10px; /* Abgerundete Ecken */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
+        }
 
-.info .lead {
-    font-size: 1.25rem; /* Größere Schrift für den Künstler */
-    color: #666; /* Sekundäre Schriftfarbe */
-}
+        .info h1 {
+            font-size: 2.5rem; /* Größere Schrift für den Titel */
+            font-weight: bold;
+            margin-bottom: 10px; /* Abstand nach unten */
+        }
 
-.info p {
-    font-size: 1rem; /* Standard-Schriftgröße */
-    line-height: 1.6; /* Bessere Lesbarkeit durch größeren Zeilenabstand */
-}
+        .info .lead {
+            font-size: 1.25rem; /* Größere Schrift für den Künstler */
+            color: #666; /* Sekundäre Schriftfarbe */
+        }
+
+        .info p {
+            font-size: 1rem; /* Standard-Schriftgröße */
+            line-height: 1.6; /* Bessere Lesbarkeit durch größeren Zeilenabstand */
+        }
