@@ -3,9 +3,6 @@ session_start(); // Session starten
 require_once 'database.php'; // Datenbankverbindung
 require_once 'ReviewRepository.php'; // Logik für Bewertungen
 
-$reviewRepo = new ReviewRepository(new Database()); // Bewertungs-Repository
-$reviewRepo->addReview($artworkId, $customerId, $rating, $comment); // Bewertung speichern
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Nur bei POST-Anfrage
     $artworkId = $_POST['artwork_id']; // ID des Kunstwerks
     $rating = $_POST['rating']; // Bewertung (z.B. 1-5)
@@ -13,6 +10,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Nur bei POST-Anfrage
 
     if (isset($_SESSION['user'])) { // Prüft, ob Benutzer eingeloggt ist
         $customerId = $_SESSION['user']['CustomerID']; // Benutzer-ID aus Session
+
+        $reviewRepo = new ReviewRepository(new Database()); // Bewertungs-Repository
+        $reviewRepo->addReview($artworkId, $customerId, $rating, $comment); // Bewertung speichern
+
         header("Location: site_artwork.php?id=$artworkId"); // Zurück zur Kunstwerkseite
         exit();
     } else {
