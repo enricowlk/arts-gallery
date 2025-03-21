@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start(); // Startet die Session
 ?>
 
 <!DOCTYPE html>
@@ -7,7 +7,9 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <title>Art Gallery - Home</title>
+    <!-- Bindet Bootstrap CSS ein -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bindet die benutzerdefinierte CSS-Datei ein -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -39,7 +41,7 @@ session_start();
     <!-- Footer einbinden -->
     <?php include 'footer.php'; ?>
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap JS einbinden -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

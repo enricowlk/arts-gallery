@@ -11,7 +11,7 @@
             padding: 20px; /* Innenabstand */
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1, h2, h3, h4 {
             font-family: 'Roboto', sans-serif; /* Unterschiedliche Schriftart für Überschriften */
             color: #333; /* Dunkle Schriftfarbe für Überschriften */
             margin-bottom: 20px; /* Abstand nach unten */
@@ -137,6 +137,12 @@
             color: white;
             padding: 2rem 0;
             margin-top: auto; /* Footer bleibt unten */
+        }
+
+        .footer h5 {
+            font-family: 'Roboto', sans-serif;
+            color: #ffffff; /* Weiße Schriftfarbe für Überschriften im Footer */
+            margin-bottom: 20px;
         }
 
         /* Carousel-Stile */

@@ -1,17 +1,24 @@
 <?php
+/**
+ * Repräsentiert ein Kunstwerk mit Eigenschaften wie Titel, Jahr, Bilddatei usw.
+ * Enthält Getter und Setter für den Zugriff auf die Eigenschaften.
+ */
 class Artwork {
-    private $ArtWorkID;
-    private $Title;
-    private $YearOfWork;
-    private $ImageFileName;
-    private $ArtistID;
-    private $Description;
-    private $Excerpt;
-    private $Medium;
-    private $OriginalHome;
-    private $ArtWorkLink;
-    private $GoogleLink;
+    private $ArtWorkID;       // Eindeutige ID des Kunstwerks
+    private $Title;           // Titel des Kunstwerks
+    private $YearOfWork;      // Jahr der Entstehung
+    private $ImageFileName;   // Dateiname des Bildes
+    private $ArtistID;        // ID des zugehörigen Künstlers
+    private $Description;     // Beschreibung des Kunstwerks
+    private $Excerpt;         // Kurzbeschreibung
+    private $Medium;          // Medium (z. B. Öl auf Leinwand)
+    private $OriginalHome;    // Ursprünglicher Aufbewahrungsort
+    private $ArtWorkLink;     // Link zum Kunstwerk
+    private $GoogleLink;      // Google-Link (z. B. Maps)
 
+    /**
+     * Konstruktor zur Initialisierung der Kunstwerkdaten.
+     */
     public function __construct($ArtWorkID, $Title, $YearOfWork, $ImageFileName, $ArtistID, $Description, $Excerpt, $Medium, $OriginalHome, $ArtWorkLink, $GoogleLink) {
         $this->ArtWorkID = $ArtWorkID;
         $this->Title = $Title;
@@ -25,7 +32,6 @@ class Artwork {
         $this->ArtWorkLink = $ArtWorkLink;
         $this->GoogleLink = $GoogleLink;
     }
-
     // Getter und Setter für ArtWorkID
     public function getArtWorkID() {
         return $this->ArtWorkID;

@@ -1,40 +1,52 @@
 <?php
-require_once 'Customer.php';
-require_once 'CustomerLogon.php';
-require_once 'database.php';
+require_once 'Customer.php'; // Bindet die Customer-Klasse ein
+require_once 'CustomerLogon.php'; // Bindet die CustomerLogon-Klasse ein
+require_once 'database.php'; // Bindet die Database-Klasse ein
 
+/**
+ * Klasse CustomerRepository
+ * 
+ * Verwaltet den Zugriff auf die Kundendaten in der Datenbank.
+ * Enthält Methoden zum Hinzufügen, Aktualisieren und Abrufen von Kunden sowie zur Passwortverwaltung.
+ */
 class CustomerRepository {
-    private $db;
+    private $db; // Datenbankverbindung
 
+    /**
+     * Konstruktor
+     * 
+     * Eingabe: Die Datenbankverbindung.
+     */
     public function __construct($db) {
         $this->db = $db;
     }
 
     /**
-     * Fügt einen neuen Kunden in die customer-Tabelle ein.
+     * Fügt einen neuen Kunden in die Datenbank ein.
+     * 
+     * Eingabe: Ein Customer-Objekt und das Passwort des Kunden.
+     * Aktion: Fügt den Kunden in die `customers`-Tabelle und die Anmeldedaten in die `customerlogon`-Tabelle ein.
      */
     public function addCustomer($customer, $password) {
-        
         $this->db->connect();
-        // Transaktion starten, um sicherzustellen, dass beide Einfügeoperationen erfolgreich sind
-        $this->db->beginTransaction();
-    
+        $this->db->beginTransaction(); // Transaktion starten
+
         try {
-            // Zuerst den Datensatz in customerlogon einfügen
+            // Fügt Anmeldedaten in customerlogon ein
             $stmt = $this->db->prepareStatement("
                 INSERT INTO customerlogon (UserName, Pass, Type)
                 VALUES (:email, :password, :type)
             ");
             $stmt->execute([
-                'email' => $customer->getEmail(), // E-Mail als username
-                'password' => password_hash($password, PASSWORD_DEFAULT),
-                'type' => 'user'
+                'email' => $customer->getEmail(), // E-Mail als Benutzername
+                'password' => password_hash($password, PASSWORD_DEFAULT), // Passwort hashen
+                'type' => 'user' // Standard-Benutzertyp
             ]);
-    
-            // CustomerID des neu eingefügten Datensatzes abrufen
+
+            // Holt die CustomerID des neu eingefügten Datensatzes
             $customerID = $this->db->lastInsertId();
-    
-            // Dann den Datensatz in customers einfügen
+
+            // Fügt Kundendaten in customers ein
             $stmt = $this->db->prepareStatement("
                 INSERT INTO customers (CustomerID, FirstName, LastName, Address, City, Country, Postal, Phone, Email)
                 VALUES (:customer_id, :first_name, :last_name, :address, :city, :country, :postal, :phone, :email)
@@ -50,12 +62,10 @@ class CustomerRepository {
                 'phone' => $customer->getPhone(),
                 'email' => $customer->getEmail()
             ]);
-    
-            // Transaktion bestätigen
-            $this->db->commit();
+
+            $this->db->commit(); // Transaktion bestätigen
         } catch (PDOException $ex) {
-            // Bei einem Fehler die Transaktion rückgängig machen
-            $this->db->rollBack();
+            $this->db->rollBack(); // Transaktion rückgängig machen
             throw $ex;
         }
 
@@ -64,6 +74,9 @@ class CustomerRepository {
 
     /**
      * Überprüft, ob eine E-Mail bereits existiert.
+     * 
+     * Eingabe: Die E-Mail-Adresse.
+     * Ausgabe: `true`, wenn die E-Mail existiert, sonst `false`.
      */
     public function emailExists($email) {
         $this->db->connect();
@@ -71,12 +84,14 @@ class CustomerRepository {
         $stmt->execute(['email' => $email]);
 
         $this->db->close();
-
         return $stmt->fetch() !== false;
     }
 
     /**
      * Aktualisiert die Kontodaten eines Kunden.
+     * 
+     * Eingabe: CustomerID, Vorname, Nachname, E-Mail und optional ein neues Passwort.
+     * Aktion: Aktualisiert die Kundendaten in der `customers`-Tabelle und die Anmeldedaten in der `customerlogon`-Tabelle.
      */
     public function updateCustomer($customerID, $firstName, $lastName, $email, $password = null) {
         $this->db->connect();
@@ -104,6 +119,9 @@ class CustomerRepository {
 
     /**
      * Setzt das Passwort eines Kunden zurück.
+     * 
+     * Eingabe: CustomerID und das neue Passwort.
+     * Aktion: Aktualisiert das Passwort in der `customerlogon`-Tabelle.
      */
     public function resetPassword($customerID, $newPassword) {
         $this->db->connect();
@@ -118,33 +136,41 @@ class CustomerRepository {
 
     /**
      * Holt die Kundendaten anhand der CustomerID.
+     * 
+     * Eingabe: Die CustomerID.
+     * Ausgabe: Ein Customer-Objekt oder `null`, wenn kein Kunde gefunden wurde.
      */
     public function getCustomerByID($customerID) {
-    $this->db->connect();
-    $stmt = $this->db->prepareStatement("SELECT * FROM customers WHERE CustomerID = :customerID");
-    $stmt->execute(['customerID' => $customerID]);
-    $row = $stmt->fetch();
+        $this->db->connect();
+        $stmt = $this->db->prepareStatement("SELECT * FROM customers WHERE CustomerID = :customerID");
+        $stmt->execute(['customerID' => $customerID]);
+        $row = $stmt->fetch();
 
-    $this->db->close();
+        $this->db->close();
 
-    if ($row) {
-        return new Customer(
-            $row['CustomerID'],
-            $row['FirstName'],
-            $row['LastName'],
-            $row['Address'],
-            $row['City'],
-            $row['Country'],
-            $row['Postal'],
-            $row['Phone'],
-            $row['Email']
-        );
-    } else {
-        return null; // oder ein Standard-Customer-Objekt zurückgeben
+        if ($row) {
+            return new Customer(
+                $row['CustomerID'],
+                $row['FirstName'],
+                $row['LastName'],
+                $row['Address'],
+                $row['City'],
+                $row['Country'],
+                $row['Postal'],
+                $row['Phone'],
+                $row['Email']
+            );
+        } else {
+            return null; // Kein Kunde gefunden
+        }
     }
-}
 
-
+    /**
+     * Holt den Namen eines Kunden anhand der CustomerID.
+     * 
+     * Eingabe: Die CustomerID.
+     * Ausgabe: Der vollständige Name des Kunden oder 'Unknown', wenn kein Kunde gefunden wurde.
+     */
     public function getCustomerNameById($customerId) {
         $this->db->connect();
         $stmt = $this->db->prepareStatement("SELECT FirstName, LastName FROM customers WHERE CustomerID = ?");
@@ -156,10 +182,16 @@ class CustomerRepository {
         if ($row) {
             return $row['FirstName'] . ' ' . $row['LastName'];
         } else {
-            return 'Unknown';
+            return 'Unknown'; // Kein Kunde gefunden
         }
     }
 
+    /**
+     * Holt die Kundendaten anhand der E-Mail-Adresse.
+     * 
+     * Eingabe: Die E-Mail-Adresse.
+     * Ausgabe: Ein Array mit den Kundendaten oder `null`, wenn kein Kunde gefunden wurde.
+     */
     public function getCustomerByEmail($db, $email) {
         $this->db->connect();
         $stmt = $this->db->prepareStatement("SELECT customerlogon.*, customers.FirstName, customers.LastName

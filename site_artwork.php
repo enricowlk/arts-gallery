@@ -1,28 +1,34 @@
 <?php
-session_start();
-require_once 'database.php';
-require_once 'ArtworkRepository.php';
-require_once 'ArtistRepository.php';
-require_once 'ReviewRepository.php';
-require_once 'CustomerRepository.php';
+session_start(); // Startet die Session
 
+require_once 'database.php'; // Bindet die Database-Klasse ein
+require_once 'ArtworkRepository.php'; // Bindet die ArtworkRepository-Klasse ein
+require_once 'ArtistRepository.php'; // Bindet die ArtistRepository-Klasse ein
+require_once 'ReviewRepository.php'; // Bindet die ReviewRepository-Klasse ein
+require_once 'CustomerRepository.php'; // Bindet die CustomerRepository-Klasse ein
+
+// Überprüft, ob der Benutzer angemeldet ist
 $isLoggedIn = isset($_SESSION['user']);
 
+// Überprüft, ob eine Kunstwerk-ID übergeben wurde
 if (isset($_GET['id'])) {
-    $artworkId = $_GET['id'];
+    $artworkId = $_GET['id']; // Holt die Kunstwerk-ID aus dem GET-Parameter
 } else {
-    $artworkId = null;
+    $artworkId = null; // Falls keine ID übergeben wurde
 }
 
+// Erstellt Instanzen der Repository-Klassen
 $artworkRepo = new ArtworkRepository(new Database());
 $artistRepo = new ArtistRepository(new Database());
 $reviewRepo = new ReviewRepository(new Database());
 $customerRepo = new CustomerRepository(new Database());
 
-$artwork = $artworkRepo->getArtworkById($artworkId);
-$artist = $artistRepo->getArtistById($artwork->getArtistID());
-$reviews = $reviewRepo->getAllReviewsForOneArtworkByArtworkId($artworkId);
+// Holt die Kunstwerkdaten, den Künstler und die Bewertungen
+$artwork = $artworkRepo->getArtworkById($artworkId); // Holt das Kunstwerk anhand der ID
+$artist = $artistRepo->getArtistById($artwork->getArtistID()); // Holt den Künstler des Kunstwerks
+$reviews = $reviewRepo->getAllReviewsForOneArtworkByArtworkId($artworkId); // Holt die Bewertungen des Kunstwerks
 
+// Überprüft, ob das Kunstwerk in den Favoriten ist
 $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkId, $_SESSION['favorite_artworks']);
 ?>
 
@@ -30,11 +36,14 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- Titel der Seite mit dem Namen des Kunstwerks -->
     <title><?php echo $artwork->getTitle(); ?> - Art Gallery</title>
+    <!-- Bindet Bootstrap CSS ein -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bindet die benutzerdefinierte CSS-Datei ein -->
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Kunstwerkbild */
+        /* Stil für das Kunstwerkbild */
         .artwork-image {
             width: 100%;
             height: 300px; /* Feste Höhe für die Bilder */
@@ -45,6 +54,7 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
     </style>
 </head>
 <body>
+    <!-- Navigation einbinden -->
     <?php include 'navigation.php'; ?>
 
     <div class="container mt-5">
@@ -55,22 +65,22 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                 <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal">
                     <img src="images/works/medium/<?php echo $artwork->getImageFileName(); ?>.jpg" class="artwork-image" alt="<?php echo $artwork->getTitle(); ?>">
                 </a>
-                <!-- Add to Favorite/Remove Button -->
+                <!-- Button zum Hinzufügen/Entfernen des Kunstwerks aus den Favoriten -->
                 <form action="favorites_process.php" method="post" class="mt-3">
                     <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
                     <button type="submit" class="btn 
                         <?php
                             if ($isFavoriteArtwork) {
-                                echo 'btn-danger';
+                                echo 'btn-danger'; // Roter Button, wenn das Kunstwerk in den Favoriten ist
                             } else {
-                                echo 'btn-secondary';
+                                echo 'btn-secondary'; // Grauer Button, wenn das Kunstwerk nicht in den Favoriten ist
                             }
                         ?>">
                         <?php
                             if ($isFavoriteArtwork) {
-                                echo 'Remove from Favorites';
+                                echo 'Remove from Favorites'; // Text für den Button, wenn das Kunstwerk in den Favoriten ist
                             } else {
-                                echo 'Add to Favorites';
+                                echo 'Add to Favorites'; // Text für den Button, wenn das Kunstwerk nicht in den Favoriten ist
                             }
                         ?>
                     </button>
@@ -78,22 +88,29 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
             </div>
             <div class="col-md-6">
                 <div class="info">
+                    <!-- Titel des Kunstwerks -->
                     <h1><?php echo $artwork->getTitle(); ?></h1>
+                    <!-- Künstlername -->
                     <p class="lead">By <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></a></p>
+                    <!-- Jahr des Kunstwerks -->
                     <p><strong>Year of Work:</strong> <?php echo $artwork->getYearOfWork(); ?></p>
+                    <!-- Medium des Kunstwerks -->
                     <p><strong>Medium:</strong> <?php echo $artwork->getMedium(); ?></p>
+                    <!-- Beschreibung des Kunstwerks -->
                     <p><strong>Description:</strong> <?php echo $artwork->getDescription(); ?></p>
+                    <!-- Ursprünglicher Aufbewahrungsort -->
                     <p><strong>Original Home:</strong> <?php echo $artwork->getOriginalHome(); ?></p>
+                    <!-- Link zu weiteren Informationen -->
                     <p> You want to know more about "<strong><?php echo $artwork->getTitle(); ?></strong>"?</p>
                     <a href="<?php echo $artwork->getArtWorkLink(); ?>" class="btn btn-secondary">Learn More</a>
                 </div>
             </div>
         </div>
 
-        <!-- Reviews -->
+        <!-- Bewertungen -->
         <h2 class="mt-5">Reviews</h2>
 
-        <!-- Add Review Form -->
+        <!-- Formular zum Hinzufügen einer Bewertung (nur für angemeldete Benutzer) -->
         <?php if($isLoggedIn){ ?>
         <div>
             <div>
@@ -124,7 +141,7 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
         </div>
         <?php } ?>
 
-        <!-- Reviews Table -->
+        <!-- Tabelle der Bewertungen -->
         <div class="table-responsive">
             <table class="table table-hover review-table">
                 <thead class="table-light">
@@ -140,20 +157,27 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                     <?php if (!empty($reviews)) { ?>
                         <?php foreach ($reviews as $review) { ?>
                             <?php
+                                // Holt die Kundendaten für die Bewertung
                                 $customer = $customerRepo->getCustomerByID($review->getCustomerId());
                             ?>
                             <tr>
+                                <!-- Kundenname -->
                                 <td><?php echo $customer->getFirstName() . ' ' . $customer->getLastName(); ?></td>
+                                <!-- Bewertung -->
                                 <td class="rating">
                                     <?php echo $review->getRating(); ?>/5 
                                     <img src="images/icon_gelberStern.png" alt="Star" class="star-icon">
                                 </td>
+                                <!-- Kommentar -->
                                 <td class="comment"><?php echo $review->getComment(); ?></td>
+                                <!-- Datum der Bewertung -->
                                 <td class="date"><?php echo $review->getReviewDate(); ?></td>
+                                <!-- Stadt und Land des Kunden -->
                                 <td class="city(country)"><?php echo $customer->getCity(); ?> (<?php echo $customer->getCountry(); ?>)</td>
                             </tr>
                         <?php } ?>
                     <?php } else { ?>
+                        <!-- Meldung, falls keine Bewertungen gefunden wurden -->
                         <tr>
                             <td colspan="5" class="text-center">No reviews found for this artwork.</td>
                         </tr>
@@ -172,13 +196,16 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <!-- Großes Bild des Kunstwerks -->
                     <img src="images/works/large/<?php echo $artwork->getImageFileName(); ?>.jpg" class="img-fluid" alt="<?php echo $artwork->getTitle(); ?>">
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Footer einbinden -->
     <?php include 'footer.php'; ?>
+    <!-- Bootstrap JS einbinden -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -1,11 +1,25 @@
 <?php
+/**
+ * Klasse Genre
+ * 
+ * Repräsentiert ein Genre mit Eigenschaften wie Name, Epoche, Beschreibung und Link.
+ * Enthält Getter- und Setter-Methoden für den Zugriff auf die Eigenschaften.
+ */
 class Genre {
-    private $GenreID;
-    private $GenreName;
-    private $Era;
-    private $Description;
-    private $Link;
+    // Eigenschaften der Klasse
+    private $GenreID;      // Eindeutige ID des Genres
+    private $GenreName;    // Name des Genres
+    private $Era;          // Epoche, zu der das Genre gehört
+    private $Description;  // Beschreibung des Genres
+    private $Link;         // Link zu weiteren Informationen
 
+    /**
+     * Konstruktor
+     * 
+     * Initialisiert die Eigenschaften des Genres.
+     * 
+     * Eingabe: GenreID, GenreName, Era, Description und Link.
+     */
     public function __construct($GenreID, $GenreName, $Era, $Description, $Link) {
         $this->GenreID = $GenreID;
         $this->GenreName = $GenreName;

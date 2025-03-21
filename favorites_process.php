@@ -1,16 +1,17 @@
 <?php
-session_start();
+session_start(); // Startet die Session
+
 // Prüfen, ob eine Künstler-ID oder Kunstwerk-ID gesendet wurde
 if (isset($_POST['artist_id'])) {
     // Verarbeitung für Künstler
-    $artistId = $_POST['artist_id'];
+    $artistId = $_POST['artist_id']; // Holt die Künstler-ID aus dem POST-Request
 
-    // Initialisiere die Favoritenliste für Künstler, falls sie noch nicht existiert
+    // Initialisiert die Favoritenliste für Künstler, falls sie noch nicht existiert
     if (!isset($_SESSION['favorite_artists'])) {
         $_SESSION['favorite_artists'] = [];
     }
 
-    // Überprüfen, ob der Künstler bereits in den Favoriten ist
+    // Überprüft, ob der Künstler bereits in den Favoriten ist
     if (in_array($artistId, $_SESSION['favorite_artists'])) {
         // Künstler aus der Favoritenliste entfernen
         $_SESSION['favorite_artists'] = array_diff($_SESSION['favorite_artists'], [$artistId]);
@@ -20,14 +21,14 @@ if (isset($_POST['artist_id'])) {
     }
 } elseif (isset($_POST['artwork_id'])) {
     // Verarbeitung für Kunstwerke
-    $artworkId = $_POST['artwork_id'];
+    $artworkId = $_POST['artwork_id']; // Holt die Kunstwerk-ID aus dem POST-Request
 
-    // Initialisiere die Favoritenliste für Kunstwerke, falls sie noch nicht existiert
+    // Initialisiert die Favoritenliste für Kunstwerke, falls sie noch nicht existiert
     if (!isset($_SESSION['favorite_artworks'])) {
         $_SESSION['favorite_artworks'] = [];
     }
 
-    // Überprüfen, ob das Kunstwerk bereits in den Favoriten ist
+    // Überprüft, ob das Kunstwerk bereits in den Favoriten ist
     if (in_array($artworkId, $_SESSION['favorite_artworks'])) {
         // Kunstwerk aus der Favoritenliste entfernen
         $_SESSION['favorite_artworks'] = array_diff($_SESSION['favorite_artworks'], [$artworkId]);
@@ -38,6 +39,6 @@ if (isset($_POST['artist_id'])) {
 }
 
 // Zurück zur vorherigen Seite
-header('Location: ' . $_SERVER['HTTP_REFERER']);
-exit();
+header('Location: ' . $_SERVER['HTTP_REFERER']); // Leitet den Benutzer zurück zur vorherigen Seite
+exit(); // Beendet das Skript
 ?>

@@ -1,27 +1,22 @@
 <?php
-session_start();
-require_once 'database.php';
-require_once 'ReviewRepository.php';
-require_once 'CustomerRepository.php';
+session_start(); // Session starten
+require_once 'database.php'; // Datenbankverbindung
+require_once 'ReviewRepository.php'; // Logik für Bewertungen
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $artworkId = $_POST['artwork_id'];
-    $rating = $_POST['rating'];
-    $comment = $_POST['comment'];
+$reviewRepo = new ReviewRepository(new Database()); // Bewertungs-Repository
+$reviewRepo->addReview($artworkId, $customerId, $rating, $comment); // Bewertung speichern
 
-    // Annahme: Der eingeloggte Benutzer ist in der Session gespeichert
-    if (isset($_SESSION['user'])) {
-        $customerId = $_SESSION['user']['CustomerID'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Nur bei POST-Anfrage
+    $artworkId = $_POST['artwork_id']; // ID des Kunstwerks
+    $rating = $_POST['rating']; // Bewertung (z.B. 1-5)
+    $comment = $_POST['comment']; // Kommentar zur Bewertung
 
-        $reviewRepo = new ReviewRepository(new Database());
-        $reviewRepo->addReview($artworkId, $customerId, $rating, $comment);
-
-        // Zurück zur Kunstwerkseite
-        header("Location: site_artwork.php?id=$artworkId");
+    if (isset($_SESSION['user'])) { // Prüft, ob Benutzer eingeloggt ist
+        $customerId = $_SESSION['user']['CustomerID']; // Benutzer-ID aus Session
+        header("Location: site_artwork.php?id=$artworkId"); // Zurück zur Kunstwerkseite
         exit();
     } else {
-        // Benutzer ist nicht eingeloggt
-        header("Location: site_login.php");
+        header("Location: site_login.php"); // Zur Login-Seite, wenn nicht eingeloggt
         exit();
     }
 }

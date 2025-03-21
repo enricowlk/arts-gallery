@@ -1,35 +1,37 @@
 <?php
-session_start(); // Session starten, um Meldungen zu speichern
+session_start(); // Startet die Session, um Erfolgs- oder Fehlermeldungen zu speichern
 
-require_once 'Customer.php';
-require_once 'CustomerRepository.php';
-require_once 'database.php';
+require_once 'Customer.php'; // Bindet die Customer-Klasse ein
+require_once 'CustomerRepository.php'; // Bindet die CustomerRepository-Klasse ein
+require_once 'database.php'; // Bindet die Database-Klasse ein
 
 // Überprüfen, ob das Formular abgeschickt wurde
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Formulardaten validieren und bereinigen
-    $password = trim($_POST['password']);
-    $firstName = trim($_POST['first_name']);
-    $lastName = trim($_POST['last_name']);
-    $address = trim($_POST['address']);
-    $city = trim($_POST['city']);
-    $country = trim($_POST['country']);
-    $postal = trim($_POST['postal']);
-    $phone = trim($_POST['phone']);
-    $email = trim($_POST['email']);
+    $password = trim($_POST['password']); // Passwort
+    $firstName = trim($_POST['first_name']); // Vorname
+    $lastName = trim($_POST['last_name']); // Nachname
+    $address = trim($_POST['address']); // Adresse
+    $city = trim($_POST['city']); // Stadt
+    $country = trim($_POST['country']); // Land
+    $postal = trim($_POST['postal']); // Postleitzahl
+    $phone = trim($_POST['phone']); // Telefonnummer
+    $email = trim($_POST['email']); // E-Mail
 
     // Repository-Instanz erstellen
     $customerRepo = new CustomerRepository(new Database());
 
     try {
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-            $_SESSION['error'] = 'Invalid email address!';
-            header('Location: site_register.php');
+        // Überprüfen, ob die E-Mail gültig ist
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $_SESSION['error'] = 'Invalid email address!'; // Fehlermeldung bei ungültiger E-Mail
+            header('Location: site_register.php'); // Weiterleitung zur Registrierungsseite
             exit();
         }
+
         // Überprüfen, ob die E-Mail bereits existiert
         if ($customerRepo->emailExists($email)) {
-            $_SESSION['error'] = 'The email address is already registered!';
+            $_SESSION['error'] = 'The email address is already registered!'; // Fehlermeldung bei bereits registrierter E-Mail
         } else {
             // Neuen Kunden erstellen
             $customer = new Customer(null, $firstName, $lastName, $address, $city, $country, $postal, $phone, $email);
@@ -49,3 +51,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Location: site_register.php');
     exit();
 }
+?>
