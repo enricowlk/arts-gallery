@@ -6,6 +6,8 @@ require_once 'ArtistRepository.php';
 require_once 'ReviewRepository.php';
 require_once 'CustomerRepository.php';
 
+$isLoggedIn = isset($_SESSION['user']);
+
 if (isset($_GET['id'])) {
     $artworkId = $_GET['id'];
 } else {
@@ -92,6 +94,7 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
         <h2 class="mt-5 mb-4">Reviews</h2>
 
         <!-- Add Review Form -->
+        <?php if($isLoggedIn){ ?>
         <div>
             <div>
                 <h5 class="card-title">Add Your Review</h5>
@@ -119,6 +122,7 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                 </form>
             </div>
         </div>
+        <?php } ?>
 
         <!-- Reviews Table -->
         <div class="table-responsive">
