@@ -11,8 +11,8 @@ if (isset($_GET['id'])) {
     $genreId = null;
 }
 
-$genreRepo = new GenreRepository($pdo);
-$artworkRepo = new ArtworkRepository($pdo);
+$genreRepo = new GenreRepository(new Database());
+$artworkRepo = new ArtworkRepository(new Database());
 
 $genre = $genreRepo->getGenreById($genreId);
 $artworks = $artworkRepo->getAllArtworksForOneGenreByGenreId($genreId);
