@@ -28,6 +28,10 @@ $artwork = $artworkRepo->getArtworkById($artworkId); // Holt das Kunstwerk anhan
 $artist = $artistRepo->getArtistById($artwork->getArtistID()); // Holt den Künstler des Kunstwerks
 $reviews = $reviewRepo->getAllReviewsForOneArtworkByArtworkId($artworkId); // Holt die Bewertungen des Kunstwerks
 
+// Berechnet die durchschnittliche Bewertung und Anzahl der Bewertungen
+$averageRating = $artworkRepo->getAverageRatingForArtwork($artworkId);
+$reviewCount = count($reviews);
+
 // Überprüft, ob das Kunstwerk in den Favoriten ist
 $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkId, $_SESSION['favorite_artworks']);
 ?>
@@ -51,6 +55,16 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
             border-radius: 10px; /* Abgerundete Ecken */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
         }
+        /* Stil für die Bewertungs- und Favoritenzeile */
+        .action-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .favorite-form {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -65,26 +79,40 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                 <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal">
                     <img src="images/works/medium/<?php echo $artwork->getImageFileName(); ?>.jpg" class="artwork-image" alt="<?php echo $artwork->getTitle(); ?>">
                 </a>
-                <!-- Button zum Hinzufügen/Entfernen des Kunstwerks aus den Favoriten -->
-                <form action="favorites_process.php" method="post" class="mt-3">
-                    <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
-                    <button type="submit" class="btn 
-                        <?php
-                            if ($isFavoriteArtwork) {
-                                echo 'btn-danger'; // Roter Button, wenn das Kunstwerk in den Favoriten ist
-                            } else {
-                                echo 'btn-secondary'; // Grauer Button, wenn das Kunstwerk nicht in den Favoriten ist
-                            }
-                        ?>">
-                        <?php
-                            if ($isFavoriteArtwork) {
-                                echo 'Remove from Favorites'; // Text für den Button, wenn das Kunstwerk in den Favoriten ist
-                            } else {
-                                echo 'Add to Favorites'; // Text für den Button, wenn das Kunstwerk nicht in den Favoriten ist
-                            }
-                        ?>
-                    </button>
-                </form>
+                
+                <!-- Bewertungsanzahl und Favoriten-Button in einer Zeile -->
+                <div class="action-row"> 
+                    <!-- Button zum Hinzufügen/Entfernen des Kunstwerks aus den Favoriten -->
+                    <form action="favorites_process.php" method="post" class="favorite-form">
+                        <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
+                        <button type="submit" class="btn 
+                            <?php
+                                if ($isFavoriteArtwork) {
+                                    echo 'btn-danger'; // Roter Button, wenn das Kunstwerk in den Favoriten ist
+                                } else {
+                                    echo 'btn-secondary'; // Grauer Button, wenn das Kunstwerk nicht in den Favoriten ist
+                                }
+                            ?>">
+                            <?php
+                                if ($isFavoriteArtwork) {
+                                    echo 'Remove from Favorites'; // Text für den Button, wenn das Kunstwerk in den Favoriten ist
+                                } else {
+                                    echo 'Add to Favorites'; // Text für den Button, wenn das Kunstwerk nicht in den Favoriten ist
+                                }
+                            ?>
+                        </button>
+                    </form>
+                    <!-- Bewertungsanzeige -->
+                    <div class="rating-container">
+                        <?php if ($reviewCount > 0){ ?>
+                            <span class="rating-text"><strong><?php echo number_format($averageRating, 1); ?>/5 </strong></span>
+                            <img src="images/icon_gelberStern.png" alt="Star">
+                            <span>(<?php echo $reviewCount; ?> reviews)</span>
+                        <?php }else{ ?>
+                            <span class="rating-text">No ratings yet</span>
+                        <?php } ?>
+                    </div>
+                </div>
             </div>
             <div class="col-md-6">
                 <div class="info">

@@ -5,7 +5,13 @@ require_once 'ArtistRepository.php'; // Bindet die ArtistRepository-Klasse ein
 
 $artistRepo = new ArtistRepository(new Database()); // Erstellt eine Instanz von ArtistRepository mit der Datenbankverbindung
 
-$artists = $artistRepo->getAllArtists(); // Ruft alle Künstler aus der Datenbank ab
+if (isset($_GET['order'])) {
+    $order = $_GET['order'];
+} else {
+    $order = 'ASC'; // Standard-Sortierreihenfolge
+}
+
+$artists = $artistRepo->getAllArtists($order); // Ruft alle Künstler aus der Datenbank ab
 ?>
 
 <!DOCTYPE html>
@@ -22,6 +28,22 @@ $artists = $artistRepo->getAllArtists(); // Ruft alle Künstler aus der Datenban
 
     <div class="container mt-3">
         <h1 class="text-center">Artists</h1> <!-- Überschrift -->
+        
+        <!-- Sortieroptionen -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Order: <?php echo $order; ?>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="?order=ASC">Ascending</a></li>
+                        <li><a class="dropdown-item" href="?order=DESC">Descending</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
         <div class="row">
             <?php foreach ($artists as $artist) { ?> <!-- Schleife durch alle Künstler -->
                 <div class="col-md-3 mb-4">
