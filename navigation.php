@@ -32,6 +32,7 @@ $isAdmin = isset($_SESSION['user']['is_admin']) && $_SESSION['user']['is_admin']
                         <li><a class="dropdown-item" href="browse_subjects.php">Subjects</a></li>
                     </ul>
                 </li>
+                <li class="nav-item"><a class="nav-link" href="site_advanced_search.php">Advanced Search</a></li>
             </ul>
 
             <!-- Suchformular -->

@@ -376,3 +376,18 @@
             font-size: 1rem; /* Standard-Schriftgröße */
             line-height: 1.6; /* Bessere Lesbarkeit durch größeren Zeilenabstand */
         }
+
+        /* Neue Styles für Hover-Effekte */
+        .info a {
+            color: inherit; /* Behält die Standardtextfarbe bei */
+            text-decoration: none; /* Entfernt die Standard-Unterstreichung */
+            transition: all 0.3s ease; /* Sanfter Übergang für den Hover-Effekt */
+        }
+        
+        .info a:hover {
+            color: black !important; /* Text wird schwarz beim Hover */
+            text-decoration: underline !important; /* Unterstreichung beim Hover */
+        }
+        
+
+        

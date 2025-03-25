@@ -96,6 +96,19 @@ class ArtworkRepository {
         return $artworks;
     }
 
+    public function getGenreForOneArtworkByArtworkId($id) {
+        $this->db->connect();
+        $sql = "SELECT * FROM genres INNER JOIN artworkgenres ON genres.GenreID = artworkgenres.GenreID WHERE ArtWorkID = ?";
+        $stmt = $this->db->prepareStatement($sql);
+        $stmt->execute([$id]);
+        $artworks = [];
+        while ($row = $stmt->fetch()) {
+            $artworks[] = new Genre($row['GenreID'], $row['GenreName'], $row['Era'], $row['Description'], $row['Link']);
+        }
+        $this->db->close();
+        return $artworks;
+    }
+
     /**
      * Gibt alle Kunstwerke eines bestimmten Themas zurück.
      * 
@@ -112,6 +125,25 @@ class ArtworkRepository {
         $artworks = [];
         while ($row = $stmt->fetch()) {
             $artworks[] = new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], $row['ImageFileName'], $row['ArtistID'], $row['Description'], $row['Excerpt'], $row['Medium'], $row['OriginalHome'], $row['ArtWorkLink'], $row['GoogleLink']);
+        }
+        $this->db->close();
+        return $artworks;
+    }
+
+    /**
+     * Gibt das Subject eines bestimmten Kunstwerks zurück.
+     * 
+     * Eingabe: Die ID des Artworks.
+     * Ausgabe: Ein Array von Subject-Objekten.
+     */
+    public function getSubjectForOneArtworkByArtworkId($id) {
+        $this->db->connect();
+        $sql = "SELECT * FROM subjects INNER JOIN artworksubjects ON subjects.SubjectId = artworksubjects.SubjectID WHERE ArtWorkID = ?";
+        $stmt = $this->db->prepareStatement($sql);
+        $stmt->execute([$id]);
+        $artworks = [];
+        while ($row = $stmt->fetch()) {
+            $artworks[] = new Subject($row['SubjectId'], $row['SubjectName']);
         }
         $this->db->close();
         return $artworks;
