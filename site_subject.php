@@ -7,12 +7,13 @@ require_once 'database.php';
 require_once 'SubjectRepository.php';
 require_once 'ArtworkRepository.php';
 
-// Überprüfen, ob eine Subject-ID als GET-Parameter übergeben wurde
-if (isset($_GET['id'])) {
-    $subjectId = $_GET['id']; // Subject-ID aus GET-Parameter auslesen
-} else {
-    $subjectId = null; // Falls keine ID übergeben wurde, auf null setzen
+// Überprüfen, ob eine gültige Subject-ID als GET-Parameter übergeben wurde
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header("Location: error.php?message=Invalid or missing subject ID");
+    exit();
 }
+
+$subjectId = (int)$_GET['id']; // Subject-ID aus GET-Parameter auslesen und validieren
 
 // Instanzen der Repository-Klassen erstellen, um auf die Datenbank zuzugreifen
 $subjectRepo = new SubjectRepository(new Database());
@@ -20,6 +21,12 @@ $artworkRepo = new ArtworkRepository(new Database());
 
 // Subject-Daten anhand der ID aus der Datenbank abrufen
 $subject = $subjectRepo->getSubjectById($subjectId);
+
+// Überprüfen, ob das Subject existiert
+if ($subject === null) {
+    header("Location: error.php?message=Subject not found");
+    exit();
+}
 
 // Alle Kunstwerke, die mit dem Subject verknüpft sind, aus der Datenbank abrufen
 $artworks = $artworkRepo->getAllArtworksForOneSubjectBySubjectId($subjectId);

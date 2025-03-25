@@ -5,19 +5,28 @@ require_once 'database.php'; // Bindet die Database-Klasse ein
 require_once 'ArtistRepository.php'; // Bindet die ArtistRepository-Klasse ein
 require_once 'ArtworkRepository.php'; // Bindet die ArtworkRepository-Klasse ein
 
-// Überprüft, ob eine Künstler-ID übergeben wurde
-if (isset($_GET['id'])) {
-    $artistId = $_GET['id']; // Holt die Künstler-ID aus dem GET-Parameter
-} else {
-    $artistId = null; // Falls keine ID übergeben wurde
+// Überprüft, ob eine gültige Künstler-ID übergeben wurde
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header("Location: error.php?message=Invalid or missing artist ID");
+    exit();
 }
+
+$artistId = (int)$_GET['id']; // Holt und validiert die Künstler-ID
 
 // Erstellt Instanzen der Repository-Klassen
 $artistRepo = new ArtistRepository(new Database());
 $artworkRepo = new ArtworkRepository(new Database());
 
-// Holt die Künstlerdaten und die zugehörigen Kunstwerke
+// Holt die Künstlerdaten
 $artist = $artistRepo->getArtistById($artistId); // Holt den Künstler anhand der ID
+
+// Überprüft, ob der Künstler existiert
+if ($artist === null) {
+    header("Location: error.php?message=Artist not found");
+    exit();
+}
+
+// Holt die zugehörigen Kunstwerke
 $artworks = $artworkRepo->getAllArtworksForOneArtistByArtistId($artistId); // Holt die Kunstwerke des Künstlers
 
 // Überprüft, ob der Künstler in den Favoriten ist

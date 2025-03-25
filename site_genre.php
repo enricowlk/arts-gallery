@@ -5,19 +5,28 @@ require_once 'database.php'; // Bindet die Database-Klasse ein
 require_once 'GenreRepository.php'; // Bindet die GenreRepository-Klasse ein
 require_once 'ArtworkRepository.php'; // Bindet die ArtworkRepository-Klasse ein
 
-// Überprüft, ob eine Genre-ID übergeben wurde
-if (isset($_GET['id'])) {
-    $genreId = $_GET['id']; // Holt die Genre-ID aus dem GET-Parameter
-} else {
-    $genreId = null; // Falls keine ID übergeben wurde
+// Überprüft, ob eine gültige Genre-ID übergeben wurde
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header("Location: error.php?message=Invalid or missing genre ID");
+    exit();
 }
+
+$genreId = (int)$_GET['id']; // Holt und validiert die Genre-ID
 
 // Erstellt Instanzen der Repository-Klassen
 $genreRepo = new GenreRepository(new Database());
 $artworkRepo = new ArtworkRepository(new Database());
 
-// Holt die Genre-Daten und die zugehörigen Kunstwerke
+// Holt die Genre-Daten
 $genre = $genreRepo->getGenreById($genreId); // Holt das Genre anhand der ID
+
+// Überprüft, ob das Genre existiert
+if ($genre === null) {
+    header("Location: error.php?message=Genre not found");
+    exit();
+}
+
+// Holt die zugehörigen Kunstwerke
 $artworks = $artworkRepo->getAllArtworksForOneGenreByGenreId($genreId); // Holt die Kunstwerke des Genres
 ?>
 

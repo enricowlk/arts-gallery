@@ -377,17 +377,16 @@
             line-height: 1.6; /* Bessere Lesbarkeit durch größeren Zeilenabstand */
         }
 
-        /* Neue Styles für Hover-Effekte */
-        .info a {
-            color: inherit; /* Behält die Standardtextfarbe bei */
-            text-decoration: none; /* Entfernt die Standard-Unterstreichung */
-            transition: all 0.3s ease; /* Sanfter Übergang für den Hover-Effekt */
+        /* Spezifisch für die Links in genre-subject-links */
+        .genre-subject-links a {
+            color: inherit;
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
         
-        .info a:hover {
-            color: black !important; /* Text wird schwarz beim Hover */
-            text-decoration: underline !important; /* Unterstreichung beim Hover */
+        .genre-subject-links a:hover {
+            color: black !important;
+            text-decoration: underline !important;
         }
-        
 
         

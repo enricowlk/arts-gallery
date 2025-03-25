@@ -13,12 +13,13 @@ require_once 'GallerieRepository.php'; // Bindet die GallerieRepository-Klasse e
 // Überprüft, ob der Benutzer angemeldet ist
 $isLoggedIn = isset($_SESSION['user']);
 
-// Überprüft, ob eine Kunstwerk-ID übergeben wurde
-if (isset($_GET['id'])) {
-    $artworkId = $_GET['id']; // Holt die Kunstwerk-ID aus dem GET-Parameter
-} else {
-    $artworkId = null; // Falls keine ID übergeben wurde
+// Überprüft, ob eine gültige Kunstwerk-ID übergeben wurde
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    header("Location: error.php?message=Invalid or missing artwork ID");
+    exit();
 }
+
+$artworkId = (int)$_GET['id']; // Validiert und konvertiert die ID
 
 // Erstellt Instanzen der Repository-Klassen
 $artworkRepo = new ArtworkRepository(new Database());
@@ -29,8 +30,14 @@ $genreRepo = new GenreRepository(new Database());
 $subjectRepo = new SubjectRepository(new Database());
 $gallerieRepo = new GallerieRepository(new Database());
 
-// Holt die Kunstwerkdaten, den Künstler und die Bewertungen
+
 $artwork = $artworkRepo->getArtworkById($artworkId); // Holt das Kunstwerk anhand der ID
+// Überprüft, ob das Kunstwerk existiert
+if ($artwork === null) {
+    header("Location: error.php?message=Artwork not found");
+    exit();
+}
+
 $artist = $artistRepo->getArtistById($artwork->getArtistID()); // Holt den Künstler des Kunstwerks
 $reviews = $reviewRepo->getAllReviewsForOneArtworkByArtworkId($artworkId); // Holt die Bewertungen des Kunstwerks
 
