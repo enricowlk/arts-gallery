@@ -8,6 +8,7 @@ require_once 'ReviewRepository.php'; // Bindet die ReviewRepository-Klasse ein
 require_once 'CustomerRepository.php'; // Bindet die CustomerRepository-Klasse ein
 require_once 'GenreRepository.php'; // Bindet die GenreRepository-Klasse ein
 require_once 'SubjectRepository.php'; // Bindet die SubjectRepository-Klasse ein
+require_once 'GallerieRepository.php'; // Bindet die GallerieRepository-Klasse ein
 
 // Überprüft, ob der Benutzer angemeldet ist
 $isLoggedIn = isset($_SESSION['user']);
@@ -26,6 +27,7 @@ $reviewRepo = new ReviewRepository(new Database());
 $customerRepo = new CustomerRepository(new Database());
 $genreRepo = new GenreRepository(new Database());
 $subjectRepo = new SubjectRepository(new Database());
+$gallerieRepo = new GallerieRepository(new Database());
 
 // Holt die Kunstwerkdaten, den Künstler und die Bewertungen
 $artwork = $artworkRepo->getArtworkById($artworkId); // Holt das Kunstwerk anhand der ID
@@ -35,6 +37,8 @@ $reviews = $reviewRepo->getAllReviewsForOneArtworkByArtworkId($artworkId); // Ho
 // Holt das Genre und Subject für das Kunstwerk
 $genres = $artworkRepo->getGenreForOneArtworkByArtworkId($artworkId); // Holt das Genre des Kunstwerks
 $subjects = $artworkRepo->getSubjectForOneArtworkByArtworkId($artworkId); // Holt das Subject des Kunstwerks
+
+$gallerie = $gallerieRepo->getGalleryByArtworkId($artworkId); // Holt die Gallerie des Kunstwerks
 
 // Berechnet die durchschnittliche Bewertung und Anzahl der Bewertungen
 $averageRating = $artworkRepo->getAverageRatingForArtwork($artworkId);
@@ -145,8 +149,6 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                     <p><strong>Medium:</strong> <?php echo $artwork->getMedium(); ?></p>
                     <!-- Beschreibung des Kunstwerks -->
                     <p><strong>Description:</strong> <?php echo $artwork->getDescription(); ?></p>
-                    <!-- Ursprünglicher Aufbewahrungsort -->
-                    <p><strong>Original Home:</strong> <?php echo $artwork->getOriginalHome(); ?></p>
                     
                     <!-- Genres und Subjects anzeigen -->
                     <div class="artwork-links">
@@ -183,6 +185,42 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                         </p>
                     </div>
                     
+                    <!-- Ursprünglicher Aufbewahrungsort -->
+                    <?php 
+                    if ($gallerie) { 
+                    ?>
+                        <div class="accordion mt-3 mb-3" id="galleryAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#galleryInfo" aria-expanded="false" aria-controls="galleryInfo">
+                                        <strong>Home of this Artwork</strong>
+                                    </button>
+                                </h2>
+                                <div id="galleryInfo" class="accordion-collapse collapse" data-bs-parent="#galleryAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Name:</strong> <?php echo $gallerie->getGalleryName(); ?></p>
+                                        <?php if ($gallerie->getGalleryNativeName()) { ?>
+                                            <p><strong>Native Name:</strong> <?php echo $gallerie->getGalleryNativeName(); ?></p>
+                                        <?php } ?>
+                                        <p><strong>Location:</strong> <?php echo $gallerie->getGalleryCity(); ?>, <?php echo $gallerie->getGalleryCountry(); ?></p>
+                                        <?php if ($gallerie->getGalleryWebSite()) { ?>
+                                            <p><strong>Website:</strong> <a class= "btn btn-secondary" href="<?php echo $gallerie->getGalleryWebSite(); ?>" target="_blank">Visit Museum Website</a></p>
+                                        <?php } ?>
+                                        <?php if ($gallerie->getLatitude() && $gallerie->getLongitude()) { ?>
+                                            <p><strong>Map:</strong> 
+                                                <a class= "btn btn-secondary" href="https://www.google.com/maps?q=<?php echo $gallerie->getLatitude(); ?>,<?php echo $gallerie->getLongitude(); ?>" target="_blank">
+                                                    View on Google Maps
+                                                </a>
+                                            </p>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php 
+                    } 
+                    ?>
+
                     <!-- Link zu weiteren Informationen -->
                     <p> You want to know more about "<strong><?php echo $artwork->getTitle(); ?></strong>"?</p>
                     <a href="<?php echo $artwork->getArtWorkLink(); ?>" class="btn btn-secondary">Learn More</a>
