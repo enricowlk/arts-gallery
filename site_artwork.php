@@ -105,10 +105,37 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
         <!-- Kunstwerkinformationen -->
         <div class="row">
             <div class="col-md-6">
+                <!-- Kunstwerk -->
+                <?php
+                $imagePath = "images/works/medium/" . $artwork->getImageFileName() . ".jpg";
+                $imageExists = file_exists($imagePath);
+
+                if (file_exists($imagePath)) {
+                    $imageUrl = $imagePath;
+                } else {
+                    $imageUrl = "images/placeholder.png";
+                }
+                ?>
                 <!-- Bild als Link zum Modal -->
                 <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal">
-                    <img src="images/works/medium/<?php echo $artwork->getImageFileName(); ?>.jpg" class="artwork-image" alt="<?php echo $artwork->getTitle(); ?>">
+                    <img src="<?php echo $imageUrl; ?>" class="artwork-image" alt="<?php echo $artwork->getTitle(); ?>">
                 </a>
+
+                <!-- Modal für das größere Bild -->
+                <div class="modal fade" id="imageModal">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="imageModalLabel"><?php echo $artwork->getTitle(); ?></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Großes Bild des Kunstwerks -->
+                                <img src="<?php echo $imageUrl; ?>" class="img-fluid" alt="<?php echo $artwork->getTitle(); ?>">
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <!-- Bewertungsanzahl und Favoriten-Button in einer Zeile -->
                 <div class="action-row"> 
@@ -312,22 +339,6 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                     <?php } ?>
                 </tbody>
             </table>
-        </div>
-    </div>
-
-    <!-- Modal für das größere Bild -->
-    <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="imageModalLabel"><?php echo $artwork->getTitle(); ?></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Großes Bild des Kunstwerks -->
-                    <img src="images/works/large/<?php echo $artwork->getImageFileName(); ?>.jpg" class="img-fluid" alt="<?php echo $artwork->getTitle(); ?>">
-                </div>
-            </div>
         </div>
     </div>
 

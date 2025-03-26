@@ -45,18 +45,26 @@ if (isset($_SESSION['favorite_artists'])) {
                 <?php foreach ($favoriteArtists as $artistId){ 
                     // Holt die Künstlerdaten anhand der ID
                     $artist = $artistRepo->getArtistById($artistId);
+                    $imagePath = "images/artists/medium/" . $artist->getArtistID() . ".jpg";
+                    $imageExists = file_exists($imagePath);
+
+                    if (file_exists($imagePath)) {
+                        $imageUrl = $imagePath;
+                    } else {
+                        $imageUrl = "images/placeholder.png";
+                    }
                 ?>
                     <div class="col-md-4 mb-4">
                         <!-- Link zur Künstlerseite -->
                         <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
                         <div class="card">
                             <!-- Künstlerbild -->
-                            <img src="images/artists/medium/<?php echo $artist->getArtistID(); ?>.jpg" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
+                            <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
                             <div class="card-body">
                                 <!-- Künstlername -->
                                 <h5 class="card-title"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h5>
                                 <!-- Nationalität des Künstlers -->
-                                <p class="card-text"><?php echo $artist->getNationality(); ?></p>
+                                <p class="small">(<?php echo $artist->getYearOfBirth(); ?> - <?php echo $artist->getYearOfDeath(); ?>)</p>
                             </div>
                         </div>
                         </a>
@@ -77,18 +85,26 @@ if (isset($_SESSION['favorite_artists'])) {
                     $artwork = $artworkRepo->getArtworkById($artworkId);
                     // Holt den Künstler des Kunstwerks
                     $artist = $artistRepo->getArtistById($artwork->getArtistID());
+                    $imagePath = "images/works/medium/" . $artwork->getImageFileName() . ".jpg";
+                    $imageExists = file_exists($imagePath);
+
+                    if (file_exists($imagePath)) {
+                        $imageUrl = $imagePath;
+                    } else {
+                        $imageUrl = "images/placeholder.png";
+                    }
                 ?>
                     <div class="col-md-4 mb-4">
                         <!-- Link zur Kunstwerkseite -->
                         <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                         <div class="card">
                             <!-- Kunstwerkbild -->
-                            <img src="images/works/medium/<?php echo $artwork->getImageFileName(); ?>.jpg" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
+                            <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
                             <div class="card-body">
                                 <!-- Titel des Kunstwerks -->
                                 <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>
                                 <!-- Künstlername -->
-                                <p class="card-text">By <?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></p>
+                                <p class="small">By <?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></p>
                             </div>
                         </div>
                         </a>

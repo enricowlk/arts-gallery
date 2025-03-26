@@ -94,12 +94,21 @@ $artworks = $artworkRepo->searchArtworks($query); // Sucht nach Kunstwerken basi
                     </div>
                     
                     <div class="row row-cols-3 g-2">
-                        <?php foreach ($artists as $artist) { ?> <!-- Schleife durch alle Künstler -->
+                        <?php foreach ($artists as $artist) { // Schleife durch alle Künstler -->
+                            $imagePath = "images/artists/medium/" . $artist->getArtistID() . ".jpg";
+                            $imageExists = file_exists($imagePath);
+            
+                            if (file_exists($imagePath)) {
+                                $imageUrl = $imagePath;
+                            } else {
+                                $imageUrl = "images/placeholder.png";
+                            } 
+                        ?>
                             <div class="col">
                                 <!-- Link zur Künstlerseite mit Bild -->
                                 <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
                                 <div class="card small-card h-100">
-                                    <img src="images/artists/medium/<?php echo $artist->getArtistID(); ?>.jpg" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
+                                    <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
                                     <div class="card-body">
                                         <!-- Künstlername -->
                                         <h5 class="small"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h5>
@@ -142,13 +151,22 @@ $artworks = $artworkRepo->searchArtworks($query); // Sucht nach Kunstwerken basi
                     </div>
                 </div>
                 <div class="row row-cols-3 g-2">
-                    <?php foreach ($artworks as $artwork) { ?> <!-- Schleife durch alle Kunstwerke -->
-                        <?php $artist = $artistRepo->getArtistByID($artwork->getArtistID()); ?>
+                    <?php foreach ($artworks as $artwork) {  // Schleife durch alle Kunstwerke -->
+                        $artist = $artistRepo->getArtistByID($artwork->getArtistID()); 
+                        $imagePath = "images/works/medium/" . $artwork->getImageFileName() . ".jpg";
+                        $imageExists = file_exists($imagePath);
+
+                        if (file_exists($imagePath)) {
+                            $imageUrl = $imagePath;
+                        } else {
+                            $imageUrl = "images/placeholder.png";
+                        }
+                    ?>
                         <div class="col">
                             <!-- Link zur Kunstwerk-Detailseite mit Bild -->
                             <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                             <div class="card small-card h-100">
-                                <img src="images/works/medium/<?php echo $artwork->getImageFileName(); ?>.jpg" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
+                                <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
                                 <div class="card-body">
                                     <!-- Titel des Kunstwerks -->
                                     <h5 class="small"><strong><?php echo $artwork->getTitle(); ?></strong></h5>

@@ -64,13 +64,22 @@ $artworks = $artworkRepo->getAllArtworks($orderBy, $order); // Ruft alle Kunstwe
             </div>
         </div>
         <div class="row">
-            <?php foreach ($artworks as $artwork) { ?> <!-- Schleife durch alle Kunstwerke -->
-                <?php $artist = $artistRepo->getArtistByID($artwork->getArtistID()); ?>
+            <?php foreach ($artworks as $artwork) {  // Schleife durch alle Kunstwerke
+                $artist = $artistRepo->getArtistByID($artwork->getArtistID());
+                $imagePath = "images/works/medium/" . $artwork->getImageFileName() .".jpg";
+                $imageExists = file_exists($imagePath);
+
+                if (file_exists($imagePath)) {
+                    $imageUrl = $imagePath;
+                } else {
+                    $imageUrl = "images/placeholder.png";
+                }
+                ?>
                 <div class="col-md-3 mb-4">
                     <!-- Link zur Kunstwerk-Detailseite mit Bild -->
                     <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                     <div class="card">
-                        <img src="images/works/medium/<?php echo $artwork->getImageFileName(); ?>.jpg" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
+                        <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
                         <div class="card-body">
                             <!-- Titel des Kunstwerks -->
                             <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>

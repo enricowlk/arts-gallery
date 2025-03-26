@@ -60,7 +60,17 @@ $artworks = $artworkRepo->getAllArtworksForOneGenreByGenreId($genreId); // Holt 
         <div class="row">
             <div class="col-md-4">
                 <!-- Genre-Bild -->
-                <img src="images/genres/square-medium/<?php echo $genre->getGenreID(); ?>.jpg" class="genre-image" alt="<?php echo $genre->getGenreName(); ?>">
+                <?php
+                $imagePath = "images/genres/square-medium/" . $genre->getGenreID() . ".jpg";
+                $imageExists = file_exists($imagePath);
+
+                if (file_exists($imagePath)) {
+                    $imageUrl = $imagePath;
+                } else {
+                    $imageUrl = "images/placeholder.png";
+                }
+                ?>
+                <img src="<?php echo $imageUrl; ?>" class="genre-image" alt="<?php echo $genre->getGenreName(); ?>">
             </div>
             <div class="col-md-8">
                 <div class="info">
@@ -88,13 +98,21 @@ $artworks = $artworkRepo->getAllArtworksForOneGenreByGenreId($genreId); // Holt 
                 <?php foreach ($artworks as $artwork){ 
                     // Holt die durchschnittliche Bewertung des Kunstwerks
                     $averageRating = $artworkRepo->getAverageRatingForArtwork($artwork->getArtWorkID());
+                    $imagePath = "images/works/medium/" . $artwork->getImageFileName() . ".jpg";
+                    $imageExists = file_exists($imagePath);
+
+                    if (file_exists($imagePath)) {
+                        $imageUrl = $imagePath;
+                    } else {
+                        $imageUrl = "images/placeholder.png";
+                    }
                 ?>
                     <div class="col-md-4 mb-4">
                         <!-- Link zu Artwork-Detailseite -->
                         <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                         <div class="card artwork-card">
                             <!-- Kunstwerkbild -->
-                            <img src="images/works/medium/<?php echo $artwork->getImageFileName(); ?>.jpg" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
+                            <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
                             <div class="card-body">
                                 <!-- Titel des Kunstwerks -->
                                 <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>

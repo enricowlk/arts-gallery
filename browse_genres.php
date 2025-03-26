@@ -23,12 +23,21 @@ $genres = $genreRepo->getAllGenres(); // Ruft alle Genres aus der Datenbank ab
     <div class="container mt-3">
         <h1 class="text-center">Genres</h1> <!-- Überschrift -->
         <div class="row">
-            <?php foreach ($genres as $genre) { ?> <!-- Schleife durch alle Genres -->
+            <?php foreach ($genres as $genre) {  // Schleife durch alle Genres
+                $imagePath = "images/genres/square-medium/" . $genre->getGenreID() . ".jpg";
+                $imageExists = file_exists($imagePath);
+
+                if (file_exists($imagePath)) {
+                    $imageUrl = $imagePath;
+                } else {
+                    $imageUrl = "images/placeholder.png";
+                }
+                ?>
                 <div class="col-md-3 mb-4">
                     <!-- Link zur Genre-Detailseite mit Bild -->
                     <a href="site_genre.php?id=<?php echo $genre->getGenreID(); ?>">
                     <div class="card">
-                        <img src="images/genres/square-medium/<?php echo $genre->getGenreID(); ?>.jpg" class="card-img-top" alt="<?php echo $genre->getGenreName(); ?>">
+                        <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $genre->getGenreName(); ?>">
                         <div class="card-body">
                             <!-- Name des Genres -->
                             <h5 class="card-title"><?php echo $genre->getGenreName(); ?></h5>

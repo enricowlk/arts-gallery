@@ -53,7 +53,17 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
         <div class="row">
             <div class="col-md-4">
                 <!-- Künstlerbild -->
-                <img src="images/artists/medium/<?php echo $artist->getArtistID(); ?>.jpg" class="artist-image" alt="<?php echo $artist->getLastName(); ?>">
+                <?php
+                $imagePath = "images/artists/medium/" . $artist->getArtistID() . ".jpg";
+                $imageExists = file_exists($imagePath);
+
+                if (file_exists($imagePath)) {
+                    $imageUrl = $imagePath;
+                } else {
+                    $imageUrl = "images/placeholder.png";
+                }
+                ?>
+                <img src="<?php echo $imageUrl; ?>" class="artist-image" alt="<?php echo $artist->getLastName(); ?>">
                 <!-- Button zum Hinzufügen/Entfernen des Künstlers aus den Favoriten -->
                 <form action="favorites_process.php" method="post" class="mt-3">
                     <input type="hidden" name="artist_id" value="<?php echo $artistId; ?>">
@@ -101,13 +111,22 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
                 <?php foreach ($artworks as $artwork){ 
                     // Holt die durchschnittliche Bewertung des Kunstwerks
                     $averageRating = $artworkRepo->getAverageRatingForArtwork($artwork->getArtWorkID());
+                    // Artwork Image Path and Exists Check 
+                    $imagePath = "images/works/medium/" . $artwork->getImageFileName() . ".jpg";
+                    $imageExists = file_exists($imagePath);
+
+                    if (file_exists($imagePath)) {
+                        $imageUrl = $imagePath;
+                    } else {
+                        $imageUrl = "images/placeholder.png";
+                    }
                 ?>
                     <div class="col-md-4 mb-4">
                         <!-- Link zur Kunstwerkseite -->
                         <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                         <div class="card artwork-card">
                             <!-- Kunstwerkbild -->
-                            <img src="images/works/medium/<?php echo $artwork->getImageFileName(); ?>.jpg" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
+                            <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
                             <div class="card-body">
                                 <!-- Titel des Kunstwerks -->
                                 <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>

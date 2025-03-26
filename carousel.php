@@ -21,8 +21,15 @@ $randomArtworks = $artworkRepo->get3RandomArtworks(); // Ruft 3 zufällige Kunst
                 <?php
                 $active = true; // Steuert, welches Kunstwerk als erstes aktiv ist
                 foreach ($randomArtworks as $artwork) {
-                    $artworkImage = "images/works/large/{$artwork->getImageFileName()}.jpg"; // Pfad zum Bild des Kunstwerks
-                    ?>
+                    $imagePath = "images/works/large/" . $artwork->getImageFileName() . ".jpg";
+                    $imageExists = file_exists($imagePath);
+
+                    if (file_exists($imagePath)) {
+                        $imageUrl = $imagePath;
+                    } else {
+                        $imageUrl = "images/placeholder.png";
+                    }
+                ?>
                     <!-- Carousel Item für jedes Kunstwerk -->
                     <div class="carousel-item <?php
                             if ($active) {
@@ -33,7 +40,7 @@ $randomArtworks = $artworkRepo->get3RandomArtworks(); // Ruft 3 zufällige Kunst
                             ?>">
                         <!-- Link zur Detailseite des Kunstwerks -->
                         <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
-                            <img src="<?php echo $artworkImage; ?>" class="d-block w-100" alt="<?php echo $artwork->getTitle(); ?>">
+                            <img src="<?php echo $imageUrl; ?>" class="d-block w-100" alt="<?php echo $artwork->getTitle(); ?>">
                         </a>
                         <!-- Titel des Kunstwerks als Bildunterschrift -->
                         <div class="carousel-caption d-none d-md-block">

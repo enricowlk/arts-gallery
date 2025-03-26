@@ -27,13 +27,20 @@ $topArtworks = $artworkRepo->get3TopArtworks();
                     // Kunstwerk-Objekt und durchschnittliche Bewertung aus den Daten extrahieren
                     $artwork = $artworkData['artwork'];
                     $averageRating = $artworkData['averageRating'];
+                    $imagePath = "images/works/small/" . $artwork->getImageFileName() . ".jpg";
+
+                    if (file_exists($imagePath)) {
+                        $imageUrl = $imagePath;
+                    } else {
+                        $imageUrl = "images/placeholder.png";
+                    }
                 ?>
                     <div class="col-md-4">
                         <!-- Link zur Kunstwerk-Detailseite -->
                         <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                         <div class="card">
-                                <!-- Kunstwerkbild anzeigen -->
-                                <img src="images/works/small/<?php echo $artwork->getImageFileName(); ?>.jpg" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
+                            <!-- Kunstwerkbild anzeigen oder Platzhalter, falls Bild fehlt -->
+                            <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
                             <div class="card-body">
                                 <!-- Titel des Kunstwerks anzeigen -->
                                 <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>

@@ -27,13 +27,20 @@ $topArtists = $artistRepo->getTop3Artists();
                     // Künstler-Objekt und Review-Anzahl aus den Daten extrahieren
                     $artist = $artistData['artist'];
                     $reviewCount = $artistData['reviewCount'];
+                    $imagePath = "images/artists/medium/" . $artist->getArtistID() . ".jpg";
+                    
+                    if (file_exists($imagePath)) {
+                        $imageUrl = $imagePath;
+                    } else {
+                        $imageUrl = "images/placeholder.png";
+                    }
                 ?>
                     <div class="col-md-4">
                         <!-- Link zur Künstler-Detailseite -->
                         <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
                         <div class="card">
-                            <!-- Künstlerbild anzeigen -->
-                            <img src="images/artists/medium/<?php echo $artist->getArtistID(); ?>.jpg" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
+                            <!-- Künstlerbild anzeigen oder Platzhalter, falls Bild fehlt -->
+                            <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
                             <div class="card-body">
                                 <!-- Künstlername anzeigen -->
                                 <h5 class="card-title"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h5>
