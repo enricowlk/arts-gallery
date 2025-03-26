@@ -1,5 +1,5 @@
 <?php
-require_once 'Artwork.php';
+require_once 'artwork.php';
 require_once 'reviews.php';
 require_once 'database.php';
 

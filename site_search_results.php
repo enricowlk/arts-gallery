@@ -2,8 +2,8 @@
 session_start(); // Startet die Session
 
 require_once 'database.php'; // Bindet die Datenbankverbindung ein
-require_once 'ArtistRepository.php'; // Bindet das ArtistRepository ein
-require_once 'ArtworkRepository.php'; // Bindet das ArtworkRepository ein
+require_once 'artistRepository.php'; // Bindet das ArtistRepository ein
+require_once 'artworkRepository.php'; // Bindet das ArtworkRepository ein
 
 if (isset($_GET['query'])) {
     $query = $_GET['query']; // Speichert den Suchbegriff aus der URL
