@@ -4,8 +4,8 @@ session_start();
 
 // Einbinden der benötigten Dateien für Datenbankzugriff und Repository-Klassen
 require_once 'database.php';
-require_once 'SubjectRepository.php';
-require_once 'ArtworkRepository.php';
+require_once 'subjectRepository.php';
+require_once 'artworkRepository.php';
 
 // Überprüfen, ob eine gültige Subject-ID als GET-Parameter übergeben wurde
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {

@@ -1,7 +1,7 @@
 <?php
 // Einbinden der benötigten Dateien
 require_once 'database.php'; // Enthält die Datenbankverbindung
-require_once 'ArtworkRepository.php'; // Enthält die Klasse "ArtworkRepository"
+require_once 'artworkRepository.php'; // Enthält die Klasse "ArtworkRepository"
 
 // Repository-Instanz erstellen
 $artworkRepo = new ArtworkRepository(new Database());

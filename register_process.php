@@ -1,8 +1,8 @@
 <?php
 session_start(); // Startet die Session, um Erfolgs- oder Fehlermeldungen zu speichern
 
-require_once 'Customer.php'; // Bindet die Customer-Klasse ein
-require_once 'CustomerRepository.php'; // Bindet die CustomerRepository-Klasse ein
+require_once 'customer.php'; // Bindet die Customer-Klasse ein
+require_once 'customerRepository.php'; // Bindet die CustomerRepository-Klasse ein
 require_once 'database.php'; // Bindet die Database-Klasse ein
 
 // Überprüfen, ob das Formular abgeschickt wurde

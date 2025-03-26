@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once 'database.php';
-require_once 'ReviewRepository.php';
+require_once 'reviewRepository.php';
 
 // Admin-Prüfung
 if (!isset($_SESSION['user']['Type']) || $_SESSION['user']['Type'] != 1) {

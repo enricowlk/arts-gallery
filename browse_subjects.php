@@ -1,7 +1,7 @@
 <?php
 session_start(); // Startet die Session
 
-require_once 'SubjectRepository.php'; // Bindet die SubjectRepository-Klasse ein
+require_once 'subjectRepository.php'; // Bindet die SubjectRepository-Klasse ein
 
 $subjectRepo = new SubjectRepository(new Database()); // Erstellt eine Instanz von SubjectRepository mit der Datenbankverbindung
 

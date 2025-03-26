@@ -2,8 +2,8 @@
 session_start(); // Startet die Session
 
 require_once 'database.php'; // Bindet die Database-Klasse ein
-require_once 'ArtistRepository.php'; // Bindet die ArtistRepository-Klasse ein
-require_once 'ArtworkRepository.php'; // Bindet die ArtworkRepository-Klasse ein
+require_once 'artistRepository.php'; // Bindet die ArtistRepository-Klasse ein
+require_once 'artworkRepository.php'; // Bindet die ArtworkRepository-Klasse ein
 
 // Überprüft, ob eine gültige Künstler-ID übergeben wurde
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {

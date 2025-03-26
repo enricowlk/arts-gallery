@@ -7,7 +7,7 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
-require_once 'CustomerRepository.php'; // Bindet die CustomerRepository-Klasse ein
+require_once 'customerRepository.php'; // Bindet die CustomerRepository-Klasse ein
 require_once 'database.php'; // Bindet die Database-Klasse ein
 
 // Erstellt eine Instanz von CustomerRepository

@@ -1,6 +1,6 @@
 <?php
 require_once 'database.php'; // Bindet die Database-Klasse ein
-require_once 'ArtworkRepository.php'; // Bindet die ArtworkRepository-Klasse ein
+require_once 'artworkRepository.php'; // Bindet die ArtworkRepository-Klasse ein
 
 $artworkRepo = new ArtworkRepository(new Database()); // Erstellt eine Instanz von ArtworkRepository mit der Datenbankverbindung
 

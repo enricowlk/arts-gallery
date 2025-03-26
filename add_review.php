@@ -1,7 +1,7 @@
 <?php
 session_start(); // Session starten
 require_once 'database.php'; // Datenbankverbindung
-require_once 'ReviewRepository.php'; // Logik für Bewertungen
+require_once 'reviewRepository.php'; // Logik für Bewertungen
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Nur bei POST-Anfrage
     $artworkId = $_POST['artwork_id']; // ID des Kunstwerks
