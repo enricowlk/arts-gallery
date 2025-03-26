@@ -27,10 +27,10 @@
         <h2 class="mt-4">Our Team</h2>
         <p>Below are the team members and their contributions to this project:</p>
         <ul>
-            <li><strong>Enrico Wölck</strong>: </li>
             <li><strong>Paul Lorenz</strong>: </li>
             <li><strong>Niels Grosche</strong>: </li>
             <li><strong>Natalie Danner</strong>: </li>
+            <li><strong>Enrico Wölck</strong>: </li>
         </ul>
     </div>
 
