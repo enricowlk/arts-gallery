@@ -1,5 +1,5 @@
 <?php
-require_once 'Artist.php';
+require_once 'artist.php';
 require_once 'database.php';
 
 /**

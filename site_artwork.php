@@ -2,13 +2,13 @@
 session_start(); // Startet die Session
 
 require_once 'database.php'; // Bindet die Database-Klasse ein
-require_once 'ArtworkRepository.php'; // Bindet die ArtworkRepository-Klasse ein
-require_once 'ArtistRepository.php'; // Bindet die ArtistRepository-Klasse ein
-require_once 'ReviewRepository.php'; // Bindet die ReviewRepository-Klasse ein
-require_once 'CustomerRepository.php'; // Bindet die CustomerRepository-Klasse ein
-require_once 'GenreRepository.php'; // Bindet die GenreRepository-Klasse ein
-require_once 'SubjectRepository.php'; // Bindet die SubjectRepository-Klasse ein
-require_once 'GallerieRepository.php'; // Bindet die GallerieRepository-Klasse ein
+require_once 'artworkRepository.php'; // Bindet die ArtworkRepository-Klasse ein
+require_once 'artistRepository.php'; // Bindet die ArtistRepository-Klasse ein
+require_once 'reviewRepository.php'; // Bindet die ReviewRepository-Klasse ein
+require_once 'customerRepository.php'; // Bindet die CustomerRepository-Klasse ein
+require_once 'genreRepository.php'; // Bindet die GenreRepository-Klasse ein
+require_once 'subjectRepository.php'; // Bindet die SubjectRepository-Klasse ein
+require_once 'gallerieRepository.php'; // Bindet die GallerieRepository-Klasse ein
 
 // Überprüft, ob der Benutzer angemeldet ist
 $isLoggedIn = isset($_SESSION['user']);

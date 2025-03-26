@@ -1,8 +1,8 @@
 <?php
 session_start(); // Startet die Session
 
-require_once 'Customer.php'; // Bindet die Customer-Klasse ein
-require_once 'CustomerRepository.php'; // Bindet das CustomerRepository ein
+require_once 'customer.php'; // Bindet die Customer-Klasse ein
+require_once 'customerRepository.php'; // Bindet das CustomerRepository ein
 require_once 'database.php'; // Bindet die Datenbankverbindung ein
 
 if (isset($_SESSION['error'])) {

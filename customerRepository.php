@@ -1,6 +1,6 @@
 <?php
-require_once 'Customer.php'; // Bindet die Customer-Klasse ein
-require_once 'CustomerLogon.php'; // Bindet die CustomerLogon-Klasse ein
+require_once 'customer.php'; // Bindet die Customer-Klasse ein
+require_once 'customerLogon.php'; // Bindet die CustomerLogon-Klasse ein
 require_once 'database.php'; // Bindet die Database-Klasse ein
 
 /**

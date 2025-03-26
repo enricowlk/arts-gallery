@@ -1,5 +1,5 @@
 <?php
-require_once 'Reviews.php'; // Bindet die Review-Klasse ein
+require_once 'reviews.php'; // Bindet die Review-Klasse ein
 require_once 'database.php'; // Bindet die Database-Klasse ein
 
 /**

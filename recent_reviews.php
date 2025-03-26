@@ -1,7 +1,7 @@
 <?php
 require_once 'database.php'; // Bindet die Database-Klasse ein
-require_once 'ReviewRepository.php'; // Bindet die ReviewRepository-Klasse ein
-require_once 'CustomerRepository.php'; // Bindet die CustomerRepository-Klasse ein
+require_once 'reviewRepository.php'; // Bindet die ReviewRepository-Klasse ein
+require_once 'customerRepository.php'; // Bindet die CustomerRepository-Klasse ein
 
 // Erstellt Instanzen der Repository-Klassen
 $reviewRepo = new ReviewRepository(new Database());

@@ -1,6 +1,6 @@
 <?php
 // Einbinden der benötigten Dateien
-require_once 'Subject.php'; // Enthält die Klasse "Subject"
+require_once 'subject.php'; // Enthält die Klasse "Subject"
 require_once 'database.php'; // Enthält die Datenbankverbindung
 
 // Definition der Klasse "SubjectRepository"
