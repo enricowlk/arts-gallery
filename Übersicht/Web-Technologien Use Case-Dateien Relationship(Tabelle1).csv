@@ -3,23 +3,23 @@ Use Case;.php-Dateien;Vollständig umgesetzt?
 2;index.php, carousel.php, top_artist.php, top_artworks.php, recent_reviews.php;vollständig
 3;navigation.php;vollständig
 4;site_aboutUs.php;nicht vollständig
-5;browse_artists.php;nicht vollständig
-6;browse_artworks.php;nicht vollständig
+5;browse_artists.php;vollständig
+6;browse_artworks.php;vollständig
 7;browse_genres.php;vollständig
 8;browse_subjects.php;vollständig
 9;navigation.php;vollständig
 10;site_search_results.php;nicht vollständig
-11;site_artist.php;nicht vollständig
-12;site_artwork.php;nicht vollständig
-13;site_genre.php;nicht vollständig
-14;site_subject.php;nicht vollständig
-15;X;noch garnicht
-16;add_Review.php;vollständig
-17;X;noch garnicht
+11;site_artist.php;vollständig
+12;site_artwork.php;vollständig
+13;site_genre.php;vollständig
+14;site_subject.php;vollständig
+15;X;vollständig
+16;add_Review.php;nicht vollständig
+17;X;vollständig
 18;favorites_process.php;vollständig
 19;site_favorites.php;vollständig
 20;site_register.php, register_process.php;nicht vollständig
-21;X;noch garnicht
+21;site_manage_users.php;nicht vollständig
 22;site_login.php, login_process.php, logout_process.php;vollständig
 23;site_myAccount.php, myAccount_process.php;nicht vollständig
 24;X;noch garnicht
