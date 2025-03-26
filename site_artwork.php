@@ -13,6 +13,10 @@ require_once 'GallerieRepository.php'; // Bindet die GallerieRepository-Klasse e
 // Überprüft, ob der Benutzer angemeldet ist
 $isLoggedIn = isset($_SESSION['user']);
 
+// Überprüft, ob der Benutzer ein Admin ist
+$isAdmin = isset($_SESSION['user']['Type']) && $_SESSION['user']['Type'] == 1;
+
+
 // Überprüft, ob eine gültige Kunstwerk-ID übergeben wurde
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header("Location: error.php?message=Invalid or missing artwork ID");
@@ -329,6 +333,19 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                                 <td class="date"><?php echo $review->getReviewDate(); ?></td>
                                 <!-- Stadt und Land des Kunden -->
                                 <td class="city(country)"><?php echo $customer->getCity(); ?> (<?php echo $customer->getCountry(); ?>)</td>
+                                <!-- Loeschbutton (nur fuer Admins) -->
+                                <?php if ($isAdmin) { ?>
+                                    <td>
+                                        <form action="delete_review.php" method="post" style="display: inline;">
+                                            <input type="hidden" name="review_id" value="<?php echo $review->getReviewID(); ?>">
+                                            <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
+                                            <button type="submit" class="btn btn-danger btn-sm" 
+                                                    onclick="return confirm('Are you sure you want to delete this review? This action cannot be undone.')">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                <?php } ?>
                             </tr>
                         <?php } ?>
                     <?php } else { ?>

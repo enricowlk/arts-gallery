@@ -96,5 +96,14 @@ class ReviewRepository {
         $stmt->execute([$artworkId, $customerId, $rating, $comment]); // Führt die Abfrage aus
         $this->db->close(); // Schließt die Datenbankverbindung
     }
+
+    public function deleteReview($reviewId) {
+        $this->db->connect();
+        $sql = "DELETE FROM reviews WHERE ReviewID = :reviewId";
+        $stmt = $this->db->prepareStatement($sql);
+        $stmt->execute(['reviewId' => $reviewId]);
+        $this->db->close();
+        return $stmt;
+    }
 }
 ?>

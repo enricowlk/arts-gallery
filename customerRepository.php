@@ -22,6 +22,80 @@ class CustomerRepository {
     }
 
     /**
+     * Holt die Kundendaten anhand der CustomerID.
+     * 
+     * Eingabe: Die CustomerID.
+     * Ausgabe: Ein Customer-Objekt oder `null`, wenn kein Kunde gefunden wurde.
+     */
+    public function getCustomerByID($customerID) {
+        $this->db->connect();
+        $sql = 'SELECT * FROM customers WHERE CustomerID = :customerID';
+        $stmt = $this->db->prepareStatement($sql);
+        $stmt->execute(['customerID' => $customerID]);
+        $row = $stmt->fetch();
+
+        $this->db->close();
+
+        if ($row) {
+            return new Customer(
+                $row['CustomerID'],
+                $row['FirstName'],
+                $row['LastName'],
+                $row['Address'],
+                $row['City'],
+                $row['Country'],
+                $row['Postal'],
+                $row['Phone'],
+                $row['Email']
+            );
+        } else {
+            return null; // Kein Kunde gefunden
+        }
+    }
+
+    /**
+     * Holt den Namen eines Kunden anhand der CustomerID.
+     * 
+     * Eingabe: Die CustomerID.
+     * Ausgabe: Der vollständige Name des Kunden oder 'Unknown', wenn kein Kunde gefunden wurde.
+     */
+    public function getCustomerNameById($customerId) {
+        $this->db->connect();
+        $sql = 'SELECT FirstName, LastName FROM customers WHERE CustomerID = ?';
+        $stmt = $this->db->prepareStatement($sql);
+        $stmt->execute([$customerId]);
+        $row = $stmt->fetch();
+
+        $this->db->close();
+        
+        if ($row) {
+            return $row['FirstName'] . ' ' . $row['LastName'];
+        } else {
+            return 'Unknown'; // Kein Kunde gefunden
+        }
+    }
+
+    /**
+     * Holt die Kundendaten anhand der E-Mail-Adresse.
+     * 
+     * Eingabe: Die E-Mail-Adresse.
+     * Ausgabe: Ein Array mit den Kundendaten oder `null`, wenn kein Kunde gefunden wurde.
+     */
+    public function getCustomerByEmail($db, $email) {
+        $this->db->connect();
+        $sql = 'SELECT customerlogon.*, customers.FirstName, customers.LastName
+                FROM customerlogon
+                INNER JOIN customers ON customerlogon.CustomerID = customers.CustomerID
+                 WHERE customerlogon.UserName = :email';
+        $stmt = $this->db->prepareStatement($sql);
+        $stmt->execute(['email' => $email]);
+        $user = $stmt->fetch();
+
+        $this->db->close();
+        return $user;
+    }
+
+    /**
      * Fügt einen neuen Kunden in die Datenbank ein.
      * 
      * Eingabe: Ein Customer-Objekt und das Passwort des Kunden.
@@ -29,49 +103,39 @@ class CustomerRepository {
      */
     public function addCustomer($customer, $password) {
         $this->db->connect();
-        $this->db->beginTransaction(); // Transaktion starten
-
+        
         try {
-            // Fügt Anmeldedaten in customerlogon ein
-            $stmt = $this->db->prepareStatement("
-                INSERT INTO customerlogon (UserName, Pass, Type)
-                VALUES (:email, :password, :type)
-            ");
-            $stmt->execute([
-                'email' => $customer->getEmail(), // E-Mail als Benutzername
-                'password' => password_hash($password, PASSWORD_DEFAULT), // Passwort hashen
-                'type' => 'user' // Standard-Benutzertyp
-            ]);
-
-            // Holt die CustomerID des neu eingefügten Datensatzes
+            // 1. Insert in customerlogon (Type immer 0 für neue User)
+            $sql='INSERT INTO customerlogon (UserName, Pass, Type) VALUES (?, ?, 0)';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute([$customer->getEmail(),password_hash($password, PASSWORD_DEFAULT)]);
+    
+            // 2. Insert in customers
             $customerID = $this->db->lastInsertId();
-
-            // Fügt Kundendaten in customers ein
-            $stmt = $this->db->prepareStatement("
-                INSERT INTO customers (CustomerID, FirstName, LastName, Address, City, Country, Postal, Phone, Email)
-                VALUES (:customer_id, :first_name, :last_name, :address, :city, :country, :postal, :phone, :email)
-            ");
+            
+            $sql= 'INSERT INTO customers (CustomerID, FirstName, LastName, Address, City, Country, Postal, Phone, Email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([
-                'customer_id' => $customerID,
-                'first_name' => $customer->getFirstName(),
-                'last_name' => $customer->getLastName(),
-                'address' => $customer->getAddress(),
-                'city' => $customer->getCity(),
-                'country' => $customer->getCountry(),
-                'postal' => $customer->getPostal(),
-                'phone' => $customer->getPhone(),
-                'email' => $customer->getEmail()
+                $customerID,
+                $customer->getFirstName(),
+                $customer->getLastName(),
+                $customer->getAddress(),
+                $customer->getCity(),
+                $customer->getCountry(),
+                $customer->getPostal(),
+                $customer->getPhone(),
+                $customer->getEmail()
             ]);
-
-            $this->db->commit(); // Transaktion bestätigen
-        } catch (PDOException $ex) {
-            $this->db->rollBack(); // Transaktion rückgängig machen
-            throw $ex;
+    
+            return $customerID; // Rückgabe der neuen ID bei Erfolg
+            
+        } catch (PDOException $e) {
+            // Fehler automatisch geworfen
+            return false;
+        } finally {
+            $this->db->close();
         }
-
-        $this->db->close();
     }
-
     /**
      * Überprüft, ob eine E-Mail bereits existiert.
      * 
@@ -80,7 +144,8 @@ class CustomerRepository {
      */
     public function emailExists($email) {
         $this->db->connect();
-        $stmt = $this->db->prepareStatement("SELECT * FROM customerlogon WHERE UserName = :email");
+        $sql= 'SELECT * FROM customerlogon WHERE UserName = :email';
+        $stmt = $this->db->prepareStatement($sql);
         $stmt->execute(['email' => $email]);
 
         $this->db->close();
@@ -126,83 +191,13 @@ class CustomerRepository {
     public function resetPassword($customerID, $newPassword) {
         $this->db->connect();
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-        $stmt = $this->db->prepareStatement("UPDATE customerlogon SET Pass = :password WHERE CustomerID = :customerID");
+        $sql = 'UPDATE customerlogon SET Pass = :password WHERE CustomerID = :customerID';
+        $stmt = $this->db->prepareStatement($sql);
         $stmt->execute([
             'password' => $hashedPassword,
             'customerID' => $customerID
         ]);
         $this->db->close();
-    }
-
-    /**
-     * Holt die Kundendaten anhand der CustomerID.
-     * 
-     * Eingabe: Die CustomerID.
-     * Ausgabe: Ein Customer-Objekt oder `null`, wenn kein Kunde gefunden wurde.
-     */
-    public function getCustomerByID($customerID) {
-        $this->db->connect();
-        $stmt = $this->db->prepareStatement("SELECT * FROM customers WHERE CustomerID = :customerID");
-        $stmt->execute(['customerID' => $customerID]);
-        $row = $stmt->fetch();
-
-        $this->db->close();
-
-        if ($row) {
-            return new Customer(
-                $row['CustomerID'],
-                $row['FirstName'],
-                $row['LastName'],
-                $row['Address'],
-                $row['City'],
-                $row['Country'],
-                $row['Postal'],
-                $row['Phone'],
-                $row['Email']
-            );
-        } else {
-            return null; // Kein Kunde gefunden
-        }
-    }
-
-    /**
-     * Holt den Namen eines Kunden anhand der CustomerID.
-     * 
-     * Eingabe: Die CustomerID.
-     * Ausgabe: Der vollständige Name des Kunden oder 'Unknown', wenn kein Kunde gefunden wurde.
-     */
-    public function getCustomerNameById($customerId) {
-        $this->db->connect();
-        $stmt = $this->db->prepareStatement("SELECT FirstName, LastName FROM customers WHERE CustomerID = ?");
-        $stmt->execute([$customerId]);
-        $row = $stmt->fetch();
-
-        $this->db->close();
-        
-        if ($row) {
-            return $row['FirstName'] . ' ' . $row['LastName'];
-        } else {
-            return 'Unknown'; // Kein Kunde gefunden
-        }
-    }
-
-    /**
-     * Holt die Kundendaten anhand der E-Mail-Adresse.
-     * 
-     * Eingabe: Die E-Mail-Adresse.
-     * Ausgabe: Ein Array mit den Kundendaten oder `null`, wenn kein Kunde gefunden wurde.
-     */
-    public function getCustomerByEmail($db, $email) {
-        $this->db->connect();
-        $stmt = $this->db->prepareStatement("SELECT customerlogon.*, customers.FirstName, customers.LastName
-        FROM customerlogon
-        INNER JOIN customers ON customerlogon.CustomerID = customers.CustomerID
-        WHERE customerlogon.UserName = :email");
-        $stmt->execute(['email' => $email]);
-        $user = $stmt->fetch();
-
-        $this->db->close();
-        return $user;
     }
 }
 ?>

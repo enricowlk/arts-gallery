@@ -36,8 +36,6 @@ class SubjectRepository {
 
     /**
      * Holt ein einzelnes Subject anhand der SubjectID.
-     * @param int $id Die ID des Subjects.
-     * @return Subject Ein Subject-Objekt.
      */
     public function getSubjectById($id) {
         $this->db->connect(); // Verbindung zur Datenbank herstellen

@@ -3,7 +3,7 @@
 $isLoggedIn = isset($_SESSION['user']);
 
 // Überprüft, ob der Benutzer ein Admin ist
-$isAdmin = isset($_SESSION['user']['is_admin']) && $_SESSION['user']['is_admin'] === 1;
+$isAdmin = isset($_SESSION['user']['Type']) && $_SESSION['user']['Type'] == 1;
 ?>
 
 <!-- Navigationsleiste -->

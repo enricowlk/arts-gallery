@@ -33,9 +33,9 @@ class GallerieRepository {
 
     public function getGalleryByArtworkId($artworkId) {
         $this->db->connect();
-        $sql = "SELECT g.* FROM galleries g 
-                INNER JOIN artworks a ON g.GalleryID = a.GalleryID 
-                WHERE a.ArtWorkID = ?";
+        $sql = "SELECT galleries.* FROM galleries  
+                INNER JOIN artworks ON galleries.GalleryID = artworks.GalleryID 
+                WHERE artworks.ArtWorkID = ?";
         $stmt = $this->db->prepareStatement($sql);
         $stmt->execute([$artworkId]);
         $row = $stmt->fetch();
