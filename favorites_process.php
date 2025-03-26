@@ -39,6 +39,6 @@ if (isset($_POST['artist_id'])) {
 }
 
 // Zurück zur vorherigen Seite
-header('Location: site_favorites.php' ); 
+header('Location: ' . $_SERVER['HTTP_REFERER']); // Leitet den Benutzer zurück zur vorherigen Seite
 exit(); // Beendet das Skript
 ?>
