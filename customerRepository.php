@@ -102,7 +102,7 @@ class CustomerRepository {
         $sql = 'SELECT customerlogon.*, customers.FirstName, customers.LastName
                 FROM customerlogon
                 INNER JOIN customers ON customerlogon.CustomerID = customers.CustomerID
-                 WHERE customerlogon.UserName = :email';
+                WHERE customerlogon.UserName = :email';
         $stmt = $this->db->prepareStatement($sql);
         $stmt->execute(['email' => $email]);
         $user = $stmt->fetch();
@@ -121,10 +121,12 @@ class CustomerRepository {
         $this->db->connect();
         
         try {
+            // PDO error mode is already set in the Database connect method
+            
             // 1. Insert in customerlogon (Type immer 0 für neue User)
             $sql='INSERT INTO customerlogon (UserName, Pass, Type) VALUES (?, ?, 0)';
             $stmt = $this->db->prepareStatement($sql);
-            $stmt->execute([$customer->getEmail(),password_hash($password, PASSWORD_DEFAULT)]);
+            $stmt->execute([$customer->getEmail(), password_hash($password, PASSWORD_DEFAULT)]);
     
             // 2. Insert in customers
             $customerID = $this->db->lastInsertId();
@@ -146,7 +148,8 @@ class CustomerRepository {
             return $customerID; // Rückgabe der neuen ID bei Erfolg
             
         } catch (PDOException $e) {
-            // Fehler automatisch geworfen
+            // Log detailed error message
+            error_log('Registration error: ' . $e->getMessage());
             return false;
         } finally {
             $this->db->close();

@@ -7,8 +7,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['username']);
     $password = trim($_POST['password']);
     
-    $customerRepo = new CustomerRepository(new Database());
+    $db = new Database();
+    $customerRepo = new CustomerRepository($db);
     $user = $customerRepo->getCustomerByEmail($db, $email);
+    
+    // Debug information
+    error_log("Login attempt for email: " . $email);
+    if (!$user) {
+        error_log("No user found with email: " . $email);
+    }
 
     if ($user && password_verify($password, $user['Pass'])) {
         $_SESSION['user'] = [

@@ -37,10 +37,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $customer = new Customer(null, $firstName, $lastName, $address, $city, $country, $postal, $phone, $email);
 
             // Kunden und Login-Daten in die Datenbank einfügen
-            $customerRepo->addCustomer($customer, $password);
-
-            // Erfolgsmeldung setzen
-            $_SESSION['success'] = 'Registration successful! You can now log in.';
+            $result = $customerRepo->addCustomer($customer, $password);
+            
+            if ($result === false) {
+                // Registrierung fehlgeschlagen
+                $_SESSION['error'] = 'Registration failed! Database error occurred.';
+            } else {
+                // Erfolgsmeldung setzen
+                $_SESSION['success'] = 'Registration successful! You can now log in.';
+            }
         }
     } catch (Exception $ex) {
         // Fehlermeldung bei einem Datenbankfehler
