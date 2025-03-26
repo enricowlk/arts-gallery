@@ -22,6 +22,22 @@ class CustomerRepository {
     }
 
     /**
+     * Get all users with their details
+     */
+    public function getAllCustomers() {
+        $this->db->connect();
+        $sql = 'SELECT customers.CustomerID, customers.FirstName, customers.LastName, customers.Email, customerlogon.Type, customerlogon.Pass
+                FROM customers 
+                JOIN customerlogon ON customers.CustomerID = customerlogon.CustomerID
+                ORDER BY customers.LastName, customers.FirstName';
+    $stmt = $this->db->prepareStatement($sql);
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+    $this->db->close();
+    return $result;
+    }
+
+    /**
      * Holt die Kundendaten anhand der CustomerID.
      * 
      * Eingabe: Die CustomerID.
@@ -136,21 +152,6 @@ class CustomerRepository {
             $this->db->close();
         }
     }
-    /**
-     * Überprüft, ob eine E-Mail bereits existiert.
-     * 
-     * Eingabe: Die E-Mail-Adresse.
-     * Ausgabe: `true`, wenn die E-Mail existiert, sonst `false`.
-     */
-    public function emailExists($email) {
-        $this->db->connect();
-        $sql= 'SELECT * FROM customerlogon WHERE UserName = :email';
-        $stmt = $this->db->prepareStatement($sql);
-        $stmt->execute(['email' => $email]);
-
-        $this->db->close();
-        return $stmt->fetch() !== false;
-    }
 
     /**
      * Aktualisiert die Kontodaten eines Kunden.
@@ -176,10 +177,26 @@ class CustomerRepository {
             'firstName' => $firstName,
             'lastName' => $lastName,
             'email' => $email,
-            'password' => $hashedPassword ?? null,
+            'password' => $hashedPassword,
             'customerID' => $customerID
         ]);
         $this->db->close();
+    }
+
+    /**
+     * Überprüft, ob eine E-Mail bereits existiert.
+     * 
+     * Eingabe: Die E-Mail-Adresse.
+     * Ausgabe: `true`, wenn die E-Mail existiert, sonst `false`.
+     */
+    public function emailExists($email) {
+        $this->db->connect();
+        $sql= 'SELECT * FROM customerlogon WHERE UserName = :email';
+        $stmt = $this->db->prepareStatement($sql);
+        $stmt->execute(['email' => $email]);
+
+        $this->db->close();
+        return $stmt->fetch() !== false;
     }
 
     /**
