@@ -131,7 +131,8 @@ class CustomerRepository {
             // 2. Insert in customers
             $customerID = $this->db->lastInsertId();
             
-            $sql= 'INSERT INTO `customers` (CustomerID, FirstName, LastName, Address, City, Country, Postal, Phone, Email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            // On macOS, sometimes field names are case-sensitive in SQL queries
+            $sql= 'INSERT INTO `customers` (`CustomerID`, `FirstName`, `LastName`, `Address`, `City`, `Country`, `Postal`, `Phone`, `Email`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([
                 $customerID,
@@ -149,7 +150,7 @@ class CustomerRepository {
             
         } catch (PDOException $e) {
             // Log detailed error message
-            error_log('Registration error: ' . $e->getMessage());
+            error_log("Registration error: " . $e->getMessage(), 3, "/Applications/XAMPP/xamppfiles/htdocs/arts-gallery/errors.log");
             return false;
         } finally {
             $this->db->close();
