@@ -5,17 +5,19 @@ require_once 'customer.php'; // Bindet die Customer-Klasse ein
 require_once 'customerRepository.php'; // Bindet das CustomerRepository ein
 require_once 'database.php'; // Bindet die Datenbankverbindung ein
 
-if (isset($_SESSION['error'])) {
+/* if (isset($_SESSION['error'])) {
     $error = $_SESSION['error']; // Speichert die Fehlermeldung aus der Session
 } else {
     $error = ''; // Setzt die Fehlermeldung auf leer, falls keine vorhanden ist
-}
+} */
+$error = $_SESSION['error'] ?? '';
 
-if (isset($_SESSION['success'])) {
+/* if (isset($_SESSION['success'])) {
     $success = $_SESSION['success']; // Speichert die Erfolgsmeldung aus der Session
 } else {
     $success = ''; // Setzt die Erfolgsmeldung auf leer, falls keine vorhanden ist
-}
+} */
+$success = $_SESSION['success'] ?? '';
 unset($_SESSION['error'], $_SESSION['success']); // Löscht die Session-Variablen
 ?>
 
