@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             if ($result === false) {
                 // Registrierung fehlgeschlagen
-                $_SESSION['error'] = 'Registration failed! Database error occurred.';
+                $_SESSION['error'] = 'Registration failed! Database error occurred. Check error log for details.';
             } else {
                 // Erfolgsmeldung setzen
                 $_SESSION['success'] = 'Registration successful! You can now log in.';
