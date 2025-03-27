@@ -150,7 +150,7 @@ class CustomerRepository {
             
         } catch (PDOException $e) {
             // Log detailed error message
-            error_log("Registration error: " . $e->getMessage(), 3, "/Applications/XAMPP/xamppfiles/htdocs/arts-gallery/errors.log");
+            error_log("[" . date('Y-m-d H:i:s') . "] Registration error: " . $e->getMessage() . PHP_EOL, 3, "/Applications/XAMPP/xamppfiles/htdocs/arts-gallery/errors.log");
             return false;
         } finally {
             $this->db->close();

@@ -1,1 +1,1 @@
-Registration error: SQLSTATE[HY000]: General error: 1364 Field 'Salt' doesn't have a default value
+[2025-03-27 17:32:58] Registration error: SQLSTATE[HY000]: General error: 1364 Field 'Salt' doesn't have a default value
