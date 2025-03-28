@@ -124,7 +124,7 @@ class CustomerRepository {
             // PDO error mode is already set in the Database connect method
             
             // 1. Insert in customerlogon (Type immer 0 für neue User)
-            $sql='INSERT INTO `customerlogon` (UserName, Pass, Salt, Type) VALUES (?, ?, 1, 0)';
+            $sql='INSERT INTO `customerlogon` (UserName, Pass, Type) VALUES (?, ?, 0)';
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([$customer->getEmail(), password_hash($password, PASSWORD_DEFAULT)]);
     

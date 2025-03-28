@@ -10,7 +10,6 @@ class CustomerLogon {
     private $CustomerID; // ID des zugehörigen Kunden
     private $UserName;   // Benutzername des Kunden
     private $Password;   // Passwort des Kunden
-    private $Salt;       // Salt des Passworts
     private $Type;       // Benutzertyp (Standard: 'user')
 
     /**
@@ -20,11 +19,10 @@ class CustomerLogon {
      * 
      * Eingabe: LogonID, CustomerID, UserName, Password und optional der Benutzertyp (Standard: 'user').
      */
-    public function __construct($CustomerID, $UserName, $Password, $Salt = null, $Type = 'user') {
+    public function __construct($CustomerID, $UserName, $Password, $Type = 'user') {
         $this->CustomerID = $CustomerID;
         $this->UserName = $UserName;
         $this->Password = $Password;
-        $this->Salt = $Salt;
         $this->Type = $Type;
     }
 
@@ -53,15 +51,6 @@ class CustomerLogon {
 
     public function setPassword($Password) {
         $this->Password = $Password;
-    }
-
-    // Getter und Setter für Salt
-    public function getSalt() {
-        return $this->Salt;
-    }
-
-    public function setSalt($Salt) {        
-        $this->Salt = $Salt;
     }
 
     // Getter und Setter für Type
