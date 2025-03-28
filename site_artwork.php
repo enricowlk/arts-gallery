@@ -135,7 +135,7 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                             </div>
                             <div class="modal-body">
                                 <!-- Großes Bild des Kunstwerks -->
-                                <img src="<?php echo $imageUrl; ?>" class="img-fluid" alt="<?php echo $artwork->getTitle(); ?>">
+                                <img src="<?php echo $imageUrl; ?>" class="img-thumbnail" alt="<?php echo $artwork->getTitle(); ?>">
                             </div>
                         </div>
                     </div>
@@ -144,7 +144,7 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                 <!-- Bewertungsanzahl und Favoriten-Button in einer Zeile -->
                 <div class="action-row"> 
                     <!-- Button zum Hinzufügen/Entfernen des Kunstwerks aus den Favoriten -->
-                    <form action="favorites_process.php" method="post" class="favorite-form">
+                    <form action="favorites_process.php" method="post">
                         <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
                         <button type="submit" class="btn 
                             <?php
@@ -164,16 +164,69 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                         </button>
                     </form>
                     <!-- Bewertungsanzeige -->
-                    <div class="rating-container">
+                    <div>
                         <?php if ($reviewCount > 0){ ?>
                             <span class="rating-text"><strong><?php echo number_format($averageRating, 1); ?>/5 </strong></span>
                             <img src="images/icon_gelberStern.png" alt="Star">
                             <span>(<?php echo $reviewCount; ?> reviews)</span>
                         <?php }else{ ?>
-                            <span class="rating-text">No ratings yet</span>
+                            <span>No ratings yet</span>
                         <?php } ?>
                     </div>
                 </div>
+
+                <!-- Gallery Information Accordion -->
+                <?php if ($gallerie && $gallerie->getLatitude() && $gallerie->getLongitude()) { ?>
+                        <div class="accordion mt-3 mb-3" id="galleryAccordion">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#galleryInfo">
+                                        <strong>Home of this Artwork</strong>
+                                    </button>
+                                </h2>
+                                <div id="galleryInfo" class="accordion-collapse collapse" 
+                                    data-bs-parent="#galleryAccordion">
+                                    <div class="accordion-body">
+                                        <p><strong>Name:</strong> <?php echo $gallerie->getGalleryName(); ?></p>
+                                        <?php if ($gallerie->getGalleryNativeName()) { ?>
+                                            <p><strong>Native Name:</strong> <?php echo $gallerie->getGalleryNativeName(); ?></p>
+                                        <?php } ?>
+                                        <p><strong>Location:</strong> <?php echo $gallerie->getGalleryCity(); ?>, <?php echo $gallerie->getGalleryCountry(); ?></p>
+                                        
+                                        <?php if ($gallerie->getGalleryWebSite()) { ?>
+                                            <p><strong>Website:</strong> 
+                                                <a class="btn btn-secondary btn-sm" href="<?php echo $gallerie->getGalleryWebSite(); ?>">
+                                                    Visit Museum Website
+                                                </a>
+                                            </p>
+                                        <?php } ?>
+                                        
+                                        <div class="mt-3">
+                                            <strong>Location Map:</strong>
+                                            <!-- Eingebettete Google Maps Karte -->
+                                            <div class="ratio ratio-16x9 mt-2">
+                                            <iframe 
+                                                src="https://maps.google.com/maps?q=<?php echo $gallerie->getLatitude(); ?>,<?php echo $gallerie->getLongitude(); ?>&z=15&output=embed"
+                                                width="100%" 
+                                                height="300" 
+                                                frameborder="0" 
+                                                style="border:0"
+                                                allowfullscreen>
+                                            </iframe>
+                                            </div>
+                                            
+                                            <div class="map-links mt-2">
+                                                <a href="https://www.google.com/maps?q=<?php echo $gallerie->getLatitude(); ?>,<?php echo $gallerie->getLongitude(); ?>" 
+                                                class="btn btn-secondary btn-sm">
+                                                    Open in Google Maps
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
             </div>
             <div class="col-md-6">
                 <div class="info">
@@ -222,42 +275,6 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                             ?>
                         </p>
                     </div>
-                    
-                    <!-- Ursprünglicher Aufbewahrungsort -->
-                    <?php 
-                    if ($gallerie) { 
-                    ?>
-                        <div class="accordion mt-3 mb-3" id="galleryAccordion">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#galleryInfo" aria-expanded="false" aria-controls="galleryInfo">
-                                        <strong>Home of this Artwork</strong>
-                                    </button>
-                                </h2>
-                                <div id="galleryInfo" class="accordion-collapse collapse" data-bs-parent="#galleryAccordion">
-                                    <div class="accordion-body">
-                                        <p><strong>Name:</strong> <?php echo $gallerie->getGalleryName(); ?></p>
-                                        <?php if ($gallerie->getGalleryNativeName()) { ?>
-                                            <p><strong>Native Name:</strong> <?php echo $gallerie->getGalleryNativeName(); ?></p>
-                                        <?php } ?>
-                                        <p><strong>Location:</strong> <?php echo $gallerie->getGalleryCity(); ?>, <?php echo $gallerie->getGalleryCountry(); ?></p>
-                                        <?php if ($gallerie->getGalleryWebSite()) { ?>
-                                            <p><strong>Website:</strong> <a class= "btn btn-secondary" href="<?php echo $gallerie->getGalleryWebSite(); ?>" target="_blank">Visit Museum Website</a></p>
-                                        <?php } ?>
-                                        <?php if ($gallerie->getLatitude() && $gallerie->getLongitude()) { ?>
-                                            <p><strong>Map:</strong> 
-                                                <a class= "btn btn-secondary" href="https://www.google.com/maps?q=<?php echo $gallerie->getLatitude(); ?>,<?php echo $gallerie->getLongitude(); ?>" target="_blank">
-                                                    View on Google Maps
-                                                </a>
-                                            </p>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php 
-                    } 
-                    ?>
 
                     <!-- Link zu weiteren Informationen -->
                     <p> You want to know more about "<strong><?php echo $artwork->getTitle(); ?></strong>"?</p>
@@ -273,10 +290,10 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
         <?php if($isLoggedIn){ ?>
         <div>
             <div>
-                <h5 class="card-title">Add Your Review</h5>
+                <h5>Add Your Review</h5>
                 <form action="add_review.php" method="post">
                     <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
-                    <div class="row">
+                    <div class="card-column">
                         <div class="col-md-3">
                             <label for="rating" class="form-label">Rating</label>
                             <select class="form-control" id="rating" name="rating" required>
@@ -292,7 +309,7 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                             <textarea class="form-control" id="comment" name="comment" rows="2" required></textarea>
                         </div>
                         <div class="col-md-3 d-flex align-items-end">
-                            <button type="submit" class="btn btn-secondary w-100">Submit Review</button>
+                            <button type="submit" class="btn btn-secondary">Submit Review</button>
                         </div>
                     </div>
                 </form>

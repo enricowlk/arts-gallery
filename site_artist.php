@@ -51,7 +51,7 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
     <div class="container mt-5">
         <!-- Künstlerinformationen -->
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <!-- Künstlerbild -->
                 <?php
                 $imagePath = "images/artists/medium/" . $artist->getArtistID() . ".jpg";
@@ -85,7 +85,7 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
                     </button>
                 </form>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <div class="info">
                     <!-- Künstlername -->
                     <h1><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h1>
