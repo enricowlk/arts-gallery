@@ -205,14 +205,14 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                                             <strong>Location Map:</strong>
                                             <!-- Eingebettete Google Maps Karte -->
                                             <div class="ratio ratio-16x9 mt-2">
-                                            <iframe 
-                                                src="https://maps.google.com/maps?q=<?php echo $gallerie->getLatitude(); ?>,<?php echo $gallerie->getLongitude(); ?>&z=15&output=embed"
-                                                width="100%" 
-                                                height="300" 
-                                                frameborder="0" 
-                                                style="border:0"
-                                                allowfullscreen>
-                                            </iframe>
+                                                <iframe 
+                                                    src="https://maps.google.com/maps?q=<?php echo $gallerie->getLatitude(); ?>,<?php echo $gallerie->getLongitude(); ?>&z=15&output=embed"
+                                                    width="100%" 
+                                                    height="300" 
+                                                    frameborder="0" 
+                                                    style="border:0"
+                                                    allowfullscreen>
+                                                </iframe>
                                             </div>
                                             
                                             <div class="map-links mt-2">
