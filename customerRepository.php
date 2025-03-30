@@ -177,10 +177,70 @@ class CustomerRepository {
             'firstName' => $firstName,
             'lastName' => $lastName,
             'email' => $email,
-            'password' => $hashedPassword,
+            'password' => isset($hashedPassword) ? $hashedPassword : null,
             'customerID' => $customerID
         ]);
         $this->db->close();
+    }
+    
+    /**
+     * Updates a user's complete profile information including address details
+     * 
+     * @param int $customerID The ID of the customer to update
+     * @param array $data Array of all customer information to update
+     * @param string|null $password Optional new password
+     * @return bool Success status
+     */
+    public function updateUserProfile($customerID, $data, $password = null) {
+        $this->db->connect();
+        
+        try {
+            // Update customer table with all profile information
+            $sql = "UPDATE customers SET 
+                FirstName = :firstName, 
+                LastName = :lastName, 
+                Email = :email, 
+                Address = :address, 
+                City = :city, 
+                Country = :country, 
+                Postal = :postal, 
+                Phone = :phone 
+                WHERE CustomerID = :customerID";
+                
+            $params = [
+                'firstName' => $data['firstName'],
+                'lastName' => $data['lastName'],
+                'email' => $data['email'],
+                'address' => $data['address'],
+                'city' => $data['city'],
+                'country' => $data['country'],
+                'postal' => $data['postal'],
+                'phone' => $data['phone'],
+                'customerID' => $customerID
+            ];
+            
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute($params);
+            
+            // Update email in customerlogon table
+            $sql = "UPDATE customerlogon SET UserName = :email WHERE CustomerID = :customerID";
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute(['email' => $data['email'], 'customerID' => $customerID]);
+            
+            // If password provided, update it
+            if ($password) {
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $sql = "UPDATE customerlogon SET Pass = :password WHERE CustomerID = :customerID";
+                $stmt = $this->db->prepareStatement($sql);
+                $stmt->execute(['password' => $hashedPassword, 'customerID' => $customerID]);
+            }
+            
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        } finally {
+            $this->db->close();
+        }
     }
 
     /**
@@ -215,6 +275,93 @@ class CustomerRepository {
             'customerID' => $customerID
         ]);
         $this->db->close();
+    }
+    
+    /**
+     * Set a user's role (administrator or regular user)
+     *
+     * @param int $customerID The ID of the customer
+     * @param int $type The type (0 = regular user, 1 = administrator)
+     * @return bool Success status
+     */
+    public function setUserRole($customerID, $type) {
+        $this->db->connect();
+        
+        try {
+            $sql = 'UPDATE customerlogon SET Type = :type WHERE CustomerID = :customerID';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute([
+                'type' => $type,
+                'customerID' => $customerID
+            ]);
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        } finally {
+            $this->db->close();
+        }
+    }
+    
+    /**
+     * Count the number of administrators in the system
+     *
+     * @return int The number of administrators
+     */
+    public function countAdministrators() {
+        $this->db->connect();
+        $sql = 'SELECT COUNT(*) FROM customerlogon WHERE Type = 1';
+        $stmt = $this->db->prepareStatement($sql);
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+        $this->db->close();
+        return $count;
+    }
+    
+    /**
+     * Deactivate a user (set their status to inactive without deleting)
+     * This is done by adding "INACTIVE_" prefix to their email/username
+     * 
+     * @param int $customerID The ID of the customer to deactivate
+     * @return bool Success status
+     */
+    public function deactivateUser($customerID) {
+        $this->db->connect();
+        
+        try {
+            // Get current username
+            $sql = 'SELECT UserName FROM customerlogon WHERE CustomerID = :customerID';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute(['customerID' => $customerID]);
+            $username = $stmt->fetchColumn();
+            
+            // Check if already inactive
+            if (strpos($username, 'INACTIVE_') === 0) {
+                return true; // Already inactive
+            }
+            
+            // Update username to mark as inactive
+            $inactiveUsername = 'INACTIVE_' . $username;
+            $sql = 'UPDATE customerlogon SET UserName = :username WHERE CustomerID = :customerID';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute([
+                'username' => $inactiveUsername,
+                'customerID' => $customerID
+            ]);
+            
+            // Update email in customers table
+            $sql = 'UPDATE customers SET Email = :email WHERE CustomerID = :customerID';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute([
+                'email' => $inactiveUsername,
+                'customerID' => $customerID
+            ]);
+            
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        } finally {
+            $this->db->close();
+        }
     }
 }
 ?>
