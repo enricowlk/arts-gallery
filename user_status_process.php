@@ -47,13 +47,7 @@ if ($_SESSION['user']['CustomerID'] == $customerID) {
 }
 
 // Check if deactivating the last admin
-$this_db = new Database();
-$this_db->connect();
-$sql = 'SELECT Type FROM customerlogon WHERE CustomerID = :customerID';
-$stmt = $this_db->prepareStatement($sql);
-$stmt->execute(['customerID' => $customerID]);
-$userType = (int)$stmt->fetchColumn();
-$this_db->close();
+$userType = $customerRepo->getUserRole($customerID);
 
 if ($userType === 1) {
     $adminCount = $customerRepo->countAdministrators();
