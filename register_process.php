@@ -18,20 +18,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $phone = trim($_POST['phone']); // Telefonnummer
     $email = trim($_POST['email']); // E-Mail
 
+    // Fehler sammeln
+    $errors = [];
+
+    // Überprüfen, ob die E-Mail gültig ist
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'Invalid email address!';
+    }
+
+    // Passwort-Validierung
+    if (
+        strlen($password >= 8) ||
+        !preg_match('/[a-z]/', $password) ||
+        !preg_match('/[A-Z]/', $password) ||
+        !preg_match('/[0-9]/', $password) ||
+        !preg_match('/[\W_]/', $password)
+    ) 
+    
+    {$errors[] = 'Password must be at least 8 characters long and contain uppercase, lowercase, a number, and a special character.';}
+
+    // Falls Fehler vorhanden sind → zurück zur Seite
+    if (!empty($errors)) {
+        $_SESSION['error'] = implode('<br>', $errors);
+        header('Location: site_register.php');
+        exit();
+    }
+
     // Repository-Instanz erstellen
     $customerRepo = new CustomerRepository(new Database());
 
     try {
-        // Überprüfen, ob die E-Mail gültig ist
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $_SESSION['error'] = 'Invalid email address!'; // Fehlermeldung bei ungültiger E-Mail
-            header('Location: site_register.php'); // Weiterleitung zur Registrierungsseite
-            exit();
-        }
-
         // Überprüfen, ob die E-Mail bereits existiert
         if ($customerRepo->emailExists($email)) {
-            $_SESSION['error'] = 'The email address is already registered!'; // Fehlermeldung bei bereits registrierter E-Mail
+            $_SESSION['error'] = 'The email address is already registered!';
         } else {
             // Neuen Kunden erstellen
             $customer = new Customer(null, $firstName, $lastName, $address, $city, $country, $postal, $phone, $email);
@@ -44,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } catch (Exception $ex) {
         // Fehlermeldung bei einem Datenbankfehler
-        $_SESSION['error'] = 'An error has occurred:' . $ex->getMessage();
+        $_SESSION['error'] = 'An error has occurred: ' . $ex->getMessage();
     }
 
     // Zurück zur Registrierungsseite weiterleiten
