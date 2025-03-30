@@ -410,5 +410,38 @@ class CustomerRepository {
             $this->db->close();
         }
     }
+    
+    /**
+     * Get the current user role (type) from the customerlogon table
+     *
+     * @param int $customerID The ID of the customer
+     * @return int The user type (0 = regular user, 1 = administrator)
+     */
+    public function getUserRole($customerID) {
+        $this->db->connect();
+        $sql = 'SELECT Type FROM customerlogon WHERE CustomerID = :customerID';
+        $stmt = $this->db->prepareStatement($sql);
+        $stmt->execute(['customerID' => $customerID]);
+        $type = (int)$stmt->fetchColumn();
+        $this->db->close();
+        return $type;
+    }
+    
+    /**
+     * Check if an email exists for any user other than the specified customer
+     *
+     * @param string $email The email to check
+     * @param int $customerID The ID of the customer to exclude from the check
+     * @return bool True if the email exists for another user, false otherwise
+     */
+    public function emailExistsForOtherUser($email, $customerID) {
+        $this->db->connect();
+        $sql = 'SELECT CustomerID FROM customerlogon WHERE UserName = :email AND CustomerID != :customerID';
+        $stmt = $this->db->prepareStatement($sql);
+        $stmt->execute(['email' => $email, 'customerID' => $customerID]);
+        $exists = $stmt->fetch() !== false;
+        $this->db->close();
+        return $exists;
+    }
 }
 ?>

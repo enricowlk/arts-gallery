@@ -55,15 +55,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 // Check if email exists for other users
-$this_db = new Database();
-$this_db->connect();
-$sql = 'SELECT CustomerID FROM customerlogon WHERE UserName = :email AND CustomerID != :customerID';
-$stmt = $this_db->prepareStatement($sql);
-$stmt->execute(['email' => $email, 'customerID' => $customerID]);
-$existingUser = $stmt->fetch();
-$this_db->close();
-
-if ($existingUser) {
+if ($customerRepo->emailExistsForOtherUser($email, $customerID)) {
     $_SESSION['error'] = "This email is already in use by another user.";
     header("Location: user_edit.php?id=" . $customerID);
     exit();

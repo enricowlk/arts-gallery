@@ -40,13 +40,7 @@ if (!$user) {
 }
 
 // Get current role
-$this_db = new Database();
-$this_db->connect();
-$sql = 'SELECT Type FROM customerlogon WHERE CustomerID = :customerID';
-$stmt = $this_db->prepareStatement($sql);
-$stmt->execute(['customerID' => $customerID]);
-$currentRole = (int)$stmt->fetchColumn();
-$this_db->close();
+$currentRole = $customerRepo->getUserRole($customerID);
 
 // Prevent self-demotion
 if ($_SESSION['user']['CustomerID'] == $customerID && $action === 'demote') {
