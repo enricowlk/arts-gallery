@@ -363,5 +363,52 @@ class CustomerRepository {
             $this->db->close();
         }
     }
+    
+    /**
+     * Reactivate a user who has been previously deactivated
+     * Removes the "INACTIVE_" prefix from their email/username
+     * 
+     * @param int $customerID The ID of the customer to reactivate
+     * @return bool Success status
+     */
+    public function reactivateUser($customerID) {
+        $this->db->connect();
+        
+        try {
+            // Get current username
+            $sql = 'SELECT UserName FROM customerlogon WHERE CustomerID = :customerID';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute(['customerID' => $customerID]);
+            $username = $stmt->fetchColumn();
+            
+            // Check if actually inactive
+            if (strpos($username, 'INACTIVE_') !== 0) {
+                return true; // Already active
+            }
+            
+            // Update username to reactivate (remove INACTIVE_ prefix)
+            $activeUsername = substr($username, 9); // Remove first 9 chars (INACTIVE_)
+            $sql = 'UPDATE customerlogon SET UserName = :username WHERE CustomerID = :customerID';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute([
+                'username' => $activeUsername,
+                'customerID' => $customerID
+            ]);
+            
+            // Update email in customers table
+            $sql = 'UPDATE customers SET Email = :email WHERE CustomerID = :customerID';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute([
+                'email' => $activeUsername,
+                'customerID' => $customerID
+            ]);
+            
+            return true;
+        } catch (PDOException $e) {
+            return false;
+        } finally {
+            $this->db->close();
+        }
+    }
 }
 ?>

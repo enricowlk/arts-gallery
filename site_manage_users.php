@@ -101,7 +101,11 @@ foreach ($users as $user) {
                                         <a href="user_role_process.php?id=<?php echo $user['CustomerID']; ?>&action=demote" class="btn btn-sm btn-warning">Remove Admin</a>
                                     <?php } ?>
                                     
-                                    <a href="user_status_process.php?id=<?php echo $user['CustomerID']; ?>&action=deactivate" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to deactivate this user?')">Deactivate</a>
+                                    <?php if (strpos($user['Email'], 'INACTIVE_') === 0) { ?>
+                                        <a href="user_status_process.php?id=<?php echo $user['CustomerID']; ?>&action=reactivate" class="btn btn-sm btn-success" onclick="return confirm('Are you sure you want to reactivate this user?')">Reactivate</a>
+                                    <?php } else { ?>
+                                        <a href="user_status_process.php?id=<?php echo $user['CustomerID']; ?>&action=deactivate" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to deactivate this user?')">Deactivate</a>
+                                    <?php } ?>
                                 <?php } else { ?>
                                     <span class="text-muted">(Current user)</span>
                                 <?php } ?>

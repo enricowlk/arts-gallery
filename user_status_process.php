@@ -25,7 +25,7 @@ $customerID = (int)$_GET['id'];
 $action = $_GET['action'];
 
 // Validate the action
-if ($action !== 'deactivate') {
+if ($action !== 'deactivate' && $action !== 'reactivate') {
     $_SESSION['error'] = "Invalid action.";
     header("Location: site_manage_users.php");
     exit();
@@ -65,13 +65,23 @@ if ($userType === 1) {
     }
 }
 
-// Perform the deactivation
-$success = $customerRepo->deactivateUser($customerID);
-
-if ($success) {
-    $_SESSION['success'] = "User deactivated successfully.";
-} else {
-    $_SESSION['error'] = "There was an error deactivating the user.";
+// Perform the action based on the request
+if ($action === 'deactivate') {
+    $success = $customerRepo->deactivateUser($customerID);
+    
+    if ($success) {
+        $_SESSION['success'] = "User deactivated successfully.";
+    } else {
+        $_SESSION['error'] = "There was an error deactivating the user.";
+    }
+} else if ($action === 'reactivate') {
+    $success = $customerRepo->reactivateUser($customerID);
+    
+    if ($success) {
+        $_SESSION['success'] = "User reactivated successfully.";
+    } else {
+        $_SESSION['error'] = "There was an error reactivating the user.";
+    }
 }
 
 // Redirect back to the manage users page
