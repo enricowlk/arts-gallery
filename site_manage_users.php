@@ -92,7 +92,7 @@ foreach ($users as $user) {
                                 <?php echo ($user['Type'] == 1) ? 'Administrator' : 'User'; ?>
                             </td>
                             <td>
-                                <a href="user_edit.php?id=<?php echo $user['CustomerID']; ?>" class="btn btn-sm btn-primary">Edit</a>
+                                <a href="site_user_edit.php?id=<?php echo $user['CustomerID']; ?>" class="btn btn-sm btn-primary">Edit</a>
                                 
                                 <?php if ($_SESSION['user']['CustomerID'] != $user['CustomerID']) { ?>
                                     <?php if ($user['Type'] == 0) { ?>
@@ -102,7 +102,7 @@ foreach ($users as $user) {
                                     <?php } ?>
                                     
                                     <?php if (strpos($user['Email'], 'INACTIVE_') === 0) { ?>
-                                        <a href="user_status_process.php?id=<?php echo $user['CustomerID']; ?>&action=reactivate" class="btn btn-sm btn-success" onclick="return confirm('Are you sure you want to reactivate this user?')">Reactivate</a>
+                                        <a href="user_status_process.php?id=<?php echo $user['CustomerID']; ?>&action=reactivate" class="btn btn-sm btn-warning" onclick="return confirm('Are you sure you want to reactivate this user?')">Reactivate</a>
                                     <?php } else { ?>
                                         <a href="user_status_process.php?id=<?php echo $user['CustomerID']; ?>&action=deactivate" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to deactivate this user?')">Deactivate</a>
                                     <?php } ?>

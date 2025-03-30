@@ -43,14 +43,14 @@ if ($customerID <= 0) {
 // Validate required fields
 if (empty($firstName) || empty($lastName) || empty($email)) {
     $_SESSION['error'] = "First name, last name, and email are required.";
-    header("Location: user_edit.php?id=" . $customerID);
+    header("Location: site_user_edit.php?id=" . $customerID);
     exit();
 }
 
 // Validate email format
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $_SESSION['error'] = "Invalid email format.";
-    header("Location: user_edit.php?id=" . $customerID);
+    header("Location: site_user_edit.php?id=" . $customerID);
     exit();
 }
 
@@ -65,14 +65,14 @@ $this_db->close();
 
 if ($existingUser) {
     $_SESSION['error'] = "This email is already in use by another user.";
-    header("Location: user_edit.php?id=" . $customerID);
+    header("Location: site_user_edit.php?id=" . $customerID);
     exit();
 }
 
 // Validate passwords match if a new password is provided
 if (!empty($password) && $password !== $confirmPassword) {
     $_SESSION['error'] = "Passwords do not match.";
-    header("Location: user_edit.php?id=" . $customerID);
+    header("Location: site_user_edit.php?id=" . $customerID);
     exit();
 }
 
@@ -83,7 +83,7 @@ if ($_SESSION['user']['CustomerID'] == $customerID && $userType == 0) {
     
     if ($adminCount <= 1) {
         $_SESSION['error'] = "Cannot demote the last administrator account.";
-        header("Location: user_edit.php?id=" . $customerID);
+        header("Location: site_user_edit.php?id=" . $customerID);
         exit();
     }
 }
@@ -121,5 +121,5 @@ if ($success) {
 }
 
 // Redirect back to the user edit page
-header("Location: user_edit.php?id=" . $customerID);
+header("Location: site_user_edit.php?id=" . $customerID);
 exit();
