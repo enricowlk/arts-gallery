@@ -28,14 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Passwort-Validierung
     if (
-        strlen($password >= 8) ||
-        !preg_match('/[a-z]/', $password) ||
-        !preg_match('/[A-Z]/', $password) ||
-        !preg_match('/[0-9]/', $password) ||
-        !preg_match('/[\W_]/', $password)
-    ) 
-    
-    {$errors[] = 'Password must be at least 8 characters long and contain uppercase, lowercase, a number, and a special character.';}
+        strlen($password) < 8 ||  // Mindestlänge 8 Zeichen
+        !preg_match('/[a-z]/', $password) ||  // Muss Kleinbuchstaben enthalten
+        !preg_match('/[A-Z]/', $password) ||  // Muss Großbuchstaben enthalten
+        !preg_match('/[0-9]/', $password) ||  // Muss Zahl enthalten
+        !preg_match('/[\W_]/', $password)     // Muss Sonderzeichen oder _ enthalten
+    ) {
+        $errors[] = 'Password must be at least 8 characters long and contain uppercase, lowercase, a number, and a special character.';
+    }
 
     // Falls Fehler vorhanden sind → zurück zur Seite
     if (!empty($errors)) {
