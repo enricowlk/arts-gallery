@@ -85,9 +85,9 @@ foreach ($users as $user) {
                     <?php foreach ($users as $user) { ?>
                         <tr>
                             <td><?php echo $user['CustomerID']; ?></td>
-                            <td><?php echo htmlspecialchars($user['FirstName']); ?></td>
-                            <td><?php echo htmlspecialchars($user['LastName']); ?></td>
-                            <td><?php echo htmlspecialchars($user['Email']); ?></td>
+                            <td><?php echo $user['FirstName']; ?></td>
+                            <td><?php echo $user['LastName']; ?></td>
+                            <td><?php echo $user['Email']; ?></td>
                             <td>
                                 <?php echo ($user['Type'] == 1) ? 'Administrator' : 'User'; ?>
                             </td>
