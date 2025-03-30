@@ -96,14 +96,14 @@ if (isset($_SESSION['error'])) {
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="firstName" class="form-label">First Name:</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo htmlspecialchars($customer->getFirstName()); ?>" required>
+                    <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo $customer->getFirstName(); ?>" required>
                     <div class="invalid-feedback">
                         First name is required.
                     </div>
                 </div>
                 <div class="col-md-6">
                     <label for="lastName" class="form-label">Last Name:</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo htmlspecialchars($customer->getLastName()); ?>" required>
+                    <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo $customer->getLastName(); ?>" required>
                     <div class="invalid-feedback">
                         Last name is required.
                     </div>
@@ -112,7 +112,7 @@ if (isset($_SESSION['error'])) {
             
             <div class="mb-3">
                 <label for="email" class="form-label">Email:</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?php echo htmlspecialchars($customer->getEmail()); ?>" required>
+                <input type="email" class="form-control" id="email" name="email" value="<?php echo $customer->getEmail(); ?>" required>
                 <div class="invalid-feedback">
                     Please enter a valid email address.
                 </div>
@@ -121,29 +121,29 @@ if (isset($_SESSION['error'])) {
             <div class="row mb-3">
                 <div class="col-md-12">
                     <label for="address" class="form-label">Address:</label>
-                    <input type="text" class="form-control" id="address" name="address" value="<?php echo htmlspecialchars($customer->getAddress()); ?>">
+                    <input type="text" class="form-control" id="address" name="address" value="<?php echo $customer->getAddress(); ?>">
                 </div>
             </div>
             
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="city" class="form-label">City:</label>
-                    <input type="text" class="form-control" id="city" name="city" value="<?php echo htmlspecialchars($customer->getCity()); ?>">
+                    <input type="text" class="form-control" id="city" name="city" value="<?php echo $customer->getCity(); ?>">
                 </div>
                 <div class="col-md-6">
                     <label for="country" class="form-label">Country:</label>
-                    <input type="text" class="form-control" id="country" name="country" value="<?php echo htmlspecialchars($customer->getCountry()); ?>">
+                    <input type="text" class="form-control" id="country" name="country" value="<?php echo $customer->getCountry(); ?>">
                 </div>
             </div>
             
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="postal" class="form-label">Postal Code:</label>
-                    <input type="text" class="form-control" id="postal" name="postal" value="<?php echo htmlspecialchars($customer->getPostal()); ?>">
+                    <input type="text" class="form-control" id="postal" name="postal" value="<?php echo $customer->getPostal(); ?>">
                 </div>
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Phone:</label>
-                    <input type="text" class="form-control" id="phone" name="phone" value="<?php echo htmlspecialchars($customer->getPhone()); ?>">
+                    <input type="text" class="form-control" id="phone" name="phone" value="<?php echo $customer->getPhone(); ?>">
                 </div>
             </div>
             
