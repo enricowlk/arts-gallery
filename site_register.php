@@ -39,44 +39,65 @@ unset($_SESSION['error'], $_SESSION['success']); // Löscht die Session-Variable
             <div class="alert alert-success"><?php echo $success; ?></div> <!-- Zeigt Erfolgsmeldungen an -->
         <?php } ?>
         <form method="POST" action="register_process.php">
+        <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="firstName" class="form-label">First Name:</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName">
+                </div>
+                <div class="col-md-6">
+                    <label for="lastName" class="form-label">Last Name:</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName">
+                </div>
+            
             <div class="mb-3">
-                <label for="email" class="form-label">E-Mail</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" id="email" name="email">
             </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="address" class="form-label">Address:</label>
+                    <input type="text" class="form-control" id="address" name="address">
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="city" class="form-label">City:</label>
+                    <input type="text" class="form-control" id="city" name="city">
+                </div>
+                <div class="col-md-6">
+                    <label for="country" class="form-label">Country:</label>
+                    <input type="text" class="form-control" id="country" name="country">
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="postal" class="form-label">Postal Code:</label>
+                    <input type="text" class="form-control" id="postal" name="postal">
+                </div>
+                <div class="col-md-6">
+                    <label for="phone" class="form-label">Phone:</label>
+                    <input type="text" class="form-control" id="phone" name="phone">
+                    <small class="text-muted">(Optional)</small>
+                </div>
+            </div>
+            
             <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
+                <label for="password" class="form-label">Password:</label>
+                <input type="password" class="form-control" id="password" name="password">
             </div>
+            
             <div class="mb-3">
-                <label for="first_name" class="form-label">Firstname</label>
-                <input type="text" class="form-control" id="first_name" name="first_name" required>
+                <label for="confirmPassword" class="form-label">Confirm Password:</label>
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                <div class = "mt-3">
+                <button type="submit" class="btn btn-secondary">Register</button> <!-- Submit-Button -->
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="last_name" class="form-label">Lastname</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" required>
-            </div>
-            <div class="mb-3">
-                <label for="city" class="form-label">City</label>
-                <input type="text" class="form-control" id="city" name="city" required>
-            </div>
-            <div class="mb-3">
-                <label for="country" class="form-label">Country</label>
-                <input type="text" class="form-control" id="country" name="country" required>
-            </div>
-            <div class="mb-3">
-                <label for="postal" class="form-label">Postal</label>
-                <input type="text" class="form-control" id="postal" name="postal" required>
-            </div>
-            <div class="mb-3">
-                <label for="address" class="form-label">Address</label>
-                <input type="text" class="form-control" id="address" name="address" required>
-            </div>
-            <div class="mb-3">
-                <label for="phone" class="form-label">Phone (optional)</label>
-                <input type="text" class="form-control" id="phone" name="phone">
-            </div>
-            <button type="submit" class="btn btn-secondary">Register</button> <!-- Submit-Button -->
         </form>
+        </div>
     </div>
     
     <?php include 'footer.php'; ?> <!-- Bindet die Fußzeile ein -->

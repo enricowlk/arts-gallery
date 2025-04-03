@@ -36,7 +36,7 @@ unset($_SESSION['error'], $_SESSION['success']);
 ?>
 
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>My Account</title>
@@ -62,28 +62,70 @@ unset($_SESSION['error'], $_SESSION['success']);
 
         <!-- Formular zum Aktualisieren der Kundendaten -->
         <form action="myAccount_process.php" method="POST">
-            <div class="mb-3">
-                <label for="firstName" class="form-label">Firstname:</label>
-                <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo $customer->getFirstName(); ?>" required>
+        <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="firstName" class="form-label">First Name:</label>
+                    <input type="text" class="form-control" id="firstName" name="firstName" 
+                           value="<?php echo $customer->getFirstName(); ?>" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="lastName" class="form-label">Last Name:</label>
+                    <input type="text" class="form-control" id="lastName" name="lastName" 
+                           value="<?php echo $customer->getLastName(); ?>" required>
+                </div>
             </div>
+            
             <div class="mb-3">
-                <label for="lastName" class="form-label">Lastname:</label>
-                <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo $customer->getLastName(); ?>" required>
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" 
+                       value="<?php echo $customer->getEmail(); ?>" required>
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">E-Mail:</label>
-                <input type="email" class="form-control" id="email" name="email" value="<?php echo $customer->getEmail(); ?>" required>
+            
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="address" class="form-label">Address:</label>
+                    <input type="text" class="form-control" id="address" name="address" 
+                           value="<?php echo $customer->getAddress(); ?>">
+                </div>
             </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="city" class="form-label">City:</label>
+                    <input type="text" class="form-control" id="city" name="city" 
+                           value="<?php echo $customer->getCity(); ?>">
+                </div>
+                <div class="col-md-6">
+                    <label for="country" class="form-label">Country:</label>
+                    <input type="text" class="form-control" id="country" name="country" 
+                           value="<?php echo $customer->getCountry(); ?>">
+                </div>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="postal" class="form-label">Postal Code:</label>
+                    <input type="text" class="form-control" id="postal" name="postal" 
+                           value="<?php echo $customer->getPostal(); ?>">
+                </div>
+                <div class="col-md-6">
+                    <label for="phone" class="form-label">Phone:</label>
+                    <input type="text" class="form-control" id="phone" name="phone" 
+                           value="<?php echo $customer->getPhone(); ?>">
+                </div>
+            </div>
+            
             <div class="mb-3">
-                <label for="password" class="form-label">New Password (optional):</label>
+                <label for="password" class="form-label">New Password:</label>
                 <input type="password" class="form-control" id="password" name="password">
                 <small class="text-muted">Leave blank to keep the current password.</small>
             </div>
+            
             <div class="mb-3">
                 <label for="confirmPassword" class="form-label">Confirm Password:</label>
                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
             </div>
-            <button type="submit" class="btn btn-secondary">Update</button>
+            <button type="submit" class="btn btn-secondary">Save Changes</button>
         </form>
     </div>
 

@@ -9,8 +9,8 @@ require_once 'database.php'; // Bindet die Database-Klasse ein
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Formulardaten validieren und bereinigen
     $password = trim($_POST['password']); // Passwort
-    $firstName = trim($_POST['first_name']); // Vorname
-    $lastName = trim($_POST['last_name']); // Nachname
+    $firstName = trim($_POST['firstName']); // Vorname
+    $lastName = trim($_POST['lastName']); // Nachname
     $address = trim($_POST['address']); // Adresse
     $city = trim($_POST['city']); // Stadt
     $country = trim($_POST['country']); // Land
