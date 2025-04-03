@@ -286,8 +286,20 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
         <!-- Bewertungen -->
         <h2 class="mt-5">Reviews</h2>
 
+        <!-- Display error message if one review already exists -->
+        <?php if(isset($_SESSION['error_message'])){ ?>
+            <div class="alert alert-danger">
+                <?php echo $_SESSION['error_message']; ?>
+                <?php unset($_SESSION['error_message']); ?>
+            </div>
+        <?php } ?>
+
         <!-- Formular zum Hinzufügen einer Bewertung (nur für angemeldete Benutzer) -->
-        <?php if($isLoggedIn){ ?>
+        <?php 
+        if($isLoggedIn){ 
+            $hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']['CustomerID']);
+            if(!$hasReviewed) { 
+        ?>
         <div>
             <div>
                 <h5>Add Your Review</h5>
@@ -315,7 +327,16 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                 </form>
             </div>
         </div>
-        <?php } ?>
+        <?php 
+            } else { 
+        ?>
+        <div class="alert alert-info">
+            You have already reviewed this artwork.
+        </div>
+        <?php 
+            } 
+        } 
+        ?>
 
         <!-- Tabelle der Bewertungen -->
         <div class="table-responsive">

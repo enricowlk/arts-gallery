@@ -105,5 +105,16 @@ class ReviewRepository {
         $this->db->close();
         return $stmt;
     }
+
+    public function hasUserReviewedArtwork($artworkId, $customerId) {
+        $this->db->connect();
+        $sql = "SELECT COUNT(*) as review_count FROM reviews WHERE ArtWorkID = ? AND CustomerID = ?";
+        $stmt = $this->db->prepareStatement($sql);
+        $stmt->execute([$artworkId, $customerId]);
+        $row = $stmt->fetch();
+        $this->db->close();
+        
+        return ($row['review_count'] > 0);
+    }
 }
 ?>

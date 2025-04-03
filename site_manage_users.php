@@ -89,7 +89,13 @@ foreach ($users as $user) {
                             <td><?php echo $user['LastName']; ?></td>
                             <td><?php echo $user['Email']; ?></td>
                             <td>
-                                <?php echo ($user['Type'] == 1) ? 'Administrator' : 'User'; ?>
+                            <?php 
+                                if ($user['Type'] == 1) {
+                                    echo 'Administrator';
+                                } else {
+                                    echo 'User';
+                                }
+                            ?>
                             </td>
                             <td>
                                 <a href="site_user_edit.php?id=<?php echo $user['CustomerID']; ?>" class="btn btn-sm btn-primary">Edit</a>

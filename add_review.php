@@ -12,7 +12,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') { // Nur bei POST-Anfrage
         $customerId = $_SESSION['user']['CustomerID']; // Benutzer-ID aus Session
 
         $reviewRepo = new ReviewRepository(new Database()); // Bewertungs-Repository
-        $reviewRepo->addReview($artworkId, $customerId, $rating, $comment); // Bewertung speichern
+        
+        // Check if user has already reviewed this artwork
+        if ($reviewRepo->hasUserReviewedArtwork($artworkId, $customerId)) {
+            $_SESSION['error_message'] = "You have already reviewed this artwork.";
+            header("Location: site_artwork.php?id=$artworkId");
+            exit();
+        }
+        
+        // If not, add the review
+        $reviewRepo->addReview($artworkId, $customerId, $rating, $comment);
 
         header("Location: site_artwork.php?id=$artworkId"); // Zurück zur Kunstwerkseite
         exit();
