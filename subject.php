@@ -11,22 +11,13 @@ class Subject {
         $this->SubjectName = $SubjectName; // Setzt den Subject-Namen
     }
 
-    // Getter und Setter für SubjectID
+    // Getter
     public function getSubjectID() {
         return $this->SubjectID;
     }
 
-    public function setSubjectID($SubjectID) {
-        $this->SubjectID = $SubjectID;
-    }
-
-    // Getter und Setter für SubjectName
     public function getSubjectName() {
         return $this->SubjectName;
-    }
-
-    public function setSubjectName($SubjectName) {
-        $this->SubjectName = $SubjectName;
     }
 }
 ?>

@@ -1,58 +1,46 @@
 <?php
-require_once 'customer.php'; // Bindet die Customer-Klasse ein
-require_once 'customerLogon.php'; // Bindet die CustomerLogon-Klasse ein
-require_once 'database.php'; // Bindet die Database-Klasse ein
+require_once 'customer.php';
+require_once 'customerLogon.php';
+require_once 'database.php';
+require_once 'logging.php';
 
-/**
- * Klasse CustomerRepository
- * 
- * Verwaltet den Zugriff auf die Kundendaten in der Datenbank.
- * Enthält Methoden zum Hinzufügen, Aktualisieren und Abrufen von Kunden sowie zur Passwortverwaltung.
- */
 class CustomerRepository {
-    private $db; // Datenbankverbindung
+    private $db;
 
-    /**
-     * Konstruktor
-     * 
-     * Eingabe: Die Datenbankverbindung.
-     */
     public function __construct($db) {
         $this->db = $db;
     }
 
-    /**
-     * Get all users with their details
-     */
     public function getAllCustomers() {
-        $this->db->connect();
-        $sql = 'SELECT customers.CustomerID, customers.FirstName, customers.LastName, customers.Email, customerlogon.Type, customerlogon.Pass
-                FROM customers 
-                JOIN customerlogon ON customers.CustomerID = customerlogon.CustomerID
-                ORDER BY customers.LastName, customers.FirstName';
-    $stmt = $this->db->prepareStatement($sql);
-    $stmt->execute();
-    $result = $stmt->fetchAll();
-    $this->db->close();
-    return $result;
+        try {
+            $this->db->connect();
+            $sql = 'SELECT customers.CustomerID, customers.FirstName, customers.LastName, customers.Email, customerlogon.Type, customerlogon.Pass
+                    FROM customers 
+                    JOIN customerlogon ON customers.CustomerID = customerlogon.CustomerID
+                    ORDER BY customers.LastName, customers.FirstName';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } catch (PDOException $e) {
+            Logging::LogError("Error in getAllCustomers: " . $e->getMessage());
+            throw new Exception("Database error occurred while fetching customers");
+        } finally {
+            $this->db->close();
+        }
     }
 
-    /**
-     * Holt die Kundendaten anhand der CustomerID.
-     * 
-     * Eingabe: Die CustomerID.
-     * Ausgabe: Ein Customer-Objekt oder `null`, wenn kein Kunde gefunden wurde.
-     */
     public function getCustomerByID($customerID) {
-        $this->db->connect();
-        $sql = 'SELECT * FROM customers WHERE CustomerID = :customerID';
-        $stmt = $this->db->prepareStatement($sql);
-        $stmt->execute(['customerID' => $customerID]);
-        $row = $stmt->fetch();
+        try {
+            $this->db->connect();
+            $sql = 'SELECT * FROM customers WHERE CustomerID = :customerID';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute(['customerID' => $customerID]);
+            $row = $stmt->fetch();
 
-        $this->db->close();
+            if (!$row) {
+                return null;
+            }
 
-        if ($row) {
             return new Customer(
                 $row['CustomerID'],
                 $row['FirstName'],
@@ -64,72 +52,70 @@ class CustomerRepository {
                 $row['Phone'],
                 $row['Email']
             );
-        } else {
-            return null; // Kein Kunde gefunden
+        } catch (PDOException $e) {
+            Logging::LogError("Error in getCustomerByID: " . $e->getMessage());
+            throw new Exception("Database error occurred while fetching customer");
+        } finally {
+            $this->db->close();
         }
     }
 
-    /**
-     * Holt den Namen eines Kunden anhand der CustomerID.
-     * 
-     * Eingabe: Die CustomerID.
-     * Ausgabe: Der vollständige Name des Kunden oder 'Unknown', wenn kein Kunde gefunden wurde.
-     */
     public function getCustomerNameById($customerId) {
-        $this->db->connect();
-        $sql = 'SELECT FirstName, LastName FROM customers WHERE CustomerID = ?';
-        $stmt = $this->db->prepareStatement($sql);
-        $stmt->execute([$customerId]);
-        $row = $stmt->fetch();
-
-        $this->db->close();
-        
-        if ($row) {
-            return $row['FirstName'] . ' ' . $row['LastName'];
-        } else {
-            return 'Unknown'; // Kein Kunde gefunden
+        try {
+            $this->db->connect();
+            $sql = 'SELECT FirstName, LastName FROM customers WHERE CustomerID = ?';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute([$customerId]);
+            $row = $stmt->fetch();
+            
+            if ($row) {
+                return $row['FirstName'] . ' ' . $row['LastName'];
+            } else {
+                return 'Unknown';
+            }
+        } catch (PDOException $e) {
+            Logging::LogError("Error in getCustomerNameById: " . $e->getMessage());
+            throw new Exception("Database error occurred while fetching customer name");
+        } finally {
+            $this->db->close();
         }
     }
 
-    /**
-     * Holt die Kundendaten anhand der E-Mail-Adresse.
-     * 
-     * Eingabe: Die E-Mail-Adresse.
-     * Ausgabe: Ein Array mit den Kundendaten oder `null`, wenn kein Kunde gefunden wurde.
-     */
     public function getCustomerByEmail($db, $email) {
-        $this->db->connect();
-        $sql = 'SELECT customerlogon.*, customers.FirstName, customers.LastName
-                FROM customerlogon
-                INNER JOIN customers ON customerlogon.CustomerID = customers.CustomerID
-                 WHERE customerlogon.UserName = :email';
-        $stmt = $this->db->prepareStatement($sql);
-        $stmt->execute(['email' => $email]);
-        $user = $stmt->fetch();
-
-        $this->db->close();
-        return $user;
+        try {
+            $this->db->connect();
+            $sql = 'SELECT customerlogon.*, customers.FirstName, customers.LastName
+                    FROM customerlogon
+                    INNER JOIN customers ON customerlogon.CustomerID = customers.CustomerID
+                    WHERE customerlogon.UserName = :email';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute(['email' => $email]);
+            return $stmt->fetch();
+        } catch (PDOException $e) {
+            Logging::LogError("Error in getCustomerByEmail: " . $e->getMessage());
+            throw new Exception("Database error occurred while fetching customer by email");
+        } finally {
+            $this->db->close();
+        }
     }
 
-    /**
-     * Fügt einen neuen Kunden in die Datenbank ein.
-     * 
-     * Eingabe: Ein Customer-Objekt und das Passwort des Kunden.
-     * Aktion: Fügt den Kunden in die `customers`-Tabelle und die Anmeldedaten in die `customerlogon`-Tabelle ein.
-     */
     public function addCustomer($customer, $password) {
-        $this->db->connect();
-        
         try {
-            // 1. Insert in customerlogon (Type immer 0 für neue User)
-            $sql='INSERT INTO customerlogon (UserName, Pass, Type) VALUES (?, ?, 0)';
+            $this->db->connect();
+            
+            // Begin transaction
+            $this->db->beginTransaction();
+            
+            // 1. Insert in customerlogon
+            $sql = 'INSERT INTO customerlogon (UserName, Pass, Type) VALUES (?, ?, 0)';
             $stmt = $this->db->prepareStatement($sql);
-            $stmt->execute([$customer->getEmail(),password_hash($password, PASSWORD_DEFAULT)]);
+            $stmt->execute([$customer->getEmail(), password_hash($password, PASSWORD_DEFAULT)]);
     
             // 2. Insert in customers
             $customerID = $this->db->lastInsertId();
             
-            $sql= 'INSERT INTO customers (CustomerID, FirstName, LastName, Address, City, Country, Postal, Phone, Email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            $sql = 'INSERT INTO customers (CustomerID, FirstName, LastName, Address, City, Country, Postal, Phone, Email) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([
                 $customerID,
@@ -142,71 +128,99 @@ class CustomerRepository {
                 $customer->getPhone(),
                 $customer->getEmail()
             ]);
-    
-            return $customerID; // Rückgabe der neuen ID bei Erfolg
             
+            // Commit transaction
+            $this->db->commit();
+            
+            return $customerID;
         } catch (PDOException $e) {
-            // Fehler automatisch geworfen
-            return false;
+            // Rollback transaction on error
+            $this->db->rollback();
+            Logging::LogError("Error in addCustomer: " . $e->getMessage());
+            throw new Exception("Database error occurred while adding customer");
         } finally {
             $this->db->close();
         }
     }
 
-    /**
-     * Aktualisiert die Kontodaten eines Kunden.
-     * 
-     * Eingabe: CustomerID, Vorname, Nachname, E-Mail und optional ein neues Passwort.
-     * Aktion: Aktualisiert die Kundendaten in der `customers`-Tabelle und die Anmeldedaten in der `customerlogon`-Tabelle.
-     */
     public function updateCustomer($customerID, $firstName, $lastName, $email, $password = null) {
-        $this->db->connect();
-        if ($password) {
-            // Passwort aktualisieren
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-            $sql = "UPDATE customers SET FirstName = :firstName, LastName = :lastName, Email = :email WHERE CustomerID = :customerID;
-                    UPDATE customerlogon SET UserName = :email, Pass = :password WHERE CustomerID = :customerID";
-        } else {
-            // Ohne Passwort aktualisieren
-            $sql = "UPDATE customers SET FirstName = :firstName, LastName = :lastName, Email = :email WHERE CustomerID = :customerID;
-                    UPDATE customerlogon SET UserName = :email WHERE CustomerID = :customerID";
+        try {
+            $this->db->connect();
+            
+            // Begin transaction
+            $this->db->beginTransaction();
+            
+            if ($password) {
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                // Update customers table
+                $sql = "UPDATE customers SET FirstName = :firstName, LastName = :lastName, Email = :email WHERE CustomerID = :customerID";
+                $stmt = $this->db->prepareStatement($sql);
+                $stmt->execute([
+                    'firstName' => $firstName,
+                    'lastName' => $lastName,
+                    'email' => $email,
+                    'customerID' => $customerID
+                ]);
+                
+                // Update customerlogon table
+                $sql = "UPDATE customerlogon SET UserName = :email, Pass = :password WHERE CustomerID = :customerID";
+                $stmt = $this->db->prepareStatement($sql);
+                $stmt->execute([
+                    'email' => $email,
+                    'password' => $hashedPassword,
+                    'customerID' => $customerID
+                ]);
+            } else {
+                // Update customers table
+                $sql = "UPDATE customers SET FirstName = :firstName, LastName = :lastName, Email = :email WHERE CustomerID = :customerID";
+                $stmt = $this->db->prepareStatement($sql);
+                $stmt->execute([
+                    'firstName' => $firstName,
+                    'lastName' => $lastName,
+                    'email' => $email,
+                    'customerID' => $customerID
+                ]);
+                
+                // Update customerlogon table
+                $sql = "UPDATE customerlogon SET UserName = :email WHERE CustomerID = :customerID";
+                $stmt = $this->db->prepareStatement($sql);
+                $stmt->execute([
+                    'email' => $email,
+                    'customerID' => $customerID
+                ]);
+            }
+            
+            // Commit transaction
+            $this->db->commit();
+        } catch (PDOException $e) {
+            // Rollback transaction on error
+            $this->db->rollback();
+            Logging::LogError("Error in updateCustomer: " . $e->getMessage());
+            throw new Exception("Database error occurred while updating customer");
+        } finally {
+            $this->db->close();
         }
-
-        $stmt = $this->db->prepareStatement($sql);
-        $stmt->execute([
-            'firstName' => $firstName,
-            'lastName' => $lastName,
-            'email' => $email,
-            'password' => isset($hashedPassword) ? $hashedPassword : null,
-            'customerID' => $customerID
-        ]);
-        $this->db->close();
     }
     
-    /**
-     * Updates a user's complete profile information including address details
-     * 
-     * @param int $customerID The ID of the customer to update
-     * @param array $data Array of all customer information to update
-     * @param string|null $password Optional new password
-     * @return bool Success status
-     */
     public function updateUserProfile($customerID, $data, $password = null) {
-        $this->db->connect();
-        
         try {
-            // Update customer table with all profile information
+            $this->db->connect();
+            
+            // Begin transaction
+            $this->db->beginTransaction();
+            
+            // Update customer table
             $sql = "UPDATE customers SET 
-                FirstName = :firstName, 
-                LastName = :lastName, 
-                Email = :email, 
-                Address = :address, 
-                City = :city, 
-                Country = :country, 
-                Postal = :postal, 
-                Phone = :phone 
-                WHERE CustomerID = :customerID";
-                
+                    FirstName = :firstName, 
+                    LastName = :lastName, 
+                    Email = :email, 
+                    Address = :address, 
+                    City = :city, 
+                    Country = :country, 
+                    Postal = :postal, 
+                    Phone = :phone 
+                    WHERE CustomerID = :customerID";
+                    
             $params = [
                 'firstName' => $data['firstName'],
                 'lastName' => $data['lastName'],
@@ -235,59 +249,56 @@ class CustomerRepository {
                 $stmt->execute(['password' => $hashedPassword, 'customerID' => $customerID]);
             }
             
+            // Commit transaction
+            $this->db->commit();
+            
             return true;
         } catch (PDOException $e) {
-            return false;
+            // Rollback transaction on error
+            $this->db->rollback();
+            Logging::LogError("Error in updateUserProfile: " . $e->getMessage());
+            throw new Exception("Database error occurred while updating user profile");
         } finally {
             $this->db->close();
         }
     }
 
-    /**
-     * Überprüft, ob eine E-Mail bereits existiert.
-     * 
-     * Eingabe: Die E-Mail-Adresse.
-     * Ausgabe: `true`, wenn die E-Mail existiert, sonst `false`.
-     */
     public function emailExists($email) {
-        $this->db->connect();
-        $sql= 'SELECT * FROM customerlogon WHERE UserName = :email';
-        $stmt = $this->db->prepareStatement($sql);
-        $stmt->execute(['email' => $email]);
-
-        $this->db->close();
-        return $stmt->fetch() !== false;
+        try {
+            $this->db->connect();
+            $sql = 'SELECT * FROM customerlogon WHERE UserName = :email';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute(['email' => $email]);
+            return $stmt->fetch() !== false;
+        } catch (PDOException $e) {
+            Logging::LogError("Error in emailExists: " . $e->getMessage());
+            throw new Exception("Database error occurred while checking email existence");
+        } finally {
+            $this->db->close();
+        }
     }
 
-    /**
-     * Setzt das Passwort eines Kunden zurück.
-     * 
-     * Eingabe: CustomerID und das neue Passwort.
-     * Aktion: Aktualisiert das Passwort in der `customerlogon`-Tabelle.
-     */
     public function resetPassword($customerID, $newPassword) {
-        $this->db->connect();
-        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-        $sql = 'UPDATE customerlogon SET Pass = :password WHERE CustomerID = :customerID';
-        $stmt = $this->db->prepareStatement($sql);
-        $stmt->execute([
-            'password' => $hashedPassword,
-            'customerID' => $customerID
-        ]);
-        $this->db->close();
+        try {
+            $this->db->connect();
+            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+            $sql = 'UPDATE customerlogon SET Pass = :password WHERE CustomerID = :customerID';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute([
+                'password' => $hashedPassword,
+                'customerID' => $customerID
+            ]);
+        } catch (PDOException $e) {
+            Logging::LogError("Error in resetPassword: " . $e->getMessage());
+            throw new Exception("Database error occurred while resetting password");
+        } finally {
+            $this->db->close();
+        }
     }
     
-    /**
-     * Set a user's role (administrator or regular user)
-     *
-     * @param int $customerID The ID of the customer
-     * @param int $type The type (0 = regular user, 1 = administrator)
-     * @return bool Success status
-     */
     public function setUserRole($customerID, $type) {
-        $this->db->connect();
-        
         try {
+            $this->db->connect();
             $sql = 'UPDATE customerlogon SET Type = :type WHERE CustomerID = :customerID';
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([
@@ -296,38 +307,35 @@ class CustomerRepository {
             ]);
             return true;
         } catch (PDOException $e) {
-            return false;
+            Logging::LogError("Error in setUserRole: " . $e->getMessage());
+            throw new Exception("Database error occurred while setting user role");
         } finally {
             $this->db->close();
         }
     }
     
-    /**
-     * Count the number of administrators in the system
-     *
-     * @return int The number of administrators
-     */
     public function countAdministrators() {
-        $this->db->connect();
-        $sql = 'SELECT COUNT(*) FROM customerlogon WHERE Type = 1';
-        $stmt = $this->db->prepareStatement($sql);
-        $stmt->execute();
-        $count = $stmt->fetchColumn();
-        $this->db->close();
-        return $count;
+        try {
+            $this->db->connect();
+            $sql = 'SELECT COUNT(*) FROM customerlogon WHERE Type = 1';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute();
+            return $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            Logging::LogError("Error in countAdministrators: " . $e->getMessage());
+            throw new Exception("Database error occurred while counting administrators");
+        } finally {
+            $this->db->close();
+        }
     }
     
-    /**
-     * Deactivate a user (set their status to inactive without deleting)
-     * This is done by adding "INACTIVE_" prefix to their email/username
-     * 
-     * @param int $customerID The ID of the customer to deactivate
-     * @return bool Success status
-     */
     public function deactivateUser($customerID) {
-        $this->db->connect();
-        
         try {
+            $this->db->connect();
+            
+            // Begin transaction
+            $this->db->beginTransaction();
+            
             // Get current username
             $sql = 'SELECT UserName FROM customerlogon WHERE CustomerID = :customerID';
             $stmt = $this->db->prepareStatement($sql);
@@ -336,7 +344,8 @@ class CustomerRepository {
             
             // Check if already inactive
             if (strpos($username, 'INACTIVE_') === 0) {
-                return true; // Already inactive
+                $this->db->commit();
+                return true;
             }
             
             // Update username to mark as inactive
@@ -356,25 +365,27 @@ class CustomerRepository {
                 'customerID' => $customerID
             ]);
             
+            // Commit transaction
+            $this->db->commit();
+            
             return true;
         } catch (PDOException $e) {
-            return false;
+            // Rollback transaction on error
+            $this->db->rollback();
+            Logging::LogError("Error in deactivateUser: " . $e->getMessage());
+            throw new Exception("Database error occurred while deactivating user");
         } finally {
             $this->db->close();
         }
     }
     
-    /**
-     * Reactivate a user who has been previously deactivated
-     * Removes the "INACTIVE_" prefix from their email/username
-     * 
-     * @param int $customerID The ID of the customer to reactivate
-     * @return bool Success status
-     */
     public function reactivateUser($customerID) {
-        $this->db->connect();
-        
         try {
+            $this->db->connect();
+            
+            // Begin transaction
+            $this->db->beginTransaction();
+            
             // Get current username
             $sql = 'SELECT UserName FROM customerlogon WHERE CustomerID = :customerID';
             $stmt = $this->db->prepareStatement($sql);
@@ -383,11 +394,12 @@ class CustomerRepository {
             
             // Check if actually inactive
             if (strpos($username, 'INACTIVE_') !== 0) {
-                return true; // Already active
+                $this->db->commit();
+                return true;
             }
             
             // Update username to reactivate (remove INACTIVE_ prefix)
-            $activeUsername = substr($username, 9); // Remove first 9 chars (INACTIVE_)
+            $activeUsername = substr($username, 9);
             $sql = 'UPDATE customerlogon SET UserName = :username WHERE CustomerID = :customerID';
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([
@@ -403,45 +415,48 @@ class CustomerRepository {
                 'customerID' => $customerID
             ]);
             
+            // Commit transaction
+            $this->db->commit();
+            
             return true;
         } catch (PDOException $e) {
-            return false;
+            // Rollback transaction on error
+            $this->db->rollback();
+            Logging::LogError("Error in reactivateUser: " . $e->getMessage());
+            throw new Exception("Database error occurred while reactivating user");
         } finally {
             $this->db->close();
         }
     }
     
-    /**
-     * Get the current user role (type) from the customerlogon table
-     *
-     * @param int $customerID The ID of the customer
-     * @return int The user type (0 = regular user, 1 = administrator)
-     */
     public function getUserRole($customerID) {
-        $this->db->connect();
-        $sql = 'SELECT Type FROM customerlogon WHERE CustomerID = :customerID';
-        $stmt = $this->db->prepareStatement($sql);
-        $stmt->execute(['customerID' => $customerID]);
-        $type = (int)$stmt->fetchColumn();
-        $this->db->close();
-        return $type;
+        try {
+            $this->db->connect();
+            $sql = 'SELECT Type FROM customerlogon WHERE CustomerID = :customerID';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute(['customerID' => $customerID]);
+            return (int)$stmt->fetchColumn();
+        } catch (PDOException $e) {
+            Logging::LogError("Error in getUserRole: " . $e->getMessage());
+            throw new Exception("Database error occurred while getting user role");
+        } finally {
+            $this->db->close();
+        }
     }
     
-    /**
-     * Check if an email exists for any user other than the specified customer
-     *
-     * @param string $email The email to check
-     * @param int $customerID The ID of the customer to exclude from the check
-     * @return bool True if the email exists for another user, false otherwise
-     */
     public function emailExistsForOtherUser($email, $customerID) {
-        $this->db->connect();
-        $sql = 'SELECT CustomerID FROM customerlogon WHERE UserName = :email AND CustomerID != :customerID';
-        $stmt = $this->db->prepareStatement($sql);
-        $stmt->execute(['email' => $email, 'customerID' => $customerID]);
-        $exists = $stmt->fetch() !== false;
-        $this->db->close();
-        return $exists;
+        try {
+            $this->db->connect();
+            $sql = 'SELECT CustomerID FROM customerlogon WHERE UserName = :email AND CustomerID != :customerID';
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute(['email' => $email, 'customerID' => $customerID]);
+            return $stmt->fetch() !== false;
+        } catch (PDOException $e) {
+            Logging::LogError("Error in emailExistsForOtherUser: " . $e->getMessage());
+            throw new Exception("Database error occurred while checking email existence");
+        } finally {
+            $this->db->close();
+        }
     }
 }
 ?>

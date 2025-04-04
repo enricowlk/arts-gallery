@@ -34,53 +34,35 @@ class Gallerie {
         $this->GalleryWebSite = $GalleryWebSite;
     }
 
-    // Getter- und Setter-Methoden
+    // Getter
     public function getGalleryID() {
         return $this->GalleryID;
-    }
-    public function setGalleryID($GalleryID) {
-        $this->GalleryID = $GalleryID;
     }
     public function getGalleryName() {
         return $this->GalleryName;
     }
-    public function setGalleryName($GalleryName) {
-        $this->GalleryName = $GalleryName;
-    }
+   
     public function getGalleryNativeName() {
         return $this->GalleryNativeName;
     }
-    public function setGalleryNativeName($GalleryNativeName) {
-        $this->GalleryNativeName = $GalleryNativeName;
-    }
+   
     public function getGalleryCity() {
         return $this->GalleryCity;
     }
-    public function setGalleryCity($GalleryCity) {
-        $this->GalleryCity = $GalleryCity;
-    }
+    
     public function getGalleryCountry() {    
         return $this->GalleryCountry;
     }
-    public function setGalleryCountry($GalleryCountry) {
-        $this->GalleryCountry = $GalleryCountry;
-    }
+    
     public function getLatitude() {    
         return $this->Latitude;
     }    
-    public function setLatitude($Latitude) {
-        $this->Latitude = $Latitude;
-    }
+
     public function getLongitude() {    
         return $this->Longitude;
     }
-    public function setLongitude($Longitude) {
-        $this->Longitude = $Longitude;
-    }
+    
     public function getGalleryWebSite() {    
         return $this->GalleryWebSite;
     }
-    public function setGalleryWebSite($GalleryWebSite) {
-        $this->GalleryWebSite = $GalleryWebSite;        
-    }
-    }
+}
