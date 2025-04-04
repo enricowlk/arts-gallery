@@ -42,11 +42,11 @@ unset($_SESSION['error'], $_SESSION['success']); // Löscht die Session-Variable
         <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="firstName" class="form-label">First Name:</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName">
+                    <input type="text" class="form-control" id="firstName" name="firstName" pattern="^[A-Za-zäöüÄÖÜß]+$">
                 </div>
                 <div class="col-md-6">
                     <label for="lastName" class="form-label">Last Name:</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName">
+                    <input type="text" class="form-control" id="lastName" name="lastName" pattern="^[A-Za-zäöüÄÖÜß]+$">
                 </div>
             
             <div class="mb-3">
@@ -64,18 +64,18 @@ unset($_SESSION['error'], $_SESSION['success']); // Löscht die Session-Variable
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="city" class="form-label">City:</label>
-                    <input type="text" class="form-control" id="city" name="city">
+                    <input type="text" class="form-control" id="city" name="city" pattern="^[A-Za-zäöüÄÖÜß ]+$">
                 </div>
                 <div class="col-md-6">
                     <label for="country" class="form-label">Country:</label>
-                    <input type="text" class="form-control" id="country" name="country">
+                    <input type="text" class="form-control" id="country" name="country" pattern="^[A-Za-zäöüÄÖÜß ]+$">
                 </div>
             </div>
             
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="postal" class="form-label">Postal Code:</label>
-                    <input type="text" class="form-control" id="postal" name="postal">
+                    <input type="text" class="form-control" id="postal" name="postal" pattern="^[0-9]+$">
                 </div>
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Phone:</label>

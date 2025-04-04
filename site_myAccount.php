@@ -65,12 +65,12 @@ unset($_SESSION['error'], $_SESSION['success']);
         <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="firstName" class="form-label">First Name:</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" 
+                    <input type="text" class="form-control" id="firstName" name="firstName" pattern="^[A-Za-zäöüÄÖÜß]+$"
                            value="<?php echo $customer->getFirstName(); ?>" required>
                 </div>
                 <div class="col-md-6">
                     <label for="lastName" class="form-label">Last Name:</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" 
+                    <input type="text" class="form-control" id="lastName" name="lastName" pattern="^[A-Za-zäöüÄÖÜß]+$"
                            value="<?php echo $customer->getLastName(); ?>" required>
                 </div>
             </div>
@@ -92,12 +92,12 @@ unset($_SESSION['error'], $_SESSION['success']);
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="city" class="form-label">City:</label>
-                    <input type="text" class="form-control" id="city" name="city" 
+                    <input type="text" class="form-control" id="city" name="city" pattern="^[A-Za-zäöüÄÖÜß ]+$"
                            value="<?php echo $customer->getCity(); ?>">
                 </div>
                 <div class="col-md-6">
                     <label for="country" class="form-label">Country:</label>
-                    <input type="text" class="form-control" id="country" name="country" 
+                    <input type="text" class="form-control" id="country" name="country" pattern="^[A-Za-zäöüÄÖÜß ]+$"
                            value="<?php echo $customer->getCountry(); ?>">
                 </div>
             </div>
@@ -105,12 +105,12 @@ unset($_SESSION['error'], $_SESSION['success']);
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="postal" class="form-label">Postal Code:</label>
-                    <input type="text" class="form-control" id="postal" name="postal" 
+                    <input type="text" class="form-control" id="postal" name="postal" pattern="^[0-9]+$"
                            value="<?php echo $customer->getPostal(); ?>">
                 </div>
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Phone:</label>
-                    <input type="text" class="form-control" id="phone" name="phone" 
+                    <input type="text" class="form-control" id="phone" name="phone"
                            value="<?php echo $customer->getPhone(); ?>">
                 </div>
             </div>
