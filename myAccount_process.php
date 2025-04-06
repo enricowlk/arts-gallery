@@ -33,6 +33,17 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $_SESSION['success'] = 'Your changes have been saved!'; // Erfolgsmeldung
 }
 
+// Passwort-Validierung
+if (
+    strlen($password) < 8 ||  // Mindestlänge 8 Zeichen
+    !preg_match('/[a-z]/', $password) ||  // Muss Kleinbuchstaben enthalten
+    !preg_match('/[A-Z]/', $password) ||  // Muss Großbuchstaben enthalten
+    !preg_match('/[0-9]/', $password) ||  // Muss Zahl enthalten
+    !preg_match('/[\W_]/', $password)     // Muss Sonderzeichen oder _ enthalten
+) {
+    $errors[] = 'Password must be at least 8 characters long and contain uppercase, lowercase, a number, and a special character.';
+}
+
 // Weiterleitung zur MyAccount-Seite
 header("Location: site_myaccount.php");
 exit();

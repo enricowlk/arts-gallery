@@ -150,10 +150,31 @@ class ArtworkRepository {
         }
     }
 
-    public function searchArtworks($query) {
+    public function searchArtworks($query, $orderBy = 'Title', $order = 'ASC') {
         try {
             $this->db->connect();
-            $sql = "SELECT * FROM artworks WHERE Title LIKE :query";
+            
+            // Sicherstellen, dass nur gültige Spalten für ORDER BY verwendet werden
+            $validOrderColumns = ['Title', 'ArtistID', 'YearOfWork'];
+            if (!in_array($orderBy, $validOrderColumns)) {
+                $orderBy = 'Title'; // Fallback auf Standardwert
+            }
+            
+            $sql = "SELECT artworks.* FROM artworks
+                    LEFT JOIN artists ON artworks.ArtistID = artists.ArtistID
+                    WHERE artworks.Title LIKE :query
+                    OR artists.LastName LIKE :query
+                    OR artists.FirstName LIKE :query
+                    OR CONCAT(artists.FirstName, ' ', artists.LastName) LIKE :query
+                    OR CONCAT(artists.LastName, ' ', artists.FirstName) LIKE :query";
+            
+            // Spezielle Behandlung für ArtistID-Sortierung
+            if ($orderBy === 'ArtistID') {
+                $sql .= " ORDER BY artists.LastName $order, artists.FirstName $order";
+            } else {
+                $sql .= " ORDER BY artworks.$orderBy $order";
+            }
+            
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute(['query' => "%$query%"]);
             $artworks = [];

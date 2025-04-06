@@ -37,7 +37,7 @@ $isAdmin = isset($_SESSION['user']['Type']) && $_SESSION['user']['Type'] == 1;
 
             <!-- Suchformular -->
             <form class="d-flex" action="site_search_results.php" method="GET">
-                <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search">
+                <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search" pattern="^[a-zA-Z0-9 ]{3,}$" required>
                 <button class="btn btn-outline-light" type="submit">Search</button>
             </form>
 

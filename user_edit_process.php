@@ -61,6 +61,17 @@ if ($customerRepo->emailExistsForOtherUser($email, $customerID)) {
     exit();
 }
 
+// Passwort-Validierung
+if (
+    strlen($password) < 8 ||  // Mindestlänge 8 Zeichen
+    !preg_match('/[a-z]/', $password) ||  // Muss Kleinbuchstaben enthalten
+    !preg_match('/[A-Z]/', $password) ||  // Muss Großbuchstaben enthalten
+    !preg_match('/[0-9]/', $password) ||  // Muss Zahl enthalten
+    !preg_match('/[\W_]/', $password)     // Muss Sonderzeichen oder _ enthalten
+) {
+    $errors[] = 'Password must be at least 8 characters long and contain uppercase, lowercase, a number, and a special character.';
+}
+
 // Validate passwords match if a new password is provided
 if (!empty($password) && $password !== $confirmPassword) {
     $_SESSION['error'] = "Passwords do not match.";

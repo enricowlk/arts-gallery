@@ -50,14 +50,15 @@ class ArtistRepository {
         }
     }
 
-    public function searchArtists($query) {
+    public function searchArtists($query, $order = 'ASC') {
         try {
             $this->db->connect();
             $sql = "SELECT * FROM artists 
                     WHERE LastName LIKE :query 
                     OR FirstName LIKE :query 
                     OR CONCAT(FirstName, ' ', LastName) LIKE :query
-                    OR CONCAT(LastName, ' ', FirstName) LIKE :query";
+                    OR CONCAT(LastName, ' ', FirstName) LIKE :query
+                    ORDER BY LastName $order, FirstName $order";
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute(['query' => "%$query%"]);
             $artists = [];
