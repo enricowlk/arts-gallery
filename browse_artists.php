@@ -63,7 +63,7 @@ $artists = $artistRepo->getAllArtists($order); // Ruft alle Künstler aus der Da
                         <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
                         <div class="card-body">
                             <!-- Künstlername -->
-                            <h5 class="card-title"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h5>
+                            <h5 class="card-title text-center"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h5>
                         </div>
                     </div>
                     </a>
