@@ -1,5 +1,10 @@
+/* Font Imports */
+@import url('https://fonts.cdnfonts.com/css/avenir');
+@import url('https://fonts.cdnfonts.com/css/didot');
+
+/* Base Styles */
 body {
-    font-family: 'Avenir Book', sans-serif;
+    font-family: 'Avenir Book', 'Avenir', sans-serif;
     background-color: #8d8474;
     color: #051113;
 }
@@ -10,6 +15,7 @@ body {
     padding: 20px;
 }
 
+/* Typography */
 h1, h2, h3, h4 {
     font-family: 'Didot', serif;
     color: #051113;
@@ -17,18 +23,23 @@ h1, h2, h3, h4 {
 }
 
 h5, h6, .subheading {
-    font-family: 'Avenir Heavy', sans-serif;
+    font-family: 'Avenir Heavy', 'Avenir', sans-serif;
 }
 
 p {
-    font-family: 'Avenir Book', sans-serif;
     font-size: 1.1rem;
     line-height: 1.6;
 }
 
+/* Links */
 a {
     text-decoration: none;
     color: #b04818;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #8d3a14;
 }
 
 a:visited {
@@ -39,6 +50,7 @@ a:visited {
     text-align: center;
 }
 
+/* Cards */
 .card-img-top {
     width: 132px;
     height: 132px;
@@ -81,18 +93,49 @@ a:visited {
     margin-top: 10px;
 }
 
+/* Buttons */
+.btn {
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    padding: 8px 16px;
+    font-family: 'Avenir Heavy', sans-serif;
+}
+
+.btn-primary {
+    background-color: #b04818;
+    border-color: #b04818;
+    color: #efe7df;
+}
+
+.btn-primary:hover {
+    background-color: #8d3a14;
+    border-color: #8d3a14;
+    color: #efe7df;
+}
+
 .btn-secondary {
     background-color: #5b7769;
-    border: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    border-color: #5b7769;
     color: #efe7df;
 }
 
 .btn-secondary:hover {
-    background-color: #051113;
+    background-color: #485e53;
+    border-color: #485e53;
+    color: #efe7df;
 }
 
+.btn-outline-primary {
+    border-color: #b04818;
+    color: #b04818;
+}
+
+.btn-outline-primary:hover {
+    background-color: #b04818;
+    color: #efe7df;
+}
+
+/* Artworks Cards */
 .artwork-card {
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -128,6 +171,7 @@ a:visited {
     color: #5b7769;
 }
 
+/* Layout */
 html, body {
     height: 100%;
     margin: 0;
@@ -152,6 +196,7 @@ html, body {
     margin-bottom: 20px;
 }
 
+/* Carousel */
 .carousel-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -180,13 +225,7 @@ html, body {
     color: #efe7df;
 }
 
-.carousel-control-prev,
-.carousel-control-next {
-    width: 5%;
-    background-color: rgba(0, 0, 0, 0);
-    border-radius: 50%;
-}
-
+/* Recent Reviews */
 .recent-reviews-container {
     background-color: #efe7df;
     padding: 20px;
@@ -220,8 +259,8 @@ html, body {
 }
 
 .recent-reviews-container a:hover {
-    text-decoration: underline;
     color: #b04818;
+    text-decoration: underline;
 }
 
 .recent-reviews-container small {
@@ -229,11 +268,7 @@ html, body {
     color: #5b7769;
 }
 
-.recent-reviews-container img {
-    position: relative;
-    top: -2px;
-}
-
+/* Review Table */
 .review-table {
     width: 100%;
     border-collapse: separate;
@@ -250,9 +285,9 @@ html, body {
 }
 
 .review-table th {
-    background-color: #ddd;
+    background-color: #5b7769;
+    color: #efe7df;
     font-weight: bold;
-    color: #051113;
 }
 
 .review-table tr {
@@ -277,32 +312,12 @@ html, body {
     color: #8d8474;
 }
 
-.star-icon {
-    width: 16px;
-    height: 16px;
-    vertical-align: middle;
-    margin-left: 5px;
-}
-
+/* Top Artists & Artworks */
 .top-artist-container,
 .top-artworks-container {
     width: 100%;
     padding: 20px;
     background-color: #efe7df;
-}
-
-.top-artist-container .row,
-.top-artworks-container .row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-}
-
-.top-artist-container .col-md-4,
-.top-artworks-container .col-md-4 {
-    flex: 1 1 300px;
-    max-width: 350px;
 }
 
 .top-artist-container .card,
@@ -328,25 +343,7 @@ html, body {
     border-radius: 10px 10px 0 0;
 }
 
-.top-artist-container .card-body,
-.top-artworks-container .card-body {
-    padding: 15px;
-    text-align: center;
-}
-
-.top-artist-container .card-title,
-.top-artworks-container .card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.top-artist-container .card-text,
-.top-artworks-container .card-text {
-    font-size: 0.875rem;
-    color: #5b7769;
-}
-
+/* Info Section */
 .info {
     background-color: #efe7df;
     padding: 20px;
@@ -365,11 +362,7 @@ html, body {
     color: #5b7769;
 }
 
-.info p {
-    font-size: 1rem;
-    line-height: 1.6;
-}
-
+/* Genre Links */
 .genre-subject-links a {
     color: #b04818;
     text-decoration: none;
@@ -377,24 +370,34 @@ html, body {
 }
 
 .genre-subject-links a:hover {
-    color: #051113 !important;
-    text-decoration: underline !important;
-}
-
-/* Bright accents for special elements */
-.bright-accent {
-    background-color: #efe7df;
     color: #051113;
+    text-decoration: underline;
 }
 
-/* Mid accents for secondary elements */
-.mid-accent {
+/* Utility Classes */
+.bg-accent {
+    background-color: #b04818;
+    color: #efe7df;
+}
+
+.bg-mid-accent {
     background-color: #5b7769;
     color: #efe7df;
 }
 
-/* Primary accent for important elements */
-.primary-accent {
-    background-color: #b04818;
+.bg-bright-accent {
+    background-color: #efe7df;
+    color: #051113;
+}
+
+.text-accent {
+    color: #b04818;
+}
+
+.text-mid-accent {
+    color: #5b7769;
+}
+
+.text-bright-accent {
     color: #efe7df;
 }
