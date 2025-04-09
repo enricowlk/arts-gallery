@@ -55,6 +55,7 @@ a:hover {
     display: block;
     border-radius: 3%;
     margin-top: 10px;
+    background-color: #efe7df;
 }
 
 .card {
@@ -89,6 +90,7 @@ a:hover {
     font-size: 1.25rem;
     font-weight: bold;
     margin-top: 10px;
+    background-color: #efe7df;
 }
 
 /* Buttons */
