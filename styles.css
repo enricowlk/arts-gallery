@@ -82,8 +82,7 @@ a:hover {
     flex-direction: column;
     justify-content: space-between;
     background-color: #efe7df;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 20px;
 }
 
 .card-title {
