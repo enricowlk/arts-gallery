@@ -80,6 +80,7 @@ a:hover {
     flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     background-color: #efe7df;
     border-radius: 20px;
 }
