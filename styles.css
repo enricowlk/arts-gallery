@@ -1,392 +1,400 @@
+body {
+    font-family: 'Avenir Book', sans-serif;
+    background-color: #8d8474;
+    color: #051113;
+}
 
-        body {
-            font-family: 'Jaini', sans-serif;
-            background-color: #f8f9fa; /* Heller Hintergrund */
-            color: #333; /* Dunkle Schriftfarbe */
-        }
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
 
-        .container {
-            max-width: 1200px; /* Begrenzte Breite für bessere Lesbarkeit */
-            margin: 0 auto; /* Zentrieren des Containers */
-            padding: 20px; /* Innenabstand */
-        }
+h1, h2, h3, h4 {
+    font-family: 'Didot', serif;
+    color: #051113;
+    margin-bottom: 20px;
+}
 
-        h1, h2, h3, h4 {
-            font-family: 'Roboto', sans-serif; /* Unterschiedliche Schriftart für Überschriften */
-            color: #333; /* Dunkle Schriftfarbe für Überschriften */
-            margin-bottom: 20px; /* Abstand nach unten */
-        }
+h5, h6, .subheading {
+    font-family: 'Avenir Heavy', sans-serif;
+}
 
-        p {
-            font-size: 1.1rem; /* Größere Schrift für bessere Lesbarkeit */
-            line-height: 1.6; /* Bessere Lesbarkeit durch größeren Zeilenabstand */
-        }
+p {
+    font-family: 'Avenir Book', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
 
-        a {
-            text-decoration: none; /* Entfernt die Unterstreichung */
-            color: inherit; /* Übernimmt die Farbe des übergeordneten Elements */
-        }
+a {
+    text-decoration: none;
+    color: #b04818;
+}
 
-        .text-center {
-            text-align: center; /* Zentrierter Text */
-        }
+a:visited {
+    color: #5b7769;
+}
 
-        /* Feste Größe für die Bilder */
-        .card-img-top {
-            width: 132px;
-            height: 132px;
-            object-fit: cover; /* Bild wird zugeschnitten, um den Container zu füllen */
-            margin: 0 auto; /* Bild zentrieren */
-            display: block; /* Block-Element für margin: auto */
-            border-radius: 3%; /* Runde Bilder */
-            margin-top: 10px; /* Abstand nach oben */
-        }
+.text-center {
+    text-align: center;
+}
 
-        /* Stile für die Cards */
-        .card {
-            padding: 10px; /* Abstand zwischen Bild und Card-Rand */
-            height: 100%; /* Volle Höhe des Containers */
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Inhalt zentrieren */
-            text-align: center; /* Text zentrieren */
-            border: 1px solid #ddd; /* Rahmen hinzufügen */
-            border-radius: 20px; /* Abgerundete Ecken */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
-            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Sanfte Übergänge */
-        }
+.card-img-top {
+    width: 132px;
+    height: 132px;
+    object-fit: cover;
+    margin: 0 auto;
+    display: block;
+    border-radius: 3%;
+    margin-top: 10px;
+}
 
-        /* Hover-Effekt für die Cards */
-        .card:hover {
-            transform: translateY(-5px); /* Leichter Anstieg beim Hover */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Größerer Schatten beim Hover */
-        }
+.card {
+    padding: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #efe7df;
+}
 
-        /* Card-Body nimmt den restlichen Platz ein */
-        .card-body {
-            flex: 1; /* Nimmt den verfügbaren Platz ein */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; /* Verteilt den Inhalt gleichmäßig */
-        }
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 
-        /* Stil für den Card-Titel */
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: bold;
-            margin-top: 10px; /* Abstand nach oben */
-        }
+.card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
-        /* Buttons */
-        .btn-secondary {
-            background-color: #6c757d; /* Standardfarbe für Buttons */
-            border: none;
-            border-radius: 5px; /* Abgerundete Ecken */
-            transition: background-color 0.3s ease; /* Sanfter Übergang */
-        }
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-top: 10px;
+}
 
-        .btn-secondary:hover {
-            background-color: #5a6268; /* Dunklere Farbe beim Hover */
-        }
+.btn-secondary {
+    background-color: #5b7769;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    color: #efe7df;
+}
 
-        /* Artworks-Cards */
-        .artwork-card {
-            border: 1px solid #ddd; /* Rahmen hinzufügen */
-            border-radius: 10px; /* Abgerundete Ecken */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
-            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Sanfte Übergänge */
-            background-color: #fff; /* Weißer Hintergrund */
-        }
+.btn-secondary:hover {
+    background-color: #051113;
+}
 
-        .artwork-card:hover {
-            transform: translateY(-5px); /* Leichter Anstieg beim Hover */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Größerer Schatten beim Hover */
-        }
+.artwork-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #efe7df;
+}
 
-        .artwork-card .card-img-top {
-            width: 100%; /* Volle Breite der Card */
-            height: 200px; /* Feste Höhe für die Bilder */
-            object-fit: cover; /* Bild wird zugeschnitten, um den Container zu füllen */
-            border-radius: 10px 10px 0 0; /* Abgerundete Ecken oben */
-        }
+.artwork-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 
-        .artwork-card .card-body {
-            padding: 15px; /* Innenabstand */
-        }
+.artwork-card .card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
 
-        .artwork-card .card-title {
-            font-size: 1.25rem; /* Größere Schrift für den Titel */
-            font-weight: bold;
-            margin-bottom: 10px; /* Abstand nach unten */
-        }
+.artwork-card .card-body {
+    padding: 15px;
+}
 
-        .artwork-card .card-text {
-            font-size: 0.875rem; /* Kleinere Schrift für sekundären Text */
-            color: #666; /* Sekundäre Schriftfarbe */
-        }
+.artwork-card .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
-        /* Flexbox-Layout für die gesamte Seite */
-        html, body {
-            height: 100%; /* Volle Höhe des Viewports */
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-        }
+.artwork-card .card-text {
+    font-size: 0.875rem;
+    color: #5b7769;
+}
 
-        .content {
-            flex: 1; /* Nimmt den verfügbaren Platz ein */
-        }
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
 
-        .footer {
-            background-color: #343a40;
-            color: white;
-            padding: 2rem 0;
-            margin-top: auto; /* Footer bleibt unten */
-        }
+.content {
+    flex: 1;
+}
 
-        .footer h5 {
-            font-family: 'Roboto', sans-serif;
-            color: #ffffff; /* Weiße Schriftfarbe für Überschriften im Footer */
-            margin-bottom: 20px;
-        }
+.footer {
+    background-color: #051113;
+    color: #efe7df;
+    padding: 2rem 0;
+    margin-top: auto;
+}
 
-        /* Carousel-Stile */
-        .carousel-container {
-            max-width: 1200px; /* Maximale Breite des Carousels */
-            margin: 0 auto; /* Zentrieren des Carousels */
-            padding: 20px; /* Innenabstand */
-            background-color: #f8f9fa; /* Heller Hintergrund */
-            border-radius: 10px; /* Abgerundete Ecken */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
-        }
+.footer h5 {
+    font-family: 'Avenir Heavy', sans-serif;
+    color: #efe7df;
+    margin-bottom: 20px;
+}
 
-        .carousel-item img {
-            width: 100%; /* Volle Breite des Carousels */
-            height: 400px; /* Feste Höhe für die Bilder */
-            object-fit: cover; /* Bild wird zugeschnitten, um den Container zu füllen */
-            border-radius: 10px; /* Abgerundete Ecken */
-        }
+.carousel-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #efe7df;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        .carousel-caption {
-            background-color: rgba(0, 0, 0, 0.5); /* Halbtransparenter Hintergrund */
-            padding: 10px; /* Innenabstand */
-            border-radius: 5px; /* Abgerundete Ecken */
-        }
+.carousel-item img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
 
-        .carousel-caption h5 {
-            font-size: 1.5rem; /* Größere Schrift für den Titel */
-            font-weight: bold;
-            color: #fff; /* Weiße Schriftfarbe */
-        }
+.carousel-caption {
+    background-color: rgba(5, 17, 19, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+}
 
-        .carousel-control-prev,
-        .carousel-control-next {
-            width: 5%; /* Breite der Controls */
-            background-color: rgba(0, 0, 0, 0); /* Halbtransparenter Hintergrund */
-            border-radius: 50%; /* Runde Buttons */
-        }
+.carousel-caption h5 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #efe7df;
+}
 
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            color: #fff;
-        }
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 50%;
+}
 
-        /* Recent Reviews Stile */
-        .recent-reviews-container {
-            background-color: #fff; /* Weißer Hintergrund */
-            padding: 20px; /* Innenabstand */
-            border-radius: 10px; /* Abgerundete Ecken */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
-            margin-top: 20px; /* Abstand nach oben */
-        }
+.recent-reviews-container {
+    background-color: #efe7df;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
 
-        .recent-reviews-container ul {
-            list-style: none; /* Entfernt die Aufzählungspunkte */
-            padding-left: 0; /* Entfernt den Standard-Padding */
-        }
+.recent-reviews-container ul {
+    list-style: none;
+    padding-left: 0;
+}
 
-        .recent-reviews-container li {
-            padding: 15px; /* Innenabstand */
-            border-bottom: 1px solid #eee; /* Trennlinie zwischen den Bewertungen */
-            transition: background-color 0.3s ease; /* Sanfter Übergang */
-        }
+.recent-reviews-container li {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s ease;
+}
 
-        .recent-reviews-container li:hover {
-            background-color: #f8f9fa; /* Heller Hintergrund beim Hover */
-        }
+.recent-reviews-container li:hover {
+    background-color: #ddd;
+}
 
-        .recent-reviews-container li:last-child {
-            border-bottom: none; /* Keine Trennlinie beim letzten Element */
-        }
+.recent-reviews-container li:last-child {
+    border-bottom: none;
+}
 
-        .recent-reviews-container strong {
-            font-size: 1.1rem; /* Größere Schrift für den Kundennamen */
-            color: #333; /* Dunkle Schriftfarbe */
-        }
+.recent-reviews-container strong {
+    font-size: 1.1rem;
+    color: #051113;
+}
 
-        .recent-reviews-container a:hover {
-            text-decoration: underline; /* Unterstreichung beim Hover */
-        }
+.recent-reviews-container a:hover {
+    text-decoration: underline;
+    color: #b04818;
+}
 
-        .recent-reviews-container small {
-            font-size: 0.875rem; /* Kleinere Schrift für sekundären Text */
-            color: #666; /* Sekundäre Schriftfarbe */
-        }
+.recent-reviews-container small {
+    font-size: 0.875rem;
+    color: #5b7769;
+}
 
-        .recent-reviews-container img {
-            position: relative;
-            top: -2px; /* Stern leicht nach oben verschieben */
-        }
+.recent-reviews-container img {
+    position: relative;
+    top: -2px;
+}
 
-        /* Review-Tabelle */
-        .review-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 10px; /* Abstand zwischen den Zeilen */
-            margin-top: 20px; /* Abstand nach oben */
-        }
+.review-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    margin-top: 20px;
+}
 
-        .review-table th,
-        .review-table td {
-            padding: 12px; /* Innenabstand */
-            text-align: left;
-            background-color: #fff; /* Weißer Hintergrund */
-            border-bottom: 1px solid #ddd; /* Untere Linie */
-        }
+.review-table th,
+.review-table td {
+    padding: 12px;
+    text-align: left;
+    background-color: #efe7df;
+    border-bottom: 1px solid #ddd;
+}
 
-        .review-table th {
-            background-color: #f8f9fa; /* Heller Hintergrund für den Header */
-            font-weight: bold;
-            color: #333; /* Dunkle Schriftfarbe */
-        }
+.review-table th {
+    background-color: #ddd;
+    font-weight: bold;
+    color: #051113;
+}
 
-        .review-table tr {
-            transition: background-color 0.3s ease; /* Sanfter Übergang */
-        }
+.review-table tr {
+    transition: background-color 0.3s ease;
+}
 
-        .review-table tr:hover {
-            background-color: #f1f1f1; /* Heller Hintergrund beim Hover */
-        }
+.review-table tr:hover {
+    background-color: #ddd;
+}
 
-        .review-table .rating {
-            font-weight: bold;
-            color: #ffc107; /* Gelbe Farbe für die Bewertung */
-        }
+.review-table .rating {
+    font-weight: bold;
+    color: #b04818;
+}
 
-        .review-table .comment {
-            color: #666; /* Sekundäre Schriftfarbe für Kommentare */
-        }
+.review-table .comment {
+    color: #5b7769;
+}
 
-        .review-table .date {
-            font-size: 0.875rem; /* Kleinere Schrift für das Datum */
-            color: #999; /* Graue Schriftfarbe */
-        }
+.review-table .date {
+    font-size: 0.875rem;
+    color: #8d8474;
+}
 
-        .star-icon {
-            width: 16px;
-            height: 16px;
-            vertical-align: middle;
-            margin-left: 5px; /* Abstand zwischen Text und Stern */
-        }
+.star-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-left: 5px;
+}
 
-        /* Top Artists und Top Artworks Container */
-        .top-artist-container,
-        .top-artworks-container {
-            width: 100%; /* Volle Breite des Eltern-Elements */
-            padding: 20px; /* Innenabstand */
-            background-color: #f8f9fa; /* Heller Hintergrund */
-        }
+.top-artist-container,
+.top-artworks-container {
+    width: 100%;
+    padding: 20px;
+    background-color: #efe7df;
+}
 
-        .top-artist-container .row,
-        .top-artworks-container .row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px; /* Abstand zwischen den Karten */
-            justify-content: center; /* Zentriert die Karten */
-        }
+.top-artist-container .row,
+.top-artworks-container .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
 
-        .top-artist-container .col-md-4,
-        .top-artworks-container .col-md-4 {
-            flex: 1 1 300px; /* Flexibles Layout mit Mindestbreite */
-            max-width: 350px; /* Maximale Breite der Karten */
-        }
+.top-artist-container .col-md-4,
+.top-artworks-container .col-md-4 {
+    flex: 1 1 300px;
+    max-width: 350px;
+}
 
-        .top-artist-container .card,
-        .top-artworks-container .card {
-            border: 1px solid #ddd; /* Rahmen hinzufügen */
-            border-radius: 10px; /* Abgerundete Ecken */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
-            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Sanfte Übergänge */
-            background-color: #fff; /* Weißer Hintergrund */
-        }
+.top-artist-container .card,
+.top-artworks-container .card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+}
 
-        .top-artist-container .card:hover,
-        .top-artworks-container .card:hover {
-            transform: translateY(-5px); /* Leichter Anstieg beim Hover */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Größerer Schatten beim Hover */
-        }
+.top-artist-container .card:hover,
+.top-artworks-container .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
 
-        .top-artist-container .card-img-top,
-        .top-artworks-container .card-img-top {
-            width: 100%; /* Volle Breite der Card */
-            height: 400px; /* Feste Höhe für die Bilder */
-            object-fit: cover; /* Bild wird zugeschnitten, um den Container zu füllen */
-            border-radius: 10px 10px 0 0; /* Abgerundete Ecken oben */
-        }
+.top-artist-container .card-img-top,
+.top-artworks-container .card-img-top {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
 
-        .top-artist-container .card-body,
-        .top-artworks-container .card-body {
-            padding: 15px; /* Innenabstand */
-            text-align: center; /* Zentrierter Text */
-        }
+.top-artist-container .card-body,
+.top-artworks-container .card-body {
+    padding: 15px;
+    text-align: center;
+}
 
-        .top-artist-container .card-title,
-        .top-artworks-container .card-title {
-            font-size: 1.25rem; /* Größere Schrift für den Titel */
-            font-weight: bold;
-            margin-bottom: 10px; /* Abstand nach unten */
-        }
+.top-artist-container .card-title,
+.top-artworks-container .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
-        .top-artist-container .card-text,
-        .top-artworks-container .card-text {
-            font-size: 0.875rem; /* Kleinere Schrift für sekundären Text */
-            color: #666; /* Sekundäre Schriftfarbe */
-        }
+.top-artist-container .card-text,
+.top-artworks-container .card-text {
+    font-size: 0.875rem;
+    color: #5b7769;
+}
 
-        /* Kunstwerkinformationen */
-        .info {
-            background-color: #fff; /* Weißer Hintergrund */
-            padding: 20px; /* Innenabstand */
-            border-radius: 10px; /* Abgerundete Ecken */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
-        }
+.info {
+    background-color: #efe7df;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-        .info h1 {
-            font-size: 2.5rem; /* Größere Schrift für den Titel */
-            font-weight: bold;
-            margin-bottom: 10px; /* Abstand nach unten */
-        }
+.info h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
-        .info .lead {
-            font-size: 1.25rem; /* Größere Schrift für den Künstler */
-            color: #666; /* Sekundäre Schriftfarbe */
-        }
+.info .lead {
+    font-size: 1.25rem;
+    color: #5b7769;
+}
 
-        .info p {
-            font-size: 1rem; /* Standard-Schriftgröße */
-            line-height: 1.6; /* Bessere Lesbarkeit durch größeren Zeilenabstand */
-        }
+.info p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
 
-        /* Spezifisch für die Links in genre-subject-links */
-        .genre-subject-links a {
-            color: inherit;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        
-        .genre-subject-links a:hover {
-            color: black !important;
-            text-decoration: underline !important;
-        }
+.genre-subject-links a {
+    color: #b04818;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
 
-        
+.genre-subject-links a:hover {
+    color: #051113 !important;
+    text-decoration: underline !important;
+}
+
+/* Bright accents for special elements */
+.bright-accent {
+    background-color: #efe7df;
+    color: #051113;
+}
+
+/* Mid accents for secondary elements */
+.mid-accent {
+    background-color: #5b7769;
+    color: #efe7df;
+}
+
+/* Primary accent for important elements */
+.primary-accent {
+    background-color: #b04818;
+    color: #efe7df;
+}
