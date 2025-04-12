@@ -44,6 +44,13 @@ if (
     $errors[] = 'Password must be at least 8 characters long and contain uppercase, lowercase, a number, and a special character.';
 }
 
+// Validate passwords match if a new password is provided
+if (!empty($password) && $password !== $confirmPassword) {
+    $_SESSION['error'] = "Passwords do not match.";
+    header("Location: site_myAccount.php?id=" . $customerID);
+    exit();
+}
+
 // Weiterleitung zur MyAccount-Seite
 header("Location: site_myaccount.php");
 exit();

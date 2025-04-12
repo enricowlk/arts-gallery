@@ -88,10 +88,6 @@ unset($_SESSION['error'], $_SESSION['success']); // Löscht die Session-Variable
                 <label for="password" class="form-label">Password:</label>
                 <input type="password" class="form-control" id="password" name="password">
             </div>
-            
-            <div class="mb-3">
-                <label for="confirmPassword" class="form-label">Confirm Password:</label>
-                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
                 <div class = "mt-3">
                 <button type="submit" class="btn btn-secondary">Register</button> <!-- Submit-Button -->
                 </div>
