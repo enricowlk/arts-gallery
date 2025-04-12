@@ -1,4 +1,9 @@
-<?php session_start();?>
+<?php 
+session_start();
+
+require_once 'logging.php';
+require_once 'global_exception_handler.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">

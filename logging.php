@@ -1,6 +1,6 @@
 <?php 
 class Logging {
-    private static $log_file_path = 'c\tmp\log\debug.log';
+    private static $log_file_path = 'c\xampp\tmp\log\debug.log';
 
     public static function LogError($message) {
         error_log(self::getTime()."-ERROR: ".$message."\n", 3, self::$log_file_path);

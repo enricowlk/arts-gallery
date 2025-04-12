@@ -7,6 +7,8 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 
+require_once 'logging.php';
+require_once 'global_exception_handler.php';
 require_once 'customerRepository.php'; // Bindet die CustomerRepository-Klasse ein
 require_once 'database.php'; // Bindet die Database-Klasse ein
 

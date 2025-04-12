@@ -1,6 +1,8 @@
 <?php
 session_start(); // Startet die Session
 
+require_once 'logging.php';
+require_once 'global_exception_handler.php';
 require_once 'database.php'; // Bindet die Datenbankverbindung ein
 require_once 'artistRepository.php'; // Bindet das ArtistRepository ein
 require_once 'artworkRepository.php'; // Bindet das ArtworkRepository ein

@@ -6,9 +6,10 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['Type'] != 1) {
     exit();
 }
 
+require_once 'logging.php';
+require_once 'global_exception_handler.php';
 require_once 'customerRepository.php';
 require_once 'database.php';
-require_once 'inputValidation.php';
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     $_SESSION['error'] = "Invalid user ID.";

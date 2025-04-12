@@ -1,6 +1,8 @@
 <?php
 session_start(); // Startet die Session
 
+require_once 'logging.php';
+require_once 'global_exception_handler.php';
 require_once 'customer.php'; // Bindet die Customer-Klasse ein
 require_once 'customerRepository.php'; // Bindet das CustomerRepository ein
 require_once 'database.php'; // Bindet die Datenbankverbindung ein

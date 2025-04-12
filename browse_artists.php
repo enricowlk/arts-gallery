@@ -1,6 +1,8 @@
 <?php
 session_start(); // Startet die Session
 
+require_once 'logging.php';
+require_once 'global_exception_handler.php';
 require_once 'artistRepository.php'; // Bindet die ArtistRepository-Klasse ein
 
 $artistRepo = new ArtistRepository(new Database()); // Erstellt eine Instanz von ArtistRepository mit der Datenbankverbindung

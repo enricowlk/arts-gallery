@@ -7,6 +7,8 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['Type'] != 1) {
     exit();
 }
 
+require_once 'logging.php';
+require_once 'global_exception_handler.php';
 require_once 'customerRepository.php'; // Include the CustomerRepository class
 require_once 'database.php'; // Include the Database class
 

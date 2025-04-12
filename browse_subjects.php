@@ -1,6 +1,8 @@
 <?php
 session_start(); // Startet die Session
 
+require_once 'logging.php';
+require_once 'global_exception_handler.php';
 require_once 'subjectRepository.php'; // Bindet die SubjectRepository-Klasse ein
 
 $subjectRepo = new SubjectRepository(new Database()); // Erstellt eine Instanz von SubjectRepository mit der Datenbankverbindung

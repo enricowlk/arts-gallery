@@ -8,6 +8,9 @@ if (isset($_SESSION['error'])) {
     $error = ''; // Falls keine Fehlermeldung vorhanden ist
 }
 unset($_SESSION['error']); // Löscht die Fehlermeldung aus der Session
+
+require_once 'logging.php';
+require_once 'global_exception_handler.php';
 ?>
 
 <!DOCTYPE html>

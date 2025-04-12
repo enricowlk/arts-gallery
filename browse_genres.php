@@ -1,6 +1,8 @@
 <?php
 session_start(); // Startet die Session
 
+require_once 'logging.php';
+require_once 'global_exception_handler.php';
 require_once 'genreRepository.php'; // Bindet die GenreRepository-Klasse ein
 
 $genreRepo = new GenreRepository(new Database()); // Erstellt eine Instanz von GenreRepository mit der Datenbankverbindung

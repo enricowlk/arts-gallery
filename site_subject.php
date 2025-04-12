@@ -2,7 +2,8 @@
 // Session starten, um Benutzerdaten zu speichern
 session_start();
 
-// Einbinden der benötigten Dateien für Datenbankzugriff und Repository-Klassen
+require_once 'logging.php';
+require_once 'global_exception_handler.php';
 require_once 'database.php';
 require_once 'subjectRepository.php';
 require_once 'artworkRepository.php';
