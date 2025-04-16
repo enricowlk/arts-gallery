@@ -1,68 +1,44 @@
 <?php
-session_start(); // Startet die Session, um Erfolgs- oder Fehlermeldungen zu speichern
+session_start();
 
-require_once 'customer.php'; // Bindet die Customer-Klasse ein
-require_once 'customerRepository.php'; // Bindet die CustomerRepository-Klasse ein
-require_once 'database.php'; // Bindet die Database-Klasse ein
+require_once 'customer.php';
+require_once 'customerRepository.php';
+require_once 'database.php';
 
 // Überprüfen, ob das Formular abgeschickt wurde
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Formulardaten validieren und bereinigen
-    $password = trim($_POST['password']); // Passwort
-    $firstName = trim($_POST['firstName']); // Vorname
-    $lastName = trim($_POST['lastName']); // Nachname
-    $address = trim($_POST['address']); // Adresse
-    $city = trim($_POST['city']); // Stadt
-    $country = trim($_POST['country']); // Land
-    $postal = trim($_POST['postal']); // Postleitzahl
-    $phone = trim($_POST['phone']); // Telefonnummer
-    $email = trim($_POST['email']); // E-Mail
+    $data = array_map('trim', $_POST);  // Trimmen aller POST-Daten
 
     // Fehler sammeln
     $errors = [];
 
-    // Überprüfen, ob die E-Mail gültig ist
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    // E-Mail und Passwort-Validierung
+    if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
         $errors[] = 'Invalid email address!';
     }
-
-    // Passwort-Validierung
-    if (
-        strlen($password) < 8 ||  // Mindestlänge 8 Zeichen
-        !preg_match('/[a-z]/', $password) ||  // Muss Kleinbuchstaben enthalten
-        !preg_match('/[A-Z]/', $password) ||  // Muss Großbuchstaben enthalten
-        !preg_match('/[0-9]/', $password) ||  // Muss Zahl enthalten
-        !preg_match('/[\W_]/', $password)     // Muss Sonderzeichen oder _ enthalten
-    ) {
+    if (strlen($data['password']) < 8 || !preg_match('/[a-z]/', $data['password']) || !preg_match('/[A-Z]/', $data['password']) || !preg_match('/[0-9]/', $data['password']) || !preg_match('/[\W_]/', $data['password'])) {
         $errors[] = 'Password must be at least 8 characters long and contain uppercase, lowercase, a number, and a special character.';
     }
 
     // Falls Fehler vorhanden sind → zurück zur Seite
-    if (!empty($errors)) {
+    if ($errors) {
         $_SESSION['error'] = implode('<br>', $errors);
         header('Location: site_register.php');
         exit();
     }
 
-    // Repository-Instanz erstellen
+    // Repository-Instanz erstellen und versuchen, den Kunden hinzuzufügen
     $customerRepo = new CustomerRepository(new Database());
-
     try {
-        // Überprüfen, ob die E-Mail bereits existiert
-        if ($customerRepo->emailExists($email)) {
+        if ($customerRepo->emailExists($data['email'])) {
             $_SESSION['error'] = 'The email address is already registered!';
         } else {
-            // Neuen Kunden erstellen
-            $customer = new Customer(null, $firstName, $lastName, $address, $city, $country, $postal, $phone, $email);
-
-            // Kunden und Login-Daten in die Datenbank einfügen
-            $customerRepo->addCustomer($customer, $password);
-
-            // Erfolgsmeldung setzen
+            $customer = new Customer(null, $data['firstName'], $data['lastName'], $data['address'], $data['city'], $data['country'], $data['postal'], $data['phone'], $data['email']);
+            $customerRepo->addCustomer($customer, $data['password']);
             $_SESSION['success'] = 'Registration successful! You can now log in.';
         }
     } catch (Exception $ex) {
-        // Fehlermeldung bei einem Datenbankfehler
         $_SESSION['error'] = 'An error has occurred: ' . $ex->getMessage();
     }
 

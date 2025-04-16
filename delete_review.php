@@ -20,6 +20,7 @@ $reviewId = (int)$_POST['review_id'];
 $artworkId = (int)$_POST['artwork_id'];
 
 $reviewRepo = new ReviewRepository(new Database());
+
 if ($reviewRepo->deleteReview($reviewId)) {
     $_SESSION['success'] = "Review deleted successfully";
 } else {

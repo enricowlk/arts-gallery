@@ -62,6 +62,7 @@ if ($customerRepo->emailExistsForOtherUser($email, $customerID)) {
 }
 
 // Passwort-Validierung
+$errors = [];
 if (
     strlen($password) < 8 ||  // Mindestlänge 8 Zeichen
     !preg_match('/[a-z]/', $password) ||  // Muss Kleinbuchstaben enthalten
