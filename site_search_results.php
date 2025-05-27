@@ -91,7 +91,7 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     Order: <?php echo $artistOrder; ?>
                                 </button>
                                 <ul class="dropdown-menu">
@@ -141,7 +141,7 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                             <div class="d-flex flex-wrap align-items-center gap-2">
                                 <!-- Sort by Dropdown -->
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                         Sort by: <?php echo $artworkOrderBy; ?>
                                     </button>
                                     <ul class="dropdown-menu">
@@ -153,7 +153,7 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                                 
                                 <!-- Order Dropdown -->
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                         Order: <?php echo $artworkOrder; ?>
                                     </button>
                                     <ul class="dropdown-menu">

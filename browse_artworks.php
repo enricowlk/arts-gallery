@@ -44,7 +44,7 @@ $artworks = $artworkRepo->getAllArtworks($orderBy, $order); // Ruft alle Kunstwe
         <div class="row mb-3">
             <div class="col-md-6">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         Sort by: <?php echo ucfirst(strtolower($orderBy)); ?>
                     </button>
                     <ul class="dropdown-menu">
@@ -55,7 +55,7 @@ $artworks = $artworkRepo->getAllArtworks($orderBy, $order); // Ruft alle Kunstwe
                 </div>
                 
                 <div class="btn-group ms-2">
-                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         Order: <?php echo $order; ?>
                     </button>
                     <ul class="dropdown-menu">

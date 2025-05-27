@@ -26,11 +26,11 @@ session_start(); // Startet die Session
         <?php include 'carousel.php'; ?>
 
         <!-- Top Kunstwerke -->
-        <h2>Top Artworks</h2>
+        
         <?php include 'top_artworks.php'; ?>
 
         <!-- Top Künstler -->
-        <h2>Top Artists</h2>
+        
         <?php include 'top_artist.php'; ?>
 
         <!-- Neueste Bewertungen -->

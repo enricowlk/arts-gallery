@@ -137,7 +137,7 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                             </div>
                             <div class="modal-body">
                                 <!-- Großes Bild des Kunstwerks -->
-                                <img src="<?php echo $imageUrl; ?>" class="img-thumbnail" alt="<?php echo $artwork->getTitle(); ?>">
+                                <img src="<?php echo $imageUrl; ?>" class="modal-artwork-image img-fluid" alt="<?php echo $artwork->getTitle(); ?>">
                             </div>
                         </div>
                     </div>
@@ -179,11 +179,11 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
 
                 <!-- Gallery Information Accordion -->
                 <?php if ($gallerie && $gallerie->getLatitude() && $gallerie->getLongitude()) { ?>
-                        <div class="accordion mt-3 mb-3" id="galleryAccordion">
+                        <div class="accordion mt-4 mb-3" id="galleryAccordion">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#galleryInfo">
-                                        <strong>Home of this Artwork</strong>
+                                        <strong>Click me to see my Location!</strong>
                                     </button>
                                 </h2>
                                 <div id="galleryInfo" class="accordion-collapse collapse" 
@@ -240,6 +240,7 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                     <p><strong>Year of Work:</strong> <?php echo $artwork->getYearOfWork(); ?></p>
                     <!-- Medium des Kunstwerks -->
                     <p><strong>Medium:</strong> <?php echo $artwork->getMedium(); ?></p>
+                    <p><strong>Excerpt:</strong> <?php echo $artwork->getExcerpt(); ?></p>
                     <!-- Beschreibung des Kunstwerks -->
                     <p><strong>Description:</strong> <?php echo $artwork->getDescription(); ?></p>
                     
@@ -318,13 +319,13 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                                 <option value="5">5 - Excellent</option>
                             </select>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 mt-2">
                             <label for="comment" class="form-label">Comment</label>
                             <textarea class="form-control" id="comment" name="comment" rows="2" required></textarea>
                         </div>
-                        <div class="col-md-3 d-flex align-items-end">
+                    </div>
+                    <div class="mt-1">
                             <button type="submit" class="btn btn-secondary">Submit Review</button>
-                        </div>
                     </div>
                 </form>
             </div>

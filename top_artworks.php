@@ -20,6 +20,7 @@ $topArtworks = $artworkRepo->get3TopArtworks();
 </head>
 <body>
     <div class="top-artworks-container">
+        <h2>Top Artworks</h2>
         <?php if (!empty($topArtworks)) { ?>
             <!-- Wenn Top-Kunstwerke vorhanden sind, werden sie angezeigt -->
             <div class="row">
@@ -41,7 +42,7 @@ $topArtworks = $artworkRepo->get3TopArtworks();
                         <div class="card">
                             <!-- Kunstwerkbild anzeigen oder Platzhalter, falls Bild fehlt -->
                             <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
-                            <div class="card-body">
+                            <div class="mt-2">
                                 <!-- Titel des Kunstwerks anzeigen -->
                                 <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>
                                 <!-- Durchschnittliche Bewertung anzeigen -->

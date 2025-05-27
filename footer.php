@@ -19,7 +19,7 @@
                 <!-- Über uns -->
                 <div class="col-md-4 mb-4 mb-md-0">
                     <h5>About Us</h5>
-                    <p>Discover the world of art through our curated collection of masterpieces. We bring you the best from classic and contemporary artists.</p>
+                    <p class="text-white">Discover the world of art through our curated collection of masterpieces. We bring you the best from classic and contemporary artists.</p>
                 </div>
 
                 <!-- Quick Links -->
@@ -47,7 +47,7 @@
 
             <!-- Copyright -->
             <div class="text-center pt-3 border-top border-secondary mt-3">
-                <p class="mb-0">&copy; <?php echo date("Y"); ?> Art Gallery. All rights reserved.</p>
+                <p class="mb-0 text-white">&copy; <?php echo date("Y"); ?> Art Gallery. All rights reserved.</p>
             </div>
         </div>
     </footer>

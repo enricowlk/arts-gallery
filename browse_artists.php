@@ -35,7 +35,7 @@ $artists = $artistRepo->getAllArtists($order); // Ruft alle Künstler aus der Da
         <div class="row mb-3">
             <div class="col-md-6">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         Order: <?php echo $order; ?>
                     </button>
                     <ul class="dropdown-menu">

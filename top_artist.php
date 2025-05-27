@@ -20,6 +20,7 @@ $topArtists = $artistRepo->getTop3Artists();
 </head>
 <body>
     <div class="top-artist-container">
+        <h2>Top Artists</h2>
         <?php if (!empty($topArtists)) { ?>
             <!-- Wenn Top-Künstler vorhanden sind, werden sie angezeigt -->
             <div class="row">
@@ -41,7 +42,7 @@ $topArtists = $artistRepo->getTop3Artists();
                         <div class="card">
                             <!-- Künstlerbild anzeigen oder Platzhalter, falls Bild fehlt -->
                             <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
-                            <div class="card-body">
+                            <div class="mt-2">
                                 <!-- Künstlername anzeigen -->
                                 <h5 class="card-title"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h5>
                                 <!-- Anzahl der Reviews anzeigen -->
