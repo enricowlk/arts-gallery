@@ -104,7 +104,7 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                     
                     <div class="row row-cols-3 g-2">
                         <?php foreach ($artists as $artist) { // Schleife durch alle Künstler
-                            $imagePath = "images/artists/medium/" . $artist->getArtistID() . ".jpg";
+                            $imagePath = "images/artists/square-medium/" . $artist->getArtistID() . ".jpg";
                             $imageExists = file_exists($imagePath);
             
                             if (file_exists($imagePath)) {
@@ -116,7 +116,7 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                             <div class="col">
                                 <!-- Link zur Künstlerseite mit Bild -->
                                 <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
-                                <div class="card small-card h-100">
+                                <div class="card">
                                     <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
                                     <div class="card-body">
                                         <!-- Künstlername -->
@@ -168,7 +168,7 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                     <div class="row row-cols-3 g-2">
                         <?php foreach ($artworks as $artwork) {  // Schleife durch alle Kunstwerke
                             $artist = $artistRepo->getArtistByID($artwork->getArtistID()); 
-                            $imagePath = "images/works/medium/" . $artwork->getImageFileName() . ".jpg";
+                            $imagePath = "images/works/square-medium/" . $artwork->getImageFileName() . ".jpg";
                             $imageExists = file_exists($imagePath);
 
                             if (file_exists($imagePath)) {
@@ -180,7 +180,7 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                             <div class="col">
                                 <!-- Link zur Kunstwerk-Detailseite mit Bild -->
                                 <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
-                                <div class="card small-card h-100">
+                                <div class="card">
                                     <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
                                     <div class="card-body">
                                         <!-- Titel des Kunstwerks -->
