@@ -35,7 +35,7 @@ $subjects = $subjectRepo->getAllSubjects(); // Ruft alle Themen (Subjects) aus d
                     $imageUrl = "images/placeholder.png";
                 }
                 ?>
-                <div class="col-md-3 mb-4">
+                <div class="col-md-4 mb-4">
                     <!-- Link zur Themen-Detailseite mit Bild -->
                     <a href="site_subject.php?id=<?php echo $subject->getSubjectID(); ?>">
                     <div class="card">

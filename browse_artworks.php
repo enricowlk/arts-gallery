@@ -68,7 +68,7 @@ $artworks = $artworkRepo->getAllArtworks($orderBy, $order); // Ruft alle Kunstwe
         <div class="row">
             <?php foreach ($artworks as $artwork) {  // Schleife durch alle Kunstwerke
                 $artist = $artistRepo->getArtistByID($artwork->getArtistID());
-                $imagePath = "images/works/medium/" . $artwork->getImageFileName() .".jpg";
+                $imagePath = "images/works/square-medium/" . $artwork->getImageFileName() .".jpg";
                 $imageExists = file_exists($imagePath);
 
                 if (file_exists($imagePath)) {
@@ -77,7 +77,7 @@ $artworks = $artworkRepo->getAllArtworks($orderBy, $order); // Ruft alle Kunstwe
                     $imageUrl = "images/placeholder.png";
                 }
                 ?>
-                <div class="col-md-3 mb-4">
+                <div class="col-md-4 mb-4">
                     <!-- Link zur Kunstwerk-Detailseite mit Bild -->
                     <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                     <div class="card">

@@ -35,7 +35,7 @@ $genres = $genreRepo->getAllGenres(); // Ruft alle Genres aus der Datenbank ab
                     $imageUrl = "images/placeholder.png";
                 }
                 ?>
-                <div class="col-md-3 mb-4">
+                <div class="col-md-4 mb-4">
                     <!-- Link zur Genre-Detailseite mit Bild -->
                     <a href="site_genre.php?id=<?php echo $genre->getGenreID(); ?>">
                     <div class="card">

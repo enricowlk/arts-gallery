@@ -48,7 +48,7 @@ $artists = $artistRepo->getAllArtists($order); // Ruft alle Künstler aus der Da
         
         <div class="row">
             <?php foreach ($artists as $artist) { 
-                $imagePath = "images/artists/medium/" . $artist->getArtistID() . ".jpg";
+                $imagePath = "images/artists/square-medium/" . $artist->getArtistID() . ".jpg";
                 $imageExists = file_exists($imagePath);
 
                 if (file_exists($imagePath)) {
@@ -57,7 +57,7 @@ $artists = $artistRepo->getAllArtists($order); // Ruft alle Künstler aus der Da
                     $imageUrl = "images/placeholder.png";
                 }
             ?>
-                <div class="col-md-3 mb-4">
+                <div class="col-md-4 mb-3">
                     <!-- Link zur Künstlerseite mit Bild -->
                     <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
                     <div class="card">
