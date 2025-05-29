@@ -72,14 +72,6 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
     <!-- Bindet die benutzerdefinierte CSS-Datei ein -->
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Stil für das Kunstwerkbild */
-        .artwork-image {
-            width: 100%;
-            height: 300px; /* Feste Höhe für die Bilder */
-            object-fit: cover; /* Bild wird zugeschnitten, um den Container zu füllen */
-            border-radius: 10px; /* Abgerundete Ecken */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
-        }
         /* Stil für die Bewertungs- und Favoritenzeile */
         .action-row {
             display: flex;
@@ -124,7 +116,10 @@ $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkI
                 ?>
                 <!-- Bild als Link zum Modal -->
                 <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal">
-                    <img src="<?php echo $imageUrl; ?>" class="artwork-image" alt="<?php echo $artwork->getTitle(); ?>">
+                <img src="<?php echo $imageUrl; ?>" 
+                    class="artist-image-small rounded shadow-sm border border-secondary" 
+                    loading="lazy"
+                    alt="<?php echo $artwork->getTitle(); ?>">
                 </a>
 
                 <!-- Modal für das größere Bild -->

@@ -23,7 +23,7 @@ $randomArtworks = $artworkRepo->get3RandomArtworks(); // Ruft 3 zufällige Kunst
                 <?php
                 $active = true; // Steuert, welches Kunstwerk als erstes aktiv ist
                 foreach ($randomArtworks as $artwork) {
-                    $imagePath = "images/works/large/" . $artwork->getImageFileName() . ".jpg";
+                    $imagePath = "images/works/medium/" . $artwork->getImageFileName() . ".jpg";
                     $imageExists = file_exists($imagePath);
 
                     if (file_exists($imagePath)) {

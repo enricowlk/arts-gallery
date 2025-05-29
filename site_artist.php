@@ -65,7 +65,12 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
                     $imageUrl = "images/placeholder.png";
                 }
                 ?>
-                <img src="<?php echo $imageUrl; ?>" class="artist-image" alt="<?php echo $artist->getLastName(); ?>">
+                <img src="<?php echo $imageUrl; ?>" 
+                class="artist-image-small rounded shadow-sm border border-secondary" 
+                loading="lazy"
+                alt="Portrait of <?php echo $artist->getFirstName() . ' ' . $artist->getLastName(); ?>">
+
+
                 <!-- Button zum Hinzufügen/Entfernen des Künstlers aus den Favoriten -->
                 <form action="favorites_process.php" method="post" class="mt-3">
                     <input type="hidden" name="artist_id" value="<?php echo $artistId; ?>">
