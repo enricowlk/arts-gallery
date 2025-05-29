@@ -45,12 +45,13 @@ $artists = $artistRepo->getAllArtists($order); // Ruft alle Künstler aus der Da
         </div>       
     </div>
 
-     <div class="artist-gallery">
+     <div class="artist-gallery row">
         <?php foreach ($artists as $artist) {
             $imagePath = "images/artists/medium/" . $artist->getArtistID() . ".jpg";
             $imageUrl = file_exists($imagePath) ? $imagePath : "images/placeholder.png";
         ?>
-        <div class="artist-card">
+        
+        <div class="artist-card col-md-3 mb-4">
             <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>" class="artist-link">
                         <div class="artist-image-wrapper">
                             <img src="<?php echo $imageUrl; ?>" alt="<?php echo $artist->getLastName(); ?>" class="artist-image">
