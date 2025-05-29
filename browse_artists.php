@@ -42,35 +42,26 @@ $artists = $artistRepo->getAllArtists($order); // Ruft alle Künstler aus der Da
                     </ul>
                 </div>
             </div>
-        </div>
-        
-        <div class="row">
-            <?php foreach ($artists as $artist) { 
-                $imagePath = "images/artists/medium/" . $artist->getArtistID() . ".jpg";
-                $imageExists = file_exists($imagePath);
+        </div>       
+    </div>
 
-                if (file_exists($imagePath)) {
-                    $imageUrl = $imagePath;
-                } else {
-                    $imageUrl = "images/placeholder.png";
-                }
-            ?>
-                <div class="col-md-3 mb-4">
-                    <!-- Link zur Künstlerseite mit Bild -->
-                    <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
-                    <div class="card">
-                        <!-- Artistbild anzeigen oder Platzhalter, falls Bild fehlt -->
-                        <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
-                        <div class="card-body">
-                            <!-- Künstlername -->
-                            <h5 class="card-title"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h5>
+     <div class="artist-gallery">
+        <?php foreach ($artists as $artist) {
+            $imagePath = "images/artists/medium/" . $artist->getArtistID() . ".jpg";
+            $imageUrl = file_exists($imagePath) ? $imagePath : "images/placeholder.png";
+        ?>
+        <div class="artist-card">
+            <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>" class="artist-link">
+                        <div class="artist-image-wrapper">
+                            <img src="<?php echo $imageUrl; ?>" alt="<?php echo $artist->getLastName(); ?>" class="artist-image">
                         </div>
-                    </div>
-                    </a>
-                </div>
+                        <div class="artist-info">
+                            <h3 class="artist-name"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h3>
+                        </div>
+            </a>
+        </div>
             <?php } ?>
         </div>
-    </div>
 
     <?php include 'footer.php'; ?> <!-- Bindet die Fußzeile ein -->
     <!-- Bindet Bootstrap JavaScript ein -->

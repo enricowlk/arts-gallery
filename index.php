@@ -17,22 +17,25 @@ session_start(); // Startet die Session
     <?php include 'navigation.php'; ?>
 
     <!-- Hauptinhalt -->
-    <div class="container">
+    <div class="container text-center" >
         <!-- Willkommensnachricht -->
-        <h1 class="text-center">Welcome to the Art Gallery</h1>
-        <p class="text-center">Explore our collection of famous art classics.</p>
+        <h1>Welcome to the Art Gallery</h1>
+        <p>Explore our collection of famous art classics.</p>
 
         <!-- Carousel einbinden -->
         <?php include 'carousel.php'; ?>
-
+    </div>
+    <div class="container">
         <!-- Top Kunstwerke -->
         <h2>Top Artworks</h2>
         <?php include 'top_artworks.php'; ?>
-
+    </div>
+    <div class="container">
         <!-- Top Künstler -->
         <h2>Top Artists</h2>
         <?php include 'top_artist.php'; ?>
-
+    </div>
+    <div class="container">
         <!-- Neueste Bewertungen -->
         <h2>Recent Reviews</h2>
         <?php include 'recent_reviews.php'; ?>
