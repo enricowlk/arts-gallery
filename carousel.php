@@ -16,7 +16,7 @@ $randomArtworks = $artworkRepo->get3RandomArtworks();
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="artCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div id="artCarousel" class="carousel slide shadow" data-bs-ride="carousel">
         <div class="carousel-inner">
             <?php
             $active = true;
