@@ -102,12 +102,12 @@ if (isset($_SESSION['error'])) {
                 <div class="col-md-6">
                     <label for="city" class="form-label">City:</label>
                     <input type="text" class="form-control" id="city" name="city" pattern="^[A-Za-zäöüÄÖÜß ]+$"
-                           value="<?php echo $customer->getCity(); ?>">
+                           value="<?php echo $customer->getCity(); ?>" required>
                 </div>
                 <div class="col-md-6">
                     <label for="country" class="form-label">Country:</label>
                     <input type="text" class="form-control" id="country" name="country" pattern="^[A-Za-zäöüÄÖÜß ]+$"
-                           value="<?php echo $customer->getCountry(); ?>">
+                           value="<?php echo $customer->getCountry(); ?>" required>
                 </div>
             </div>
             

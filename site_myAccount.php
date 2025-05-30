@@ -1,39 +1,33 @@
 <?php
-session_start(); // Startet die Session
+session_start(); 
 
-// Überprüft, ob der Benutzer angemeldet ist
 if (!isset($_SESSION['user'])) {
-    header("Location: site_login.php"); // Weiterleitung zur Login-Seite, wenn nicht angemeldet
+    header("Location: site_login.php"); 
     exit();
 }
 
 require_once 'logging.php';
 require_once 'global_exception_handler.php';
-require_once 'customerRepository.php'; // Bindet die CustomerRepository-Klasse ein
-require_once 'database.php'; // Bindet die Database-Klasse ein
+require_once 'customerRepository.php'; 
+require_once 'database.php'; 
 
-// Erstellt eine Instanz von CustomerRepository
 $customerRepo = new CustomerRepository(new Database());
 
-// Holt die Kundendaten aus der Session
-$customerID = $_SESSION['user']['CustomerID']; // CustomerID aus der Session
-$customer = $customerRepo->getCustomerByID($customerID); // Holt die Kundendaten anhand der ID
+$customerID = $_SESSION['user']['CustomerID']; 
+$customer = $customerRepo->getCustomerByID($customerID); 
 
-// Überprüft, ob eine Fehlermeldung in der Session gespeichert ist
 if (isset($_SESSION['error'])) {
-    $error = $_SESSION['error']; // Holt die Fehlermeldung
+    $error = $_SESSION['error'];
 } else {
-    $error = ''; // Falls keine Fehlermeldung vorhanden ist
+    $error = ''; 
 }
 
-// Überprüft, ob eine Erfolgsmeldung in der Session gespeichert ist
 if (isset($_SESSION['success'])) {
-    $success = $_SESSION['success']; // Holt die Erfolgsmeldung
+    $success = $_SESSION['success'];
 } else {
-    $success = ''; // Falls keine Erfolgsmeldung vorhanden ist
+    $success = ''; 
 }
 
-// Löscht die Fehler- und Erfolgsmeldungen aus der Session
 unset($_SESSION['error'], $_SESSION['success']);
 ?>
 
@@ -42,27 +36,21 @@ unset($_SESSION['error'], $_SESSION['success']);
 <head>
     <meta charset="UTF-8">
     <title>My Account</title>
-    <!-- Bindet Bootstrap CSS ein -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bindet die benutzerdefinierte CSS-Datei ein -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Navigation einbinden -->
     <?php include 'navigation.php'; ?>
 
     <div class="container mt-3">
         <h1 class="text-center">My Account</h1>
-        <!-- Fehlermeldung anzeigen -->
         <?php if ($error) { ?>
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php } ?>
-        <!-- Erfolgsmeldung anzeigen -->
         <?php if ($success) { ?>
             <div class="alert alert-success"><?php echo $success; ?></div>
         <?php } ?>
 
-        <!-- Formular zum Aktualisieren der Kundendaten -->
         <form action="myAccount_process.php" method="POST">
         <div class="row mb-3">
                 <div class="col-md-6">
@@ -131,9 +119,7 @@ unset($_SESSION['error'], $_SESSION['success']);
         </form>
     </div>
 
-    <!-- Footer einbinden -->
     <?php include 'footer.php'; ?>
-    <!-- Bootstrap JS einbinden -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

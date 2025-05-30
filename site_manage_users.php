@@ -1,24 +1,20 @@
 <?php
-session_start(); // Start the session
+session_start();
 
-// Check if user is logged in and is an administrator
 if (!isset($_SESSION['user']) || $_SESSION['user']['Type'] != 1) {
-    header("Location: index.php"); // Redirect to home page if not an admin
+    header("Location: index.php"); 
     exit();
 }
 
 require_once 'logging.php';
 require_once 'global_exception_handler.php';
-require_once 'customerRepository.php'; // Include the CustomerRepository class
-require_once 'database.php'; // Include the Database class
+require_once 'customerRepository.php'; 
+require_once 'database.php'; 
 
-// Create an instance of CustomerRepository
 $customerRepo = new CustomerRepository(new Database());
 
-// Get all customers from the database
 $users = $customerRepo->getAllCustomers();
 
-// Check if success message exists in session
 if (isset($_SESSION['success'])) {
     $success = $_SESSION['success'];
     unset($_SESSION['success']);
@@ -26,7 +22,6 @@ if (isset($_SESSION['success'])) {
     $success = '';
 }
 
-// Check if error message exists in session
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];
     unset($_SESSION['error']);
@@ -34,7 +29,6 @@ if (isset($_SESSION['error'])) {
     $error = '';
 }
 
-// Count the number of administrators
 $adminCount = 0;
 foreach ($users as $user) {
     if ($user['Type'] == 1) {
@@ -48,30 +42,24 @@ foreach ($users as $user) {
 <head>
     <meta charset="UTF-8">
     <title>Manage Users</title>
-    <!-- Include Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Include custom CSS -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Include navigation -->
     <?php include 'navigation.php'; ?>
 
     <div class="container mt-3">
         <h1 class="text-center">Manage Users</h1>
         
-        <!-- Display success message -->
         <?php if ($success) { ?>
             <div class="alert alert-success"><?php echo $success; ?></div>
         <?php } ?>
         
-        <!-- Display error message -->
         <?php if ($error) { ?>
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php } ?>
 
-        <!-- Users table -->
-        <div class="table-responsive mt-3">
+        <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
@@ -100,13 +88,13 @@ foreach ($users as $user) {
                             ?>
                             </td>
                             <td>
-                                <a href="site_user_edit.php?id=<?php echo $user['CustomerID']; ?>" class="btn btn-sm btn-primary">Edit</a>
+                                <a href="site_user_edit.php?id=<?php echo $user['CustomerID']; ?>" class="btn btn-primary">Edit</a>
                                 
                                 <?php if ($_SESSION['user']['CustomerID'] != $user['CustomerID']) { ?>
                                     <?php if ($user['Type'] == 0) { ?>
-                                        <a href="user_role_process.php?id=<?php echo $user['CustomerID']; ?>&action=promote" class="btn btn-sm btn-success">Make Admin</a>
+                                        <a href="user_role_process.php?id=<?php echo $user['CustomerID']; ?>&action=promote" class="btn btn-success">Make Admin</a>
                                     <?php } else if ($adminCount > 1) { ?>
-                                        <a href="user_role_process.php?id=<?php echo $user['CustomerID']; ?>&action=demote" class="btn btn-sm btn-warning">Remove Admin</a>
+                                        <a href="user_role_process.php?id=<?php echo $user['CustomerID']; ?>&action=demote" class="btn btn-warning">Remove Admin</a>
                                     <?php } ?>
                                     
                                     <?php if (strpos($user['Email'], 'INACTIVE_') === 0) { ?>
@@ -125,9 +113,7 @@ foreach ($users as $user) {
         </div>
     </div>
 
-    <!-- Include footer -->
     <?php include 'footer.php'; ?>
-    <!-- Include Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

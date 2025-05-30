@@ -5,15 +5,11 @@ require_once 'customer.php';
 require_once 'customerRepository.php';
 require_once 'database.php';
 
-// Überprüfen, ob das Formular abgeschickt wurde
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Formulardaten validieren und bereinigen
-    $data = array_map('trim', $_POST);  // Trimmen aller POST-Daten
+    $data = array_map('trim', $_POST);  
 
-    // Fehler sammeln
     $errors = [];
 
-    // E-Mail und Passwort-Validierung
     if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
         $errors[] = 'Invalid email address!';
     }
@@ -21,14 +17,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Password must be at least 8 characters long and contain uppercase, lowercase, a number, and a special character.';
     }
 
-    // Falls Fehler vorhanden sind → zurück zur Seite
     if ($errors) {
         $_SESSION['error'] = implode('<br>', $errors);
         header('Location: site_register.php');
         exit();
     }
 
-    // Repository-Instanz erstellen und versuchen, den Kunden hinzuzufügen
     $customerRepo = new CustomerRepository(new Database());
     try {
         if ($customerRepo->emailExists($data['email'])) {
@@ -42,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['error'] = 'An error has occurred: ' . $ex->getMessage();
     }
 
-    // Zurück zur Registrierungsseite weiterleiten
     header('Location: site_register.php');
     exit();
 }

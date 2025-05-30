@@ -1,19 +1,15 @@
-<?php
- // Repräsentiert einen Künstler mit grundlegenden Eigenschaften und Methoden zur Datenverwaltung.
- 
+<?php 
 class Artist {
-    private $ArtistID;        // Eindeutige ID
-    private $FirstName;       // Vorname
-    private $LastName;        // Nachname
-    private $Nationality;     // Nationalität
-    private $YearOfBirth;     // Geburtsjahr
-    private $YearOfDeath;     // Todesjahr
-    private $Details;         // Weitere Details
-    private $ArtistLink;      // Link zu weiteren Informationen
+    private $ArtistID;        
+    private $FirstName;       
+    private $LastName;        
+    private $Nationality;     
+    private $YearOfBirth;     
+    private $YearOfDeath;     
+    private $Details;         
+    private $ArtistLink;      
 
 
-
-     // Konstruktor zur Initialisierung der Künstlerdaten.
     public function __construct($ArtistID, $FirstName, $LastName, $Nationality, $YearOfBirth, $YearOfDeath, $Details, $ArtistLink) {
         $this->ArtistID = $ArtistID;
         $this->FirstName = $FirstName;
@@ -26,7 +22,6 @@ class Artist {
     }
 
 
-    // Getter 
     public function getArtistID() {
         return $this->ArtistID;
     }

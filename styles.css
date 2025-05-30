@@ -7,12 +7,12 @@ body {
     font-family: 'Avenir Book', 'Avenir', sans-serif;
     background-color: #f8f5f2; /* Warmes Museumsweiß */
     color: #333333;
+    padding-top: 70px;
 }
 
 .container {
     max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+    margin: 0 auto; 
 }
 
 /* Typography */
@@ -458,7 +458,6 @@ html, body {
     margin: 0 auto;
 }
 
-/* Optional: Modal-Dialog selbst größer machen */
 .modal-dialog.modal-lg {
     max-width: 90vw;
     max-height: 90vh; 
@@ -466,5 +465,18 @@ html, body {
 
 .modal-body {
     padding: 0;
+}
+
+.favorite-form {
+    margin: 0;
+}
+.artwork-links a {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+.artwork-links a:hover {
+    color: black ;
+    text-decoration: underline;
 }
 

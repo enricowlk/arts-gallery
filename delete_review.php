@@ -3,7 +3,6 @@ session_start();
 require_once 'database.php';
 require_once 'reviewRepository.php';
 
-// Admin-Prüfung
 if (!isset($_SESSION['user']['Type']) || $_SESSION['user']['Type'] != 1) {
     $_SESSION['error'] = "Unauthorized access";
     header("Location: error.php");

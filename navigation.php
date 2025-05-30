@@ -1,43 +1,38 @@
 <?php
-// Überprüft, ob der Benutzer angemeldet ist
 $isLoggedIn = isset($_SESSION['user']);
 
-// Überprüft, ob der Benutzer ein Admin ist
 $isAdmin = isset($_SESSION['user']['Type']) && $_SESSION['user']['Type'] == 1;
 ?>
 
-<!-- Navigationsleiste -->
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg fixed-top shadow-sm">
     <div class="container-fluid">
-        <!-- Brand/Logo -->
         <a class="navbar-brand" href="index.php">Art Gallery</a>
 
-        <!-- Toggle-Button für mobile Ansicht -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <!-- Hauptnavigation -->
-        <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+        <div class="navbar-collapse">
             <!-- Linke Seite der Navbar -->
             <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="index.php">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="site_aboutUs.php">About Us</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBrowse" role="button" data-bs-toggle="dropdown" aria-expanded="false">Browse</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownBrowse">
+                <li><a class="nav-link" href="index.php">Home</a></li>
+                <li><a class="nav-link" href="site_aboutUs.php">About Us</a></li>
+                <li class="dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Browse</a>
+                    <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="browse_artists.php">Artists</a></li>
                         <li><a class="dropdown-item" href="browse_artworks.php">Artworks</a></li>
                         <li><a class="dropdown-item" href="browse_genres.php">Genres</a></li>
                         <li><a class="dropdown-item" href="browse_subjects.php">Subjects</a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="site_advanced_search.php">Advanced Search</a></li>
+                <li><a class="nav-link" href="site_advanced_search.php">Advanced Search</a></li>
             </ul>
 
             <!-- Mitte: Suchleiste -->
             <form class="d-flex mx-auto" action="site_search_results.php" method="GET" style="max-width: 600px; width: 100%;">
-                <input class="form-control me-2" type="search" name="query" placeholder="Search" aria-label="Search" pattern="^[a-zA-Z0-9 ]{3,}$" required>
+                <input class="form-control me-2" type="search" name="query" placeholder="Search" pattern="^[a-zA-Z0-9 ]{3,}$" required>
                 <button class="btn btn-secondary" type="submit">Search</button>
             </form>
 
@@ -45,11 +40,11 @@ $isAdmin = isset($_SESSION['user']['Type']) && $_SESSION['user']['Type'] == 1;
             <ul class="navbar-nav">
                 <?php if ($isLoggedIn){ ?>
                     <!-- Dropdown-Menü für angemeldete Benutzer -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <li class="dropdown">
+                        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <?php echo $_SESSION['user']['FirstName']; ?> <?php echo $_SESSION['user']['LastName']; ?>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownUser">
+                        <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="site_myAccount.php">My Account</a></li>
                             <li><a class="dropdown-item" href="site_favorites.php">Favorites</a></li>
                             <?php if ($isAdmin){ ?>
@@ -59,9 +54,10 @@ $isAdmin = isset($_SESSION['user']['Type']) && $_SESSION['user']['Type'] == 1;
                             <li><a class="dropdown-item" href="logout_process.php">Logout</a></li>
                         </ul>
                     </li>
+                    <!-- Inhalt für nicht angemeldete Benutzer -->
                 <?php }else{ ?>
-                    <li class="nav-item"><a class="nav-link" href="site_login.php">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="site_register.php">Register</a></li>
+                    <li><a class="nav-link" href="site_login.php">Login</a></li>
+                    <li><a class="nav-link" href="site_register.php">Register</a></li>
                 <?php } ?>
             </ul>
         </div>

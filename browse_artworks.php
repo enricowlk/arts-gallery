@@ -1,28 +1,27 @@
 <?php
-session_start(); // Startet die Session
+session_start(); 
 
 require_once 'logging.php';
 require_once 'global_exception_handler.php';
-require_once 'artworkRepository.php'; // Bindet die ArtworkRepository-Klasse ein
-require_once 'artistRepository.php'; // Bindet die ArtistRepository-Klasse ein
+require_once 'artworkRepository.php'; 
+require_once 'artistRepository.php';
 
-$artworkRepo = new ArtworkRepository(new Database()); // Erstellt eine Instanz von ArtworkRepository mit der Datenbankverbindung
-$artistRepo = new ArtistRepository(new Database()); // Erstellt eine Instanz von ArtistRepository mit der Datenbankverbindung
+$artworkRepo = new ArtworkRepository(new Database()); 
+$artistRepo = new ArtistRepository(new Database()); 
 
-// Überprüft, ob Sortierparameter (orderBy und order) übergeben wurden, sonst Standardwerte verwenden
 if (isset($_GET['orderBy'])) {
     $orderBy = $_GET['orderBy'];
 } else {
-    $orderBy = 'Title'; // Standard-Sortierfeld
+    $orderBy = 'Title'; 
 }
 
 if (isset($_GET['order'])) {
     $order = $_GET['order'];
 } else {
-    $order = 'ASC'; // Standard-Sortierreihenfolge
+    $order = 'ASC';
 }
 
-$artworks = $artworkRepo->getAllArtworks($orderBy, $order); // Ruft alle Kunstwerke sortiert aus der Datenbank ab
+$artworks = $artworkRepo->getAllArtworks($orderBy, $order); 
 ?>
 
 <!DOCTYPE html>
@@ -30,60 +29,54 @@ $artworks = $artworkRepo->getAllArtworks($orderBy, $order); // Ruft alle Kunstwe
 <head>
     <meta charset="UTF-8">
     <title>Artworks</title>
-    <!-- Bindet Bootstrap CSS und benutzerdefinierte CSS-Datei ein -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <?php include 'navigation.php'; ?> <!-- Bindet die Navigationsleiste ein -->
+    <?php include 'navigation.php'; ?> 
 
-    <div class="container mt-3">
-        <h1 class="text-center">Artworks</h1> <!-- Überschrift -->
+    <div class="container">
+        <h1 class="text-center">Artworks</h1> 
         
-        <!-- Sortieroptionen -->
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        Sort by: <?php echo ucfirst(strtolower($orderBy)); ?>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="?orderBy=Title&order=<?php echo $order; ?>">Title</a></li>
-                        <li><a class="dropdown-item" href="?orderBy=ArtistID&order=<?php echo $order; ?>">Artist</a></li>
-                        <li><a class="dropdown-item" href="?orderBy=YearOfWork&order=<?php echo $order; ?>">Year</a></li>
-                    </ul>
-                </div>
-                
-                <div class="btn-group ms-2">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        Order: <?php echo $order; ?>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="?orderBy=<?php echo $orderBy; ?>&order=ASC">Ascending</a></li>
-                        <li><a class="dropdown-item" href="?orderBy=<?php echo $orderBy; ?>&order=DESC">Descending</a></li>
-                    </ul>
-                </div>
+        <div class="mb-3">
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Sort by: <?php echo ucfirst(strtolower($orderBy)); ?>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="?orderBy=Title&order=<?php echo $order; ?>">Title</a></li>
+                    <li><a class="dropdown-item" href="?orderBy=ArtistID&order=<?php echo $order; ?>">Artist</a></li>
+                    <li><a class="dropdown-item" href="?orderBy=YearOfWork&order=<?php echo $order; ?>">Year</a></li>
+                </ul>
+            </div>
+            
+            <div class="btn-group">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Order: <?php echo $order; ?>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="?orderBy=<?php echo $orderBy; ?>&order=ASC">Ascending</a></li>
+                    <li><a class="dropdown-item" href="?orderBy=<?php echo $orderBy; ?>&order=DESC">Descending</a></li>
+                </ul>
             </div>
         </div>
         <div class="row">
-            <?php foreach ($artworks as $artwork) {  // Schleife durch alle Kunstwerke
+            <?php foreach ($artworks as $artwork) { 
                 $artist = $artistRepo->getArtistByID($artwork->getArtistID());
                 $imagePath = "images/works/square-medium/" . $artwork->getImageFileName() .".jpg";
                 $imageExists = file_exists($imagePath);
 
-                if (file_exists($imagePath)) {
+                if ($imageExists) {
                     $imageUrl = $imagePath;
                 } else {
                     $imageUrl = "images/placeholder.png";
                 }
                 ?>
                 <div class="col-md-4 mb-4">
-                    <!-- Link zur Kunstwerk-Detailseite mit Bild -->
                     <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                     <div class="card">
                         <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
                         <div class="card-body">
-                            <!-- Titel des Kunstwerks -->
                             <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>
                             <p class = "small"> By <?php echo $artist->getFirstName(); ?> <?php echo $artist->getLastName(); ?></p>
                         </div>
@@ -94,8 +87,7 @@ $artworks = $artworkRepo->getAllArtworks($orderBy, $order); // Ruft alle Kunstwe
         </div>
     </div>
 
-    <?php include 'footer.php'; ?> <!-- Bindet die Fußzeile ein -->
-    <!-- Bindet Bootstrap JavaScript ein -->
+    <?php include 'footer.php'; ?> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

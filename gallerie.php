@@ -1,12 +1,5 @@
 <?php
-/**
- * Klasse Gallerie
- * 
- * Repräsentiert eine Gallerie mit Eigenschaften wie ID, Name, Native Name, Stadt, Land, Latitude, Longitude und Webseite.
- * Enthält Getter- und Setter-Methoden für den Zugriff auf die Eigenschaften.
- */
 class Gallerie {
-    // Eigenschaften der Klasse
     private $GalleryID;   
     private $GalleryName;    
     private $GalleryNativeName;          
@@ -16,13 +9,6 @@ class Gallerie {
     private $Longitude;    
     private $GalleryWebSite;     
 
-    /**
-     * Konstruktor
-     * 
-     * Initialisiert die Eigenschaften der Gallerie.
-     * 
-     * Eingabe: GalleryID, GalleryName, GalleryNativeName, GalleryCity, GalleryCountry, Latitude, Longitude und GalleryWebSite.
-     */
     public function __construct($GalleryID, $GalleryName, $GalleryNativeName, $GalleryCity, $GalleryCountry, $Latitude, $Longitude, $GalleryWebSite) {
         $this->GalleryID = $GalleryID;
         $this->GalleryName = $GalleryName;
@@ -34,7 +20,6 @@ class Gallerie {
         $this->GalleryWebSite = $GalleryWebSite;
     }
 
-    // Getter
     public function getGalleryID() {
         return $this->GalleryID;
     }

@@ -14,14 +14,14 @@ require_once 'global_exception_handler.php';
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Navigation einbinden -->
     <?php include 'navigation.php'; ?>
 
-    <!-- Hauptinhalt -->
     <div class="container">
         <h1>Advanced Search</h1>
         <h2> In Progress !!!</h2>
-
+    </div>
+    
+    <?php include 'footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

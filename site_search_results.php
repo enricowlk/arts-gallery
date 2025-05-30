@@ -1,43 +1,41 @@
 <?php
-session_start(); // Startet die Session
+session_start();
 
 require_once 'logging.php';
 require_once 'global_exception_handler.php';
-require_once 'database.php'; // Bindet die Datenbankverbindung ein
-require_once 'artistRepository.php'; // Bindet das ArtistRepository ein
-require_once 'artworkRepository.php'; // Bindet das ArtworkRepository ein
+require_once 'database.php'; 
+require_once 'artistRepository.php';
+require_once 'artworkRepository.php'; 
 
 if (isset($_GET['query'])) {
-    $query = $_GET['query']; // Speichert den Suchbegriff aus der URL
+    $query = $_GET['query']; 
 } else {
-    $query = ''; // Setzt den Suchbegriff auf leer, falls keiner vorhanden ist
+    $query = ''; 
 }
 
-// Sortierparameter für Künstler
 if (isset($_GET['artistOrder'])) {
     $artistOrder = $_GET['artistOrder'];
 } else {
-    $artistOrder = 'ASC'; // Standard-Sortierreihenfolge für Künstler
+    $artistOrder = 'ASC'; 
 }
 
-// Sortierparameter für Kunstwerke
 if (isset($_GET['artworkOrder'])) {
     $artworkOrder = $_GET['artworkOrder'];
 } else {
-    $artworkOrder = 'ASC'; // Standard-Sortierreihenfolge für Kunstwerke
+    $artworkOrder = 'ASC';
 }
 
 if (isset($_GET['artworkOrderBy'])) {
     $artworkOrderBy = $_GET['artworkOrderBy'];
 } else {
-    $artworkOrderBy = 'Title'; // Standard-Sortierfeld für Kunstwerke
+    $artworkOrderBy = 'Title'; 
 }
 
-$artistRepo = new ArtistRepository(new Database()); // Erstellt eine Instanz des ArtistRepository
-$artworkRepo = new ArtworkRepository(new Database()); // Erstellt eine Instanz des ArtworkRepository
+$artistRepo = new ArtistRepository(new Database()); 
+$artworkRepo = new ArtworkRepository(new Database());
 
-$artists = $artistRepo->searchArtists($query, $artistOrder); // Sucht nach Künstlern mit Sortierung
-$artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder); // Sucht nach Kunstwerken mit Sortierung
+$artists = $artistRepo->searchArtists($query, $artistOrder); 
+$artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder);
 ?>
 
 <!DOCTYPE html>
@@ -56,70 +54,51 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
         .left-column, .right-column {
             flex: 1;
         }
-        .section-header {
-            margin-bottom: 15px;
-        }
-        .small-card {
-            max-width: 200px;
-        }
-        .small-card img {
-            height: 150px;
-            object-fit: cover;
-        }
-        .card-title {
-            font-size: 0.9rem;
-        }
         .small {
             font-size: 0.8rem;
         }
     </style>
 </head>
 <body>
-    <?php include 'navigation.php'; ?> <!-- Bindet die Navigation ein -->
+    <?php include 'navigation.php'; ?> 
 
     <div class="container mt-3">
-        <h1>Search Results for "<?php echo $query; ?>"</h1> <!-- Zeigt den Suchbegriff an -->
+        <h1>Search Results for "<?php echo $query; ?>"</h1> 
 
         <div class="split-container">
-            <!-- Left Column for Artists -->
             <div class="left-column">
-                <h2 class="section-header">Artists</h2>
+                <h2>Artists</h2>
                 <?php if (empty($artists)){ ?>
-                    <p>No artists found.</p> <!-- Zeigt an, wenn keine Künstler gefunden wurden -->
+                    <p>No artists found.</p> 
                 <?php }else{ ?>
-                    <!-- Sortieroptionen für Künstler -->
                     <div class="row mb-3">
-                        <div class="col-md-6">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Order: <?php echo $artistOrder; ?>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="?query=<?php echo urlencode($query); ?>&artistOrder=ASC&artworkOrderBy=<?php echo $artworkOrderBy; ?>&artworkOrder=<?php echo $artworkOrder; ?>">Ascending</a></li>
-                                    <li><a class="dropdown-item" href="?query=<?php echo urlencode($query); ?>&artistOrder=DESC&artworkOrderBy=<?php echo $artworkOrderBy; ?>&artworkOrder=<?php echo $artworkOrder; ?>">Descending</a></li>
-                                </ul>
-                            </div>
+                        <div>
+                            <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Order: <?php echo $artistOrder; ?>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="?query=<?php echo urlencode($query); ?>&artistOrder=ASC&artworkOrderBy=<?php echo $artworkOrderBy; ?>&artworkOrder=<?php echo $artworkOrder; ?>">Ascending</a></li>
+                                <li><a class="dropdown-item" href="?query=<?php echo urlencode($query); ?>&artistOrder=DESC&artworkOrderBy=<?php echo $artworkOrderBy; ?>&artworkOrder=<?php echo $artworkOrder; ?>">Descending</a></li>
+                            </ul>
                         </div>
                     </div>
                     
-                    <div class="row row-cols-3 g-2">
-                        <?php foreach ($artists as $artist) { // Schleife durch alle Künstler
+                    <div class="row g-2">
+                        <?php foreach ($artists as $artist) { 
                             $imagePath = "images/artists/square-medium/" . $artist->getArtistID() . ".jpg";
                             $imageExists = file_exists($imagePath);
             
-                            if (file_exists($imagePath)) {
+                            if ($imageExists) {
                                 $imageUrl = $imagePath;
                             } else {
                                 $imageUrl = "images/placeholder.png";
                             } 
                         ?>
                             <div class="col">
-                                <!-- Link zur Künstlerseite mit Bild -->
                                 <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
                                 <div class="card">
                                     <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
                                     <div class="card-body">
-                                        <!-- Künstlername -->
                                         <h5 class="small"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h5>
                                     </div>
                                 </div>
@@ -130,16 +109,13 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                 <?php } ?>
             </div>
 
-            <!-- Right Column for Artworks -->
             <div class="right-column">
-                <h2 class="section-header">Artworks</h2>
+                <h2>Artworks</h2>
                 <?php if (empty($artworks)){ ?>
-                    <p>No artworks found.</p> <!-- Zeigt an, wenn keine Kunstwerke gefunden wurden -->
+                    <p>No artworks found.</p> 
                 <?php }else{ ?>
                     <div class="row mb-3">
-                        <div class="col-md-12">
-                            <div class="d-flex flex-wrap align-items-center gap-2">
-                                <!-- Sort by Dropdown -->
+                            <div>
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                         Sort by: <?php echo $artworkOrderBy; ?>
@@ -151,7 +127,6 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                                     </ul>
                                 </div>
                                 
-                                <!-- Order Dropdown -->
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                         Order: <?php echo $artworkOrder; ?>
@@ -162,28 +137,25 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                                     </ul>
                                 </div>
                             </div>
-                        </div>
                     </div>
                     
-                    <div class="row row-cols-3 g-2">
-                        <?php foreach ($artworks as $artwork) {  // Schleife durch alle Kunstwerke
+                    <div class="row g-2">
+                        <?php foreach ($artworks as $artwork) {  
                             $artist = $artistRepo->getArtistByID($artwork->getArtistID()); 
                             $imagePath = "images/works/square-medium/" . $artwork->getImageFileName() . ".jpg";
                             $imageExists = file_exists($imagePath);
 
-                            if (file_exists($imagePath)) {
+                            if ($imageExists) {
                                 $imageUrl = $imagePath;
                             } else {
                                 $imageUrl = "images/placeholder.png";
                             }
                         ?>
                             <div class="col">
-                                <!-- Link zur Kunstwerk-Detailseite mit Bild -->
                                 <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                                 <div class="card">
                                     <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
                                     <div class="card-body">
-                                        <!-- Titel des Kunstwerks -->
                                         <h5 class="small"><strong><?php echo $artwork->getTitle(); ?></strong></h5>
                                         <p class="small">By <?php echo $artist->getFirstName(); ?> <?php echo $artist->getLastName(); ?></p>
                                     </div>
@@ -197,7 +169,7 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
         </div>
     </div>
 
-    <?php include 'footer.php'; ?> <!-- Bindet die Fußzeile ein -->
+    <?php include 'footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

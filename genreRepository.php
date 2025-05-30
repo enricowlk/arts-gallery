@@ -13,16 +13,15 @@ class GenreRepository {
     public function getAllGenres() {
        try{
         $this->db->connect();
-        $sql = "SELECT * FROM genres ORDER BY Era, GenreName"; // SQL-Abfrage
-        $stmt = $this->db->prepareStatement($sql); // Bereitet die Abfrage vor
-        $stmt->execute(); // Führt die Abfrage aus
+        $sql = "SELECT * FROM genres ORDER BY Era, GenreName";
+        $stmt = $this->db->prepareStatement($sql); 
+        $stmt->execute();
         $genres = [];
         while ($row = $stmt->fetch()) {
-            // Erstellt für jeden Datensatz ein Genre-Objekt
             $genres[] = new Genre($row['GenreID'], $row['GenreName'], $row['Era'], $row['Description'], $row['Link']);
         }
 
-        return $genres; // Gibt das Array von Genre-Objekten zurück
+        return $genres; 
         } catch (PDOException $e){
             Logging::LogError("Database error in getAllGenres: " . $e->getMessage());
             throw new Exception("Could not retrieve all genres.");

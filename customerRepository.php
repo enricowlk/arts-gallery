@@ -103,15 +103,12 @@ class CustomerRepository {
         try {
             $this->db->connect();
             
-            // Begin transaction
             $this->db->beginTransaction();
             
-            // 1. Insert in customerlogon
             $sql = 'INSERT INTO customerlogon (UserName, Pass, Type) VALUES (?, ?, 0)';
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([$customer->getEmail(), password_hash($password, PASSWORD_DEFAULT)]);
     
-            // 2. Insert in customers
             $customerID = $this->db->lastInsertId();
             
             $sql = 'INSERT INTO customers (CustomerID, FirstName, LastName, Address, City, Country, Postal, Phone, Email) 
@@ -129,12 +126,10 @@ class CustomerRepository {
                 $customer->getEmail()
             ]);
             
-            // Commit transaction
             $this->db->commit();
             
             return $customerID;
         } catch (PDOException $e) {
-            // Rollback transaction on error
             $this->db->rollback();
             Logging::LogError("Error in addCustomer: " . $e->getMessage());
             throw new Exception("Database error occurred while adding customer");
@@ -147,12 +142,10 @@ class CustomerRepository {
         try {
             $this->db->connect();
             
-            // Begin transaction
             $this->db->beginTransaction();
             
             if ($password) {
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                // Update customers table
                 $sql = "UPDATE customers SET FirstName = :firstName, LastName = :lastName, Email = :email WHERE CustomerID = :customerID";
                 $stmt = $this->db->prepareStatement($sql);
                 $stmt->execute([
@@ -162,7 +155,6 @@ class CustomerRepository {
                     'customerID' => $customerID
                 ]);
                 
-                // Update customerlogon table
                 $sql = "UPDATE customerlogon SET UserName = :email, Pass = :password WHERE CustomerID = :customerID";
                 $stmt = $this->db->prepareStatement($sql);
                 $stmt->execute([
@@ -171,7 +163,6 @@ class CustomerRepository {
                     'customerID' => $customerID
                 ]);
             } else {
-                // Update customers table
                 $sql = "UPDATE customers SET FirstName = :firstName, LastName = :lastName, Email = :email WHERE CustomerID = :customerID";
                 $stmt = $this->db->prepareStatement($sql);
                 $stmt->execute([
@@ -181,7 +172,6 @@ class CustomerRepository {
                     'customerID' => $customerID
                 ]);
                 
-                // Update customerlogon table
                 $sql = "UPDATE customerlogon SET UserName = :email WHERE CustomerID = :customerID";
                 $stmt = $this->db->prepareStatement($sql);
                 $stmt->execute([
@@ -190,10 +180,8 @@ class CustomerRepository {
                 ]);
             }
             
-            // Commit transaction
             $this->db->commit();
         } catch (PDOException $e) {
-            // Rollback transaction on error
             $this->db->rollback();
             Logging::LogError("Error in updateCustomer: " . $e->getMessage());
             throw new Exception("Database error occurred while updating customer");
@@ -206,10 +194,8 @@ class CustomerRepository {
         try {
             $this->db->connect();
             
-            // Begin transaction
             $this->db->beginTransaction();
             
-            // Update customer table
             $sql = "UPDATE customers SET 
                     FirstName = :firstName, 
                     LastName = :lastName, 
@@ -236,12 +222,10 @@ class CustomerRepository {
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute($params);
             
-            // Update email in customerlogon table
             $sql = "UPDATE customerlogon SET UserName = :email WHERE CustomerID = :customerID";
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute(['email' => $data['email'], 'customerID' => $customerID]);
             
-            // If password provided, update it
             if ($password) {
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $sql = "UPDATE customerlogon SET Pass = :password WHERE CustomerID = :customerID";
@@ -249,12 +233,10 @@ class CustomerRepository {
                 $stmt->execute(['password' => $hashedPassword, 'customerID' => $customerID]);
             }
             
-            // Commit transaction
             $this->db->commit();
             
             return true;
         } catch (PDOException $e) {
-            // Rollback transaction on error
             $this->db->rollback();
             Logging::LogError("Error in updateUserProfile: " . $e->getMessage());
             throw new Exception("Database error occurred while updating user profile");
@@ -333,22 +315,18 @@ class CustomerRepository {
         try {
             $this->db->connect();
             
-            // Begin transaction
             $this->db->beginTransaction();
             
-            // Get current username
             $sql = 'SELECT UserName FROM customerlogon WHERE CustomerID = :customerID';
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute(['customerID' => $customerID]);
             $username = $stmt->fetchColumn();
             
-            // Check if already inactive
             if (strpos($username, 'INACTIVE_') === 0) {
                 $this->db->commit();
                 return true;
             }
             
-            // Update username to mark as inactive
             $inactiveUsername = 'INACTIVE_' . $username;
             $sql = 'UPDATE customerlogon SET UserName = :username WHERE CustomerID = :customerID';
             $stmt = $this->db->prepareStatement($sql);
@@ -357,7 +335,6 @@ class CustomerRepository {
                 'customerID' => $customerID
             ]);
             
-            // Update email in customers table
             $sql = 'UPDATE customers SET Email = :email WHERE CustomerID = :customerID';
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([
@@ -365,12 +342,10 @@ class CustomerRepository {
                 'customerID' => $customerID
             ]);
             
-            // Commit transaction
             $this->db->commit();
             
             return true;
         } catch (PDOException $e) {
-            // Rollback transaction on error
             $this->db->rollback();
             Logging::LogError("Error in deactivateUser: " . $e->getMessage());
             throw new Exception("Database error occurred while deactivating user");
@@ -383,22 +358,18 @@ class CustomerRepository {
         try {
             $this->db->connect();
             
-            // Begin transaction
             $this->db->beginTransaction();
             
-            // Get current username
             $sql = 'SELECT UserName FROM customerlogon WHERE CustomerID = :customerID';
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute(['customerID' => $customerID]);
             $username = $stmt->fetchColumn();
             
-            // Check if actually inactive
             if (strpos($username, 'INACTIVE_') !== 0) {
                 $this->db->commit();
                 return true;
             }
             
-            // Update username to reactivate (remove INACTIVE_ prefix)
             $activeUsername = substr($username, 9);
             $sql = 'UPDATE customerlogon SET UserName = :username WHERE CustomerID = :customerID';
             $stmt = $this->db->prepareStatement($sql);
@@ -407,7 +378,6 @@ class CustomerRepository {
                 'customerID' => $customerID
             ]);
             
-            // Update email in customers table
             $sql = 'UPDATE customers SET Email = :email WHERE CustomerID = :customerID';
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([
@@ -415,12 +385,10 @@ class CustomerRepository {
                 'customerID' => $customerID
             ]);
             
-            // Commit transaction
             $this->db->commit();
             
             return true;
         } catch (PDOException $e) {
-            // Rollback transaction on error
             $this->db->rollback();
             Logging::LogError("Error in reactivateUser: " . $e->getMessage());
             throw new Exception("Database error occurred while reactivating user");
