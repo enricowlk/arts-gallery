@@ -480,3 +480,32 @@ html, body {
     text-decoration: underline;
 }
 
+.action-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+.genre-image {
+    width: 322px;
+    height: 400px;
+    object-fit: cover; 
+    border-radius: 10px; 
+}
+
+.subject-image {
+    width: 322px; 
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px; 
+}
+
+.split-container {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+.left-column, .right-column {
+    flex: 1;
+}

@@ -13,7 +13,7 @@ $customerRepo = new CustomerRepository(new Database());
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['action'])) {
     $_SESSION['error'] = "Invalid request parameters.";
-    header("Location: site_manage_users.php");
+    header("Location: ../views/site_manage_users.php");
     exit();
 }
 
@@ -22,19 +22,19 @@ $action = $_GET['action'];
 
 if ($action !== 'deactivate' && $action !== 'reactivate') {
     $_SESSION['error'] = "Invalid action.";
-    header("Location: site_manage_users.php");
+    header("Location: ../views/site_manage_users.php");
     exit();
 }
 
 $user = $customerRepo->getCustomerByID($customerID);
 if (!$user) {
     $_SESSION['error'] = "User not found.";
-    header("Location: site_manage_users.php");
+    header("Location: ../views/site_manage_users.php");
     exit();
 }
 if ($_SESSION['user']['CustomerID'] == $customerID) {
     $_SESSION['error'] = "You cannot deactivate yourself.";
-    header("Location: site_manage_users.php");
+    header("Location: ../views/site_manage_users.php");
     exit();
 }
 
@@ -45,7 +45,7 @@ if ($userType === 1) {
     
     if ($adminCount <= 1) {
         $_SESSION['error'] = "Cannot deactivate the last administrator.";
-        header("Location: site_manage_users.php");
+        header("Location: ../views/site_manage_users.php");
         exit();
     }
 }
@@ -68,5 +68,5 @@ if ($action === 'deactivate') {
     }
 }
 
-header("Location: site_manage_users.php");
+header("Location: ../views/site_manage_users.php");
 exit();

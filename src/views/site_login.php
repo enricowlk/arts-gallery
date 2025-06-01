@@ -29,7 +29,7 @@ require_once __DIR__ . '/../services/global_exception_handler.php';
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php } ?>
 
-        <form action="login_process.php" method="POST">
+        <form action="../controllers/login_process.php" method="POST">
             <div>
                 <label for="username" class="form-label">E-Mail:</label>
                 <input type="email" class="form-control" id="username" name="username" required>

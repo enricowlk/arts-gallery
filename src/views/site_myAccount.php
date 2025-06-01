@@ -50,7 +50,7 @@ unset($_SESSION['error'], $_SESSION['success']);
             <div class="alert alert-success"><?php echo $success; ?></div>
         <?php } ?>
 
-        <form action="myAccount_process.php" method="POST">
+        <form action="../controllers/myAccount_process.php" method="POST">
         <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="firstName" class="form-label">First Name:</label>
@@ -114,7 +114,7 @@ unset($_SESSION['error'], $_SESSION['success']);
                 <label for="confirmPassword" class="form-label">Confirm Password:</label>
                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
             </div>
-            <button type="submit" class="btn btn-secondary">Save Changes</button>
+            <button type="submit" class="btn btn-secondary mb-3">Save Changes</button>
         </form>
     </div>
 

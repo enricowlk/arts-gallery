@@ -91,15 +91,15 @@ foreach ($users as $user) {
                                 
                                 <?php if ($_SESSION['user']['CustomerID'] != $user['CustomerID']) { ?>
                                     <?php if ($user['Type'] == 0) { ?>
-                                        <a href="user_role_process.php?id=<?php echo $user['CustomerID']; ?>&action=promote" class="btn btn-success">Make Admin</a>
+                                        <a href="../controllers/user_role_process.php?id=<?php echo $user['CustomerID']; ?>&action=promote" class="btn btn-success">Make Admin</a>
                                     <?php } else if ($adminCount > 1) { ?>
-                                        <a href="user_role_process.php?id=<?php echo $user['CustomerID']; ?>&action=demote" class="btn btn-warning">Remove Admin</a>
+                                        <a href="../controllers/user_role_process.php?id=<?php echo $user['CustomerID']; ?>&action=demote" class="btn btn-warning">Remove Admin</a>
                                     <?php } ?>
                                     
                                     <?php if (strpos($user['Email'], 'INACTIVE_') === 0) { ?>
-                                        <a href="user_status_process.php?id=<?php echo $user['CustomerID']; ?>&action=reactivate" class="btn btn-sm btn-warning" onclick="return confirm('Are you sure you want to reactivate this user?')">Reactivate</a>
+                                        <a href="../controllers/user_status_process.php?id=<?php echo $user['CustomerID']; ?>&action=reactivate" class="btn btn-sm btn-warning" onclick="return confirm('Are you sure you want to reactivate this user?')">Reactivate</a>
                                     <?php } else { ?>
-                                        <a href="user_status_process.php?id=<?php echo $user['CustomerID']; ?>&action=deactivate" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to deactivate this user?')">Deactivate</a>
+                                        <a href="../controllers/user_status_process.php?id=<?php echo $user['CustomerID']; ?>&action=deactivate" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to deactivate this user?')">Deactivate</a>
                                     <?php } ?>
                                 <?php } else { ?>
                                     <span class="text-muted">(Current user)</span>

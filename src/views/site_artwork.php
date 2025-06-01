@@ -12,9 +12,7 @@ require_once __DIR__ . '/../repositories/subjectRepository.php';
 require_once __DIR__ . '/../repositories/gallerieRepository.php';
 
 $isLoggedIn = isset($_SESSION['user']);
-
 $isAdmin = isset($_SESSION['user']['Type']) && $_SESSION['user']['Type'] == 1;
-
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header("Location: error.php?message=Invalid or missing artwork ID");
@@ -30,7 +28,6 @@ $customerRepo = new CustomerRepository(new Database());
 $genreRepo = new GenreRepository(new Database());
 $subjectRepo = new SubjectRepository(new Database());
 $gallerieRepo = new GallerieRepository(new Database());
-
 
 $artwork = $artworkRepo->getArtworkById($artworkId); 
 if ($artwork === null) {
@@ -51,7 +48,12 @@ $reviewCount = count($reviews);
 
 $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkId, $_SESSION['favorite_artworks']);
 
-$hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']['CustomerID']);
+// Initialize $hasReviewed as false for non-logged-in users
+$hasReviewed = false;
+
+if ($isLoggedIn) {
+    $hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']['CustomerID']);
+}
 
 ?>
 
@@ -62,14 +64,6 @@ $hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']
     <title><?php echo $artwork->getTitle(); ?> - Art Gallery</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../styles.css">
-    <style>
-        .action-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-    </style>
 </head>
 <body>
     <?php include __DIR__ . '/components/navigation.php'; ?>
@@ -89,7 +83,7 @@ $hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']
                 ?>
                 <a data-bs-toggle="modal" data-bs-target="#imageModal">
                 <img src="<?php echo $imageUrl; ?>" 
-                    class="modal-artwork-image img-fluid rounded border border-secondary" 
+                    class="modal-artwork-image img-fluid rounded border border-secondary shadow" 
                     alt="<?php echo $artwork->getTitle(); ?>">
                 </a>
 
@@ -108,7 +102,7 @@ $hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']
                 </div>
                 
                 <div class="action-row"> 
-                    <form action="favorites_process.php" method="post">
+                    <form action="../controllers/favorites_process.php" method="post">
                         <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
                         <button type="submit" class="btn 
                             <?php
@@ -239,52 +233,50 @@ $hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']
         </div>
 
         <h2 class="mt-4">Reviews</h2>
-        <?php if(isset($_SESSION['error_message'])){ ?>
-            <div class="alert alert-danger">
-                <?php echo $_SESSION['error_message']; ?>
-                <?php unset($_SESSION['error_message']); ?>
-            </div>
-        <?php } ?>
-
         <?php 
-        if($isLoggedIn && !$hasReviewed){ 
+        if(!$isLoggedIn) { 
         ?>
-        <div>
+            <div class="alert alert-danger col-md-3">
+                Log in to leave a review.
+            </div>
+        <?php 
+        } elseif($isLoggedIn && !$hasReviewed) { 
+        ?>
             <div>
-                <h5>Add Your Review</h5>
-                <form action="add_review.php" method="post">
-                    <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
-                    <div>
-                        <div class="col-md-3">
-                            <label class="form-label">Rating</label>
-                            <select class="form-control" id="rating" name="rating" required>
-                                <option value="1">1 - Poor</option>
-                                <option value="2">2 - Fair</option>
-                                <option value="3">3 - Good</option>
-                                <option value="4">4 - Very Good</option>
-                                <option value="5">5 - Excellent</option>
-                            </select>
+                <div>
+                    <h5>Add Your Review</h5>
+                    <form action="../controllers/add_review.php" method="post">
+                        <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
+                        <div>
+                            <div class="col-md-3">
+                                <label class="form-label">Rating</label>
+                                <select class="form-control" id="rating" name="rating" required>
+                                    <option value="1">1 - Poor</option>
+                                    <option value="2">2 - Fair</option>
+                                    <option value="3">3 - Good</option>
+                                    <option value="4">4 - Very Good</option>
+                                    <option value="5">5 - Excellent</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mt-2">
+                                <label for="comment" class="form-label">Comment</label>
+                                <textarea class="form-control" id="comment" name="comment" rows="2" required></textarea>
+                            </div>
                         </div>
-                        <div class="col-md-6 mt-2">
-                            <label for="comment" class="form-label">Comment</label>
-                            <textarea class="form-control" id="comment" name="comment" rows="2" required></textarea>
+                        <div class="mt-1">
+                                <button type="submit" class="btn btn-secondary">Submit Review</button>
                         </div>
-                    </div>
-                    <div class="mt-1">
-                            <button type="submit" class="btn btn-secondary">Submit Review</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
         <?php 
-            } else { 
+        } else { 
         ?>
-        <div class="alert alert-info">
-            You have already reviewed this artwork.
-        </div>
+            <div class="alert alert-success col-md-4">
+                You have already reviewed this artwork.
+            </div>
         <?php 
-            } 
-        
+        } 
         ?>
 
         <div>
@@ -318,7 +310,7 @@ $hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']
                                 <td><?php echo $customer->getCity(); ?> (<?php echo $customer->getCountry(); ?>)</td>
                                 <?php if ($isAdmin) { ?>
                                     <td>
-                                        <form action="delete_review.php" method="post">
+                                        <form action="../controllers/delete_review.php" method="post">
                                             <input type="hidden" name="review_id" value="<?php echo $review->getReviewID(); ?>">
                                             <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
                                             <button type="submit" class="btn btn-danger btn-sm" 

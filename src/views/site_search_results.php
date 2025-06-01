@@ -45,14 +45,6 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../styles.css">
     <style>
-        .split-container {
-            display: flex;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .left-column, .right-column {
-            flex: 1;
-        }
         .small {
             font-size: 0.8rem;
         }

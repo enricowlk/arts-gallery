@@ -34,6 +34,6 @@ if (!isset($_SESSION['error'])) {
     $_SESSION['success'] = 'Your changes have been saved!';
 }
 
-header("Location: site_myaccount.php?id=$customerID");
+header("Location: ../views/site_myaccount.php?id=$customerID");
 exit();
 ?>

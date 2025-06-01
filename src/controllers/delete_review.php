@@ -5,13 +5,13 @@ require_once __DIR__ . '/../repositories/reviewRepository.php';
 
 if (!isset($_SESSION['user']['Type']) || $_SESSION['user']['Type'] != 1) {
     $_SESSION['error'] = "Unauthorized access";
-    header("Location: error.php");
+    header("Location: ../views/components/error.php");
     exit();
 }
 
 if (!isset($_POST['review_id']) || !isset($_POST['artwork_id'])) {
     $_SESSION['error'] = "Invalid request";
-    header("Location: error.php");
+    header("Location: ../views/components/error.php");
     exit();
 }
 
@@ -26,6 +26,6 @@ if ($reviewRepo->deleteReview($reviewId)) {
     $_SESSION['error'] = "Failed to delete review";
 }
 
-header("Location: site_artwork.php?id=$artworkId");
+header("Location: ../views/site_artwork.php?id=$artworkId");
 exit();
 ?>

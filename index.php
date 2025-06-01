@@ -13,7 +13,7 @@ session_start();
 <body>
     <?php include __DIR__ . '/src/views/components/navigation.php'; ?>
 
-    <div class="container">
+    <div class="container mb-3">
         <h1 class="text-center">Welcome to the Art Gallery</h1>
         <p class="text-center">Explore our collection of famous art classics.</p>
 

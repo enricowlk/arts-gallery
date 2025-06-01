@@ -13,7 +13,7 @@ $customerRepo = new CustomerRepository(new Database());
 
 if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['action'])) {
     $_SESSION['error'] = "Invalid request parameters.";
-    header("Location: site_manage_users.php");
+    header("Location: ../views/site_manage_users.php");
     exit();
 }
 
@@ -22,14 +22,14 @@ $action = $_GET['action'];
 
 if ($action !== 'promote' && $action !== 'demote') {
     $_SESSION['error'] = "Invalid action.";
-    header("Location: site_manage_users.php");
+    header("Location: ../views/site_manage_users.php");
     exit();
 }
 
 $user = $customerRepo->getCustomerByID($customerID);
 if (!$user) {
     $_SESSION['error'] = "User not found.";
-    header("Location: site_manage_users.php");
+    header("Location: ../views/site_manage_users.php");
     exit();
 }
 
@@ -37,7 +37,7 @@ $currentRole = $customerRepo->getUserRole($customerID);
 
 if ($_SESSION['user']['CustomerID'] == $customerID && $action === 'demote') {
     $_SESSION['error'] = "You cannot demote yourself.";
-    header("Location: site_manage_users.php");
+    header("Location: ../views/site_manage_users.php");
     exit();
 }
 
@@ -46,7 +46,7 @@ if ($action === 'demote' && $currentRole === 1) {
     
     if ($adminCount <= 1) {
         $_SESSION['error'] = "Cannot demote the last administrator.";
-        header("Location: site_manage_users.php");
+        header("Location: ../views/site_manage_users.php");
         exit();
     }
 }
@@ -59,5 +59,5 @@ if ($action === 'promote') {
     $_SESSION['success'] = "Administrator demoted to regular user successfully.";
 }
 
-header("Location: site_manage_users.php");
+header("Location: ../views/site_manage_users.php");
 exit();

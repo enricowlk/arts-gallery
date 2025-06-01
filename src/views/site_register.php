@@ -39,7 +39,7 @@ unset($_SESSION['error'], $_SESSION['success']);
         <?php if ($success){ ?>
             <div class="alert alert-success"><?php echo $success; ?></div> 
         <?php } ?>
-        <form method="POST" action="register_process.php">
+        <form method="POST" action="../controllers/register_process.php">
         <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="firstName" class="form-label">First Name:</label>

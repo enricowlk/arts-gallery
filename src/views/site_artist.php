@@ -53,11 +53,11 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
                 }
                 ?>
                 <img src="<?php echo $imageUrl; ?>" 
-                class="artist-image-small rounded border" 
+                class="artist-image-small rounded border shadow" 
                 alt="Portrait of <?php echo $artist->getFirstName() . ' ' . $artist->getLastName(); ?>">
 
 
-                <form action="favorites_process.php" method="post" class="mt-3">
+                <form action="../controllers/favorites_process.php" method="post" class="mt-3">
                     <input type="hidden" name="artist_id" value="<?php echo $artistId; ?>">
                     <button type="submit" class="btn 
                         <?php
@@ -111,8 +111,8 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
                             <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>
-                                <p class="card-text">Year of Work: <?php echo $artwork->getYearOfWork(); ?></p>
-                                <p class="card-text">Rating: <?php echo number_format((float)$averageRating, 1); ?> 
+                                <p class="small">Year of Work: <?php echo $artwork->getYearOfWork(); ?></p>
+                                <p class="small">Rating: <?php echo number_format((float)$averageRating, 1); ?> 
                                     <img src="../../images/icon_gelberStern.png" alt="Star" style="position: relative; top: -2px;">
                                 </p>
                             </div>

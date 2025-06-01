@@ -67,7 +67,7 @@ if (isset($_SESSION['error'])) {
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php } ?>
 
-        <form action="user_edit_process.php" method="POST">
+        <form action="../controllers/user_edit_process.php" method="POST">
             <input type="hidden" name="customerID" value="<?php echo $customerID; ?>">
             
             <div class="row mb-3">
@@ -141,8 +141,7 @@ if (isset($_SESSION['error'])) {
                     <option value="1" <?php echo ($userType == 1) ? 'selected' : ''; ?>>Administrator</option>
                 </select>
             </div>
-            
-            <button type="submit" class="btn btn-secondary">Save Changes</button>
+            <button type="submit" class="btn btn-secondary mb-3">Save Changes</button>
         </form>
     </div>
 

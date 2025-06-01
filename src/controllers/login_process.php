@@ -20,11 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'is_admin' => ($user['Type'] == 1) 
         ];
         
-        header("Location: index.php");
+        header("Location: ../../index.php");
         exit();
     } else {
         $_SESSION['error'] = "Wrong Password or E-Mail!";
-        header("Location: ../controllers/site_login.php");
+        header("Location: ../views/site_login.php");
         exit();
     }
 }

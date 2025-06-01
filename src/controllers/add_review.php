@@ -12,7 +12,7 @@ $rating = $_POST['rating'];
 $comment = $_POST['comment'];
 
 if (!isset($_SESSION['user'])) {
-    header("Location: site_login.php");
+    header("Location: ../views/site_login.php");
     exit();
 }
 
@@ -21,12 +21,12 @@ $reviewRepo = new ReviewRepository(new Database());
 
 if ($reviewRepo->hasUserReviewedArtwork($artworkId, $customerId)) {
     $_SESSION['error_message'] = "You have already reviewed this artwork.";
-    header("Location: site_artwork.php?id=$artworkId");
+    header("Location: ../views/site_artwork.php?id=$artworkId");
     exit();
 }
 
 $reviewRepo->addReview($artworkId, $customerId, $rating, $comment);
 
-header("Location: site_artwork.php?id=$artworkId");
+header("Location: ../views/site_artwork.php?id=$artworkId");
 exit();
 ?>

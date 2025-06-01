@@ -10,7 +10,7 @@ require_once __DIR__ . '/../repositories/customerRepository.php';
 require_once __DIR__ . '/../../config/database.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: site_manage_users.php");
+    header("Location: ../views/site_manage_users.php");
     exit();
 }
 
@@ -31,25 +31,25 @@ $userType = isset($_POST['userType']) ? (int)$_POST['userType'] : 0;
 
 if ($customerID <= 0) {
     $_SESSION['error'] = "Invalid user ID.";
-    header("Location: site_manage_users.php");
+    header("Location: ../views/site_manage_users.php");
     exit();
 }
 
 if (empty($firstName) || empty($lastName) || empty($email)) {
     $_SESSION['error'] = "First name, last name, and email are required.";
-    header("Location: site_user_edit.php?id=" . $customerID);
+    header("Location: ../views/site_user_edit.php?id=" . $customerID);
     exit();
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $_SESSION['error'] = "Invalid email format.";
-    header("Location: site_user_edit.php?id=" . $customerID);
+    header("Location: ../views/site_user_edit.php?id=" . $customerID);
     exit();
 }
 
 if ($customerRepo->emailExistsForOtherUser($email, $customerID)) {
     $_SESSION['error'] = "This email is already in use by another user.";
-    header("Location: site_user_edit.php?id=" . $customerID);
+    header("Location: ../views/site_user_edit.php?id=" . $customerID);
     exit();
 }
 
@@ -66,7 +66,7 @@ if (
 
 if (!empty($password) && $password !== $confirmPassword) {
     $_SESSION['error'] = "Passwords do not match.";
-    header("Location: site_user_edit.php?id=" . $customerID);
+    header("Location: ../views/site_user_edit.php?id=" . $customerID);
     exit();
 }
 
@@ -75,7 +75,7 @@ if ($_SESSION['user']['CustomerID'] == $customerID && $userType == 0) {
     
     if ($adminCount <= 1) {
         $_SESSION['error'] = "Cannot demote the last administrator account.";
-        header("Location: site_user_edit.php?id=" . $customerID);
+        header("Location: ../views/site_user_edit.php?id=" . $customerID);
         exit();
     }
 }
@@ -108,5 +108,5 @@ if ($success) {
     $_SESSION['error'] = "There was an error updating the user.";
 }
 
-header("Location: site_user_edit.php?id=" . $customerID);
+header("Location: ../views/site_user_edit.php?id=" . $customerID);
 exit();

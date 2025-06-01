@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($errors) {
         $_SESSION['error'] = implode('<br>', $errors);
-        header('Location: site_register.php');
+        header('Location: ../views/site_register.php');
         exit();
     }
 
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['error'] = 'An error has occurred: ' . $ex->getMessage();
     }
 
-    header('Location: site_register.php');
+    header('Location: ../views/site_register.php');
     exit();
 }
 ?>

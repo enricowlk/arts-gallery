@@ -32,15 +32,6 @@ $artworks = $artworkRepo->getAllArtworksForOneSubjectBySubjectId($subjectId);
     <title><?php echo $subject->getSubjectName(); ?> - Art Gallery</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../styles.css">
-    <style>
-        .subject-image {
-            width: 322px; /* Breite des Bildes */
-            height: 300px; /* Höhe des Bildes */
-            object-fit: cover; /* Bild wird zugeschnitten, um den Container zu füllen */
-            border-radius: 10px; /* Abgerundete Ecken */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Schatten hinzufügen */
-        }
-    </style>
 </head>
 <body>
     <?php include __DIR__ . '/components/navigation.php'; ?>
@@ -58,7 +49,7 @@ $artworks = $artworkRepo->getAllArtworksForOneSubjectBySubjectId($subjectId);
                     $imageUrl = "../../images/placeholder.png";
                 }
                 ?>
-                <img src="<?php echo $imageUrl; ?>" class="subject-image" alt="<?php echo $subject->getSubjectName(); ?>">
+                <img src="<?php echo $imageUrl; ?>" class="subject-image shadow" alt="<?php echo $subject->getSubjectName(); ?>">
             </div>
             <div class="col-md-8">
                 <div class="info text-center">

@@ -51,7 +51,7 @@ $isAdmin = isset($_SESSION['user']['Type']) && $_SESSION['user']['Type'] == 1;
                                 <li><a class="dropdown-item" href="/arts-gallery/src/views/site_manage_users.php">Manage Users</a></li>
                             <?php } ?>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/logout_process.php">Logout</a></li>
+                            <li><a class="dropdown-item" href="/arts-gallery/src/controllers/logout_process.php">Logout</a></li>
                         </ul>
                     </li>
                     <!-- Inhalt für nicht angemeldete Benutzer -->
