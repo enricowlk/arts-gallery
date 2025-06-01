@@ -12,7 +12,7 @@ $topArtists = $artistRepo->getTop3Artists();
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/public/assets/styles.css">
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
     <div class="top-artist-container">

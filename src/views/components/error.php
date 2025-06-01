@@ -14,7 +14,7 @@ if (isset($_GET['message'])) {
     <meta charset="UTF-8">
     <title>Error - Art Gallery</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/public/assets/styles.css">
+    <link rel="stylesheet" href="../../styles.css">
     <style>
         .error-container {
             min-height: 60vh;

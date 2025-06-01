@@ -12,7 +12,7 @@ $randomArtworks = $artworkRepo->get3RandomArtworks();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/public/assets/styles.css">
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
     <div id="artCarousel" class="carousel slide shadow" data-bs-ride="carousel">

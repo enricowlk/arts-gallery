@@ -2,8 +2,8 @@
 session_start(); 
 
 require_once __DIR__ . '/../services/global_exception_handler.php';
-require_once __DIR__ . '/../repositories/artist_repository.php'; 
-require_once __DIR__ . '/../repositories/artwork_repository.php';
+require_once __DIR__ . '/../repositories/artistRepository.php'; 
+require_once __DIR__ . '/../repositories/artworkRepository.php';
 
 $artworkRepo = new ArtworkRepository(new Database()); 
 $artistRepo = new ArtistRepository(new Database()); 
@@ -29,7 +29,7 @@ $artworks = $artworkRepo->getAllArtworks($orderBy, $order);
     <meta charset="UTF-8">
     <title>Artworks</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
     <?php include __DIR__ . '/components/navigation.php'; ?> 
