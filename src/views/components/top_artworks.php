@@ -32,7 +32,7 @@ $topArtworks = $artworkRepo->get3TopArtworks();
                     }
                 ?>
                     <div class="col-md-4">
-                        <a href="arts-gallery/src/views/site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
+                        <a href="../arts-gallery/src/views/site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                         <div class="card">
                             <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
                             <div class="mt-2">

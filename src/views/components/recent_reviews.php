@@ -23,7 +23,7 @@ $recentReviews = $reviewRepo->get3RecentReviews(3);
                 <?php foreach ($recentReviews as $review){ 
                     $customerName = $customerRepo->getCustomerNameById($review->getCustomerId());
                 ?>
-                    <a href="arts-gallery/src/views/site_artwork.php?id=<?php echo $review->getArtWorkId(); ?>">
+                    <a href="../arts-gallery/src/views/site_artwork.php?id=<?php echo $review->getArtWorkId(); ?>">
                     <li>
                         <strong><?php echo $customerName; ?></strong> wrote:
                             <?php echo substr($review->getComment(), 0, 100); ?>...

@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     } else {
         $_SESSION['error'] = "Wrong Password or E-Mail!";
-        header("Location: site_login.php");
+        header("Location: ../controllers/site_login.php");
         exit();
     }
 }
