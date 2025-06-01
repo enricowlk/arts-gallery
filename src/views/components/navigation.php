@@ -6,7 +6,7 @@ $isAdmin = isset($_SESSION['user']['Type']) && $_SESSION['user']['Type'] == 1;
 
 <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
     <div class="container-fluid">
-        <a class="navbar-brand" href="index.php">Art Gallery</a>
+        <a class="navbar-brand" href="../../index.php">Art Gallery</a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -16,7 +16,7 @@ $isAdmin = isset($_SESSION['user']['Type']) && $_SESSION['user']['Type'] == 1;
         <div class="navbar-collapse">
             <!-- Linke Seite der Navbar -->
             <ul class="navbar-nav">
-                <li><a class="nav-link" href="index.php">Home</a></li>
+                <li><a class="nav-link" href="../../index.php">Home</a></li>
                 <li><a class="nav-link" href="/arts-gallery/src/views/site_aboutUs.php">About Us</a></li>
                 <li class="dropdown">
                     <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Browse</a>

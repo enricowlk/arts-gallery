@@ -43,7 +43,7 @@ $artists = $artistRepo->getAllArtists($order);
         
         <div class="row">
             <?php foreach ($artists as $artist) { 
-                $imagePath = "images/artists/square-medium/" . $artist->getArtistID() . ".jpg";
+                $imagePath = "../../../images/artists/square-medium/" . $artist->getArtistID() . ".jpg";
                 $imageExists = file_exists($imagePath);
 
                 if ($imageExists) {
