@@ -32,7 +32,7 @@ $topArtists = $artistRepo->getTop3Artists();
                     }
                 ?>
                     <div class="col-md-4">
-                        <a href="arts-gallery/src/views/site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
+                        <a href="/src/views/site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
                         <div class="card">
                             <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
                             <div class="mt-2">
