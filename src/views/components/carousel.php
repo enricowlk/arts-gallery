@@ -36,7 +36,7 @@ $randomArtworks = $artworkRepo->get3RandomArtworks();
                             echo '';
                         }
                         ?>">
-                    <a href="/src/views/site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
+                    <a href="arts-gallery/src/views/site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                         <img src="<?php echo $imageUrl; ?>" alt="<?php echo $artwork->getTitle(); ?>">
                     </a>
                     <div class="carousel-caption">
