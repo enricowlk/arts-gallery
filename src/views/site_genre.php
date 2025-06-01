@@ -50,13 +50,13 @@ $artworks = $artworkRepo->getAllArtworksForOneGenreByGenreId($genreId);
         <div class="row">
             <div class="col-md-4">
                 <?php
-                $imagePath = "images/genres/square-medium/" . $genre->getGenreID() . ".jpg";
+                $imagePath = "../../images/genres/square-medium/" . $genre->getGenreID() . ".jpg";
                 $imageExists = file_exists($imagePath);
 
                 if ($imageExists) {
                     $imageUrl = $imagePath;
                 } else {
-                    $imageUrl = "images/placeholder.png";
+                    $imageUrl = "../../images/placeholder.png";
                 }
                 ?>
                 <img src="<?php echo $imageUrl; ?>" class="genre-image" alt="<?php echo $genre->getGenreName(); ?>">
@@ -80,13 +80,13 @@ $artworks = $artworkRepo->getAllArtworksForOneGenreByGenreId($genreId);
             <div class="row">
                 <?php foreach ($artworks as $artwork){ 
                     $averageRating = $artworkRepo->getAverageRatingForArtwork($artwork->getArtWorkID());
-                    $imagePath = "images/works/medium/" . $artwork->getImageFileName() . ".jpg";
+                    $imagePath = "../../images/works/medium/" . $artwork->getImageFileName() . ".jpg";
                     $imageExists = file_exists($imagePath);
 
                     if ($imageExists) {
                         $imageUrl = $imagePath;
                     } else {
-                        $imageUrl = "images/placeholder.png";
+                        $imageUrl = "../../images/placeholder.png";
                     }
                 ?>
                     <div class="col-md-4 mb-4">
@@ -97,7 +97,7 @@ $artworks = $artworkRepo->getAllArtworksForOneGenreByGenreId($genreId);
                                 <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>
                                 <p class="small">Year of Work: <?php echo $artwork->getYearOfWork(); ?></p>
                                 <p class="small">Rating: <?php echo number_format((float)$averageRating, 1); ?> 
-                                    <img src="images/icon_gelberStern.png" alt="Star" style="position: relative; top: -2px;">
+                                    <img src="../../images/icon_gelberStern.png" alt="Star" style="position: relative; top: -2px;">
                                 </p>
                             </div>
                         </div>

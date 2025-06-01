@@ -78,13 +78,13 @@ $hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']
         <div class="row">
             <div class="col-md-6">
                 <?php
-                $imagePath = "images/works/medium/" . $artwork->getImageFileName() . ".jpg";
+                $imagePath = "../../images/works/medium/" . $artwork->getImageFileName() . ".jpg";
                 $imageExists = file_exists($imagePath);
 
                 if ($imageExists) {
                     $imageUrl = $imagePath;
                 } else {
-                    $imageUrl = "images/placeholder.png";
+                    $imageUrl = "../../images/placeholder.png";
                 }
                 ?>
                 <a data-bs-toggle="modal" data-bs-target="#imageModal">
@@ -131,7 +131,7 @@ $hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']
                     <div>
                         <?php if ($reviewCount > 0){ ?>
                             <span><strong><?php echo number_format($averageRating, 1); ?>/5 </strong></span>
-                            <img src="images/icon_gelberStern.png" alt="Star">
+                            <img src="../../images/icon_gelberStern.png" alt="Star">
                             <span>(<?php echo $reviewCount; ?> reviews)</span>
                         <?php }else{ ?>
                             <span>No ratings yet</span>
@@ -311,7 +311,7 @@ $hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']
                                 <td><?php echo $customer->getFirstName() . ' ' . $customer->getLastName(); ?></td>
                                 <td class="small">
                                     <?php echo $review->getRating(); ?>/5 
-                                    <img src="images/icon_gelberStern.png" alt="Star" class="star-icon">
+                                    <img src="../../images/icon_gelberStern.png" alt="Star" class="star-icon">
                                 </td>
                                 <td><?php echo $review->getComment(); ?></td>
                                 <td class="small"><?php echo $review->getReviewDate(); ?></td>

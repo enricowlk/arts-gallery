@@ -40,13 +40,13 @@ if (isset($_SESSION['favorite_artists'])) {
             <div class="row">
                 <?php foreach ($favoriteArtists as $artistId){ 
                     $artist = $artistRepo->getArtistById($artistId);
-                    $imagePath = "images/artists/medium/" . $artist->getArtistID() . ".jpg";
+                    $imagePath = "../../images/artists/medium/" . $artist->getArtistID() . ".jpg";
                     $imageExists = file_exists($imagePath);
 
                     if ($imageExists) {
                         $imageUrl = $imagePath;
                     } else {
-                        $imageUrl = "images/placeholder.png";
+                        $imageUrl = "../../images/placeholder.png";
                     }
                 ?>
                     <div class="col-md-4 mb-4">
@@ -72,13 +72,13 @@ if (isset($_SESSION['favorite_artists'])) {
                 <?php foreach ($favoriteArtworks as $artworkId){ 
                     $artwork = $artworkRepo->getArtworkById($artworkId);
                     $artist = $artistRepo->getArtistById($artwork->getArtistID());
-                    $imagePath = "images/works/medium/" . $artwork->getImageFileName() . ".jpg";
+                    $imagePath = "../../images/works/medium/" . $artwork->getImageFileName() . ".jpg";
                     $imageExists = file_exists($imagePath);
 
                     if ($imageExists) {
                         $imageUrl = $imagePath;
                     } else {
-                        $imageUrl = "images/placeholder.png";
+                        $imageUrl = "../../images/placeholder.png";
                     }
                 ?>
                     <div class="col-md-4 mb-4">

@@ -84,13 +84,13 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                     
                     <div class="row g-2">
                         <?php foreach ($artists as $artist) { 
-                            $imagePath = "images/artists/square-medium/" . $artist->getArtistID() . ".jpg";
+                            $imagePath = "../../images/artists/square-medium/" . $artist->getArtistID() . ".jpg";
                             $imageExists = file_exists($imagePath);
             
                             if ($imageExists) {
                                 $imageUrl = $imagePath;
                             } else {
-                                $imageUrl = "images/placeholder.png";
+                                $imageUrl = "../../images/placeholder.png";
                             } 
                         ?>
                             <div class="col">
@@ -141,13 +141,13 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                     <div class="row g-2">
                         <?php foreach ($artworks as $artwork) {  
                             $artist = $artistRepo->getArtistByID($artwork->getArtistID()); 
-                            $imagePath = "images/works/square-medium/" . $artwork->getImageFileName() . ".jpg";
+                            $imagePath = "../../images/works/square-medium/" . $artwork->getImageFileName() . ".jpg";
                             $imageExists = file_exists($imagePath);
 
                             if ($imageExists) {
                                 $imageUrl = $imagePath;
                             } else {
-                                $imageUrl = "images/placeholder.png";
+                                $imageUrl = "../../images/placeholder.png";
                             }
                         ?>
                             <div class="col">

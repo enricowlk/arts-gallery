@@ -43,13 +43,13 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
         <div class="row">
             <div class="col-md-6">
                 <?php
-                $imagePath = "images/artists/medium/" . $artist->getArtistID() . ".jpg";
+                $imagePath = "../../images/artists/medium/" . $artist->getArtistID() . ".jpg";
                 $imageExists = file_exists($imagePath);
 
                 if ($imageExists) {
                     $imageUrl = $imagePath;
                 } else {
-                    $imageUrl = "images/placeholder.png";
+                    $imageUrl = "../../images/placeholder.png";
                 }
                 ?>
                 <img src="<?php echo $imageUrl; ?>" 
@@ -96,13 +96,13 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
             <div class="row">
                 <?php foreach ($artworks as $artwork){ 
                     $averageRating = $artworkRepo->getAverageRatingForArtwork($artwork->getArtWorkID());
-                    $imagePath = "images/works/medium/" . $artwork->getImageFileName() . ".jpg";
+                    $imagePath = "../../images/works/medium/" . $artwork->getImageFileName() . ".jpg";
                     $imageExists = file_exists($imagePath);
 
                     if ($imageExists) {
                         $imageUrl = $imagePath;
                     } else {
-                        $imageUrl = "images/placeholder.png";
+                        $imageUrl = "../../images/placeholder.png";
                     }
                 ?>
                     <div class="col-md-4 mb-4">
@@ -113,7 +113,7 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
                                 <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>
                                 <p class="card-text">Year of Work: <?php echo $artwork->getYearOfWork(); ?></p>
                                 <p class="card-text">Rating: <?php echo number_format((float)$averageRating, 1); ?> 
-                                    <img src="images/icon_gelberStern.png" alt="Star" style="position: relative; top: -2px;">
+                                    <img src="../../images/icon_gelberStern.png" alt="Star" style="position: relative; top: -2px;">
                                 </p>
                             </div>
                         </div>

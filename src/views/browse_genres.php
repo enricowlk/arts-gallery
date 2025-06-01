@@ -24,13 +24,13 @@ $genres = $genreRepo->getAllGenres();
         <h1 class="text-center">Genres</h1>
         <div class="row">
             <?php foreach ($genres as $genre) {  
-                $imagePath = "images/genres/square-medium/" . $genre->getGenreID() . ".jpg";
+                $imagePath = "../../images/genres/square-medium/" . $genre->getGenreID() . ".jpg";
                 $imageExists = file_exists($imagePath);
 
                 if ($imageExists) {
                     $imageUrl = $imagePath;
                 } else {
-                    $imageUrl = "images/placeholder.png";
+                    $imageUrl = "../../images/placeholder.png";
                 }
                 ?>
                 <div class="col-md-4 mb-4">

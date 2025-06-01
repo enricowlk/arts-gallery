@@ -24,13 +24,13 @@ $subjects = $subjectRepo->getAllSubjects();
         <h1 class="text-center">Subjects</h1> 
         <div class="row">
             <?php foreach ($subjects as $subject) {  
-                $imagePath = "images/subjects/square-medium/" . $subject->getSubjectID() . ".jpg";
+                $imagePath = "../../images/subjects/square-medium/" . $subject->getSubjectID() . ".jpg";
                 $imageExists = file_exists($imagePath);
 
                 if ($imageExists) {
                     $imageUrl = $imagePath;
                 } else {
-                    $imageUrl = "images/placeholder.png";
+                    $imageUrl = "../../images/placeholder.png";
                 }
                 ?>
                 <div class="col-md-4 mb-4">

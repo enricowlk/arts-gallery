@@ -62,13 +62,13 @@ $artworks = $artworkRepo->getAllArtworks($orderBy, $order);
         <div class="row">
             <?php foreach ($artworks as $artwork) { 
                 $artist = $artistRepo->getArtistByID($artwork->getArtistID());
-                $imagePath = "images/works/square-medium/" . $artwork->getImageFileName() .".jpg";
+                $imagePath = "../../images/works/square-medium/" . $artwork->getImageFileName() .".jpg";
                 $imageExists = file_exists($imagePath);
 
                 if ($imageExists) {
                     $imageUrl = $imagePath;
                 } else {
-                    $imageUrl = "images/placeholder.png";
+                    $imageUrl = "../../images/placeholder.png";
                 }
                 ?>
                 <div class="col-md-4 mb-4">
