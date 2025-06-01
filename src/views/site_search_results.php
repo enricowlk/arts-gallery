@@ -59,7 +59,7 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
     </style>
 </head>
 <body>
-    <?php include __DIR__ . 'navigation.php'; ?> 
+    <?php include __DIR__ . '/components/navigation.php'; ?> 
 
     <div class="container mt-3">
         <h1>Search Results for "<?php echo $query; ?>"</h1> 
@@ -168,7 +168,7 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
         </div>
     </div>
 
-    <?php include __DIR__ . 'footer.php'; ?>
+    <?php include __DIR__ . '/components/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

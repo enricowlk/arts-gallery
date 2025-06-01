@@ -37,7 +37,7 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <?php include __DIR__ . 'navigation.php'; ?>
+    <?php include __DIR__ . '/components/navigation.php'; ?>
 
     <div class="container mt-3">
         <div class="row">
@@ -124,7 +124,7 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
         <?php } ?>
     </div>
 
-    <?php include __DIR__ . 'footer.php'; ?>
+    <?php include __DIR__ . '/components/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
