@@ -1,6 +1,6 @@
 <?php
-require_once 'artist.php';
-require_once 'database.php';
+require_once __DIR__ .'/../entitys/artist.php';
+require_once __DIR__ . '/../../config/database.php';
 
 class ArtistRepository {
     private $db;

@@ -1,6 +1,6 @@
 <?php
-require_once 'gallerie.php';
-require_once 'database.php';
+require_once __DIR__ . '/../entitys/gallerie.php';
+require_once __DIR__ . '/../../config/database.php';
 
 class GallerieRepository {
     private $db;

@@ -1,7 +1,7 @@
 <?php
-require_once 'artwork.php';
-require_once 'reviews.php';
-require_once 'database.php';
+require_once __DIR__ . '/../entitys/artwork.php';
+require_once __DIR__ . '/../entitys/reviews.php';
+require_once __DIR__ . '/../../config/database.php';
 
 class ArtworkRepository {
     private $db;

@@ -6,8 +6,8 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['Type'] != 1) {
     exit();
 }
 
-require_once 'customerRepository.php'; 
-require_once 'database.php'; 
+require_once __DIR__ . '/../repositories/customerRepository.php';
+require_once __DIR__ . '/../../config/database.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: site_manage_users.php");

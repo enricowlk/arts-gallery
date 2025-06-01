@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once 'database.php';
-require_once 'reviewRepository.php';
+require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../repositories/reviewRepository.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();

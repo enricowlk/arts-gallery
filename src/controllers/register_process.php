@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-require_once 'customer.php';
-require_once 'customerRepository.php';
-require_once 'database.php';
+require_once __DIR__ . '/../entitys/customer.php';
+require_once __DIR__ . '/../repositories/customerRepository.php';
+require_once __DIR__ . '/../../config/database.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = array_map('trim', $_POST);  

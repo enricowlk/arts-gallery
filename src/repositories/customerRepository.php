@@ -1,7 +1,7 @@
 <?php
-require_once 'customer.php';
-require_once 'customerLogon.php';
-require_once 'database.php';
+require_once __DIR__ . '/../entitys/customer.php';
+require_once __DIR__ . '/../entitys/customerLogon.php';
+require_once __DIR__ . '/../../config/database.php';
 
 class CustomerRepository {
     private $db;

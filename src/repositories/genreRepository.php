@@ -1,6 +1,6 @@
 <?php
-require_once 'genre.php';
-require_once 'database.php';
+require_once __DIR__ . '/../entitys/genre.php';
+require_once __DIR__ . '/../../config/database.php';
 
 class GenreRepository {
     private $db;

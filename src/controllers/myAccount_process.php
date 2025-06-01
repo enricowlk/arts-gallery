@@ -25,8 +25,8 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 if (!isset($_SESSION['error'])) { 
-    require_once 'CustomerRepository.php';
-    require_once 'database.php';
+    require_once __DIR__ . '/../repositories/customerRepository.php';
+    require_once __DIR__ . '/../../config/database.php';
 
     $customerRepo = new CustomerRepository(new Database());
     $customerRepo->updateCustomer($customerID, $firstName, $lastName, $email, $password);

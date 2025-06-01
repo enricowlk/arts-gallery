@@ -1,6 +1,6 @@
 <?php
-require_once 'subject.php';
-require_once 'database.php';
+require_once __DIR__ . '/../entitys/subject.php';
+require_once __DIR__ . '/../../config/database.php';
 
 class SubjectRepository {
     private $db;

@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once 'customerRepository.php';
-require_once 'database.php';
+require_once __DIR__ . '/../repositories/customerRepository.php';
+require_once __DIR__ . '/../../config/database.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['username']);

@@ -1,7 +1,7 @@
 <?php
-require_once 'global_exception_handler.php';
-require_once 'database.php'; 
-require_once 'artworkRepository.php'; 
+require_once __DIR__ . '/../../services/global_exception_handler.php';
+require_once __DIR__ . '/../../../config/database.php'; 
+require_once __DIR__ . '/../../repositories/artworkRepository.php'; 
 
 $artworkRepo = new ArtworkRepository(new Database()); 
 
@@ -12,7 +12,7 @@ $randomArtworks = $artworkRepo->get3RandomArtworks();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/public/assets/styles.css">
 </head>
 <body>
     <div id="artCarousel" class="carousel slide shadow" data-bs-ride="carousel">

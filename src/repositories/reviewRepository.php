@@ -1,6 +1,6 @@
 <?php
-require_once 'reviews.php';
-require_once 'database.php';
+require_once __DIR__ . '/../entitys/reviews.php';
+require_once __DIR__ . '/../../config/database.php';
 
 class ReviewRepository {
     private $db;
