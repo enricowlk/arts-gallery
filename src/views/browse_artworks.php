@@ -1,9 +1,9 @@
 <?php
 session_start(); 
 
-require_once 'global_exception_handler.php';
-require_once 'artworkRepository.php'; 
-require_once 'artistRepository.php';
+require_once __DIR__ . '/../services/global_exception_handler.php';
+require_once __DIR__ . 'artworkRepository.php'; 
+require_once __DIR__ . 'artistRepository.php';
 
 $artworkRepo = new ArtworkRepository(new Database()); 
 $artistRepo = new ArtistRepository(new Database()); 
@@ -32,7 +32,7 @@ $artworks = $artworkRepo->getAllArtworks($orderBy, $order);
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <?php include 'navigation.php'; ?> 
+    <?php include __DIR__ . 'navigation.php'; ?> 
 
     <div class="container">
         <h1 class="text-center">Artworks</h1> 
@@ -86,7 +86,7 @@ $artworks = $artworkRepo->getAllArtworks($orderBy, $order);
         </div>
     </div>
 
-    <?php include 'footer.php'; ?> 
+    <?php include __DIR__ . 'footer.php'; ?> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

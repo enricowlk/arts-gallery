@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-require_once 'global_exception_handler.php';
-require_once 'genreRepository.php'; 
+require_once __DIR__ . '/../services/global_exception_handler.php';
+require_once __DIR__ . 'genreRepository.php'; 
 
 $genreRepo = new GenreRepository(new Database()); 
 
@@ -18,7 +18,7 @@ $genres = $genreRepo->getAllGenres();
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <?php include 'navigation.php'; ?> 
+    <?php include __DIR__ . 'navigation.php'; ?> 
 
     <div class="container">
         <h1 class="text-center">Genres</h1>
@@ -47,7 +47,7 @@ $genres = $genreRepo->getAllGenres();
         </div>
     </div>
 
-    <?php include 'footer.php'; ?> 
+    <?php include __DIR__ . 'footer.php'; ?> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

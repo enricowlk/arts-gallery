@@ -8,7 +8,7 @@ if (isset($_SESSION['error'])) {
 }
 unset($_SESSION['error']);
 
-require_once 'global_exception_handler.php';
+require_once __DIR__ . '/../services/global_exception_handler.php';
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +20,7 @@ require_once 'global_exception_handler.php';
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <?php include 'navigation.php'; ?>
+    <?php include __DIR__ . 'navigation.php'; ?>
 
     <div class="container mt-4">
         <h1 class="text-center">Login</h1>
@@ -42,7 +42,7 @@ require_once 'global_exception_handler.php';
         </form>
     </div>
 
-    <?php include 'footer.php'; ?>
+    <?php include __DIR__ . 'footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

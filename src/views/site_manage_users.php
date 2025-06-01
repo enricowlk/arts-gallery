@@ -6,9 +6,9 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['Type'] != 1) {
     exit();
 }
 
-require_once 'global_exception_handler.php';
-require_once 'customerRepository.php'; 
-require_once 'database.php'; 
+require_once __DIR__ . '/../services/global_exception_handler.php';
+require_once __DIR__ . 'customerRepository.php'; 
+require_once __DIR__ . 'database.php'; 
 
 $customerRepo = new CustomerRepository(new Database());
 
@@ -45,7 +45,7 @@ foreach ($users as $user) {
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <?php include 'navigation.php'; ?>
+    <?php include __DIR__ . 'navigation.php'; ?>
 
     <div class="container mt-3">
         <h1 class="text-center">Manage Users</h1>
@@ -112,7 +112,7 @@ foreach ($users as $user) {
         </div>
     </div>
 
-    <?php include 'footer.php'; ?>
+    <?php include __DIR__ . 'footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

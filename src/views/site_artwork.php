@@ -1,15 +1,15 @@
 <?php
 session_start(); 
 
-require_once 'global_exception_handler.php';
-require_once 'database.php'; 
-require_once 'artworkRepository.php'; 
-require_once 'artistRepository.php'; 
-require_once 'reviewRepository.php'; 
-require_once 'customerRepository.php'; 
-require_once 'genreRepository.php';
-require_once 'subjectRepository.php'; 
-require_once 'gallerieRepository.php';
+require_once __DIR__ . '/../services/global_exception_handler.php';
+require_once __DIR__ . 'database.php'; 
+require_once __DIR__ . 'artworkRepository.php'; 
+require_once __DIR__ . 'artistRepository.php'; 
+require_once __DIR__ . 'reviewRepository.php'; 
+require_once __DIR__ . 'customerRepository.php'; 
+require_once __DIR__ . 'genreRepository.php';
+require_once __DIR__ . 'subjectRepository.php'; 
+require_once __DIR__ . 'gallerieRepository.php';
 
 $isLoggedIn = isset($_SESSION['user']);
 
@@ -72,7 +72,7 @@ $hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']
     </style>
 </head>
 <body>
-    <?php include 'navigation.php'; ?>
+    <?php include __DIR__ . 'navigation.php'; ?>
 
     <div class="container mt-4">
         <div class="row">
@@ -340,7 +340,7 @@ $hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']
         </div>
     </div>
 
-    <?php include 'footer.php'; ?>
+    <?php include __DIR__ . 'footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
