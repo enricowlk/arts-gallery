@@ -14,7 +14,6 @@ if (isset($_GET['message'])) {
     <meta charset="UTF-8">
     <title>Error - Art Gallery</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../styles.css">
     <style>
         .error-container {
             min-height: 60vh;
@@ -32,7 +31,6 @@ if (isset($_GET['message'])) {
     </style>
 </head>
 <body>
-    <?php __DIR__ . include 'navigation.php'; ?>
 
     <div class="container">
         <div class="error-container">
@@ -44,13 +42,11 @@ if (isset($_GET['message'])) {
             <h1 class="mb-4">Oops! Something went wrong.</h1>
             <p class="lead text-muted mb-4"><?php echo $errorMessage; ?></p>
             <div class="d-flex gap-3">
-                <a href="index.php" class="btn btn-secondary">Go to Homepage</a>
+                <a href="/arts-gallery/index.php" class="btn btn-secondary">Go to Homepage</a>
                 <a href="javascript:history.back()" class="btn btn-outline-secondary">Go Back</a>
             </div>
         </div>
     </div>
-
-    <?php __DIR__ . include 'footer.php'; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

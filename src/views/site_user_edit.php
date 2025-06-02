@@ -1,32 +1,42 @@
 <?php
+// Session starten - notwendig für Session-Variablen
 session_start();
 
+// Überprüfen ob User eingeloggt ist und Admin-Rechte hat (Type=1)
 if (!isset($_SESSION['user']) || $_SESSION['user']['Type'] != 1) {
     header("Location: index.php");
     exit();
 }
 
-require_once __DIR__ . '/../services/global_exception_handler.php';
-require_once __DIR__ . '/../repositories/customerRepository.php';
-require_once __DIR__ . '/../../config/database.php';
+// Einbinden benötigter Dateien
+require_once __DIR__ . '/../services/global_exception_handler.php'; 
+require_once __DIR__ . '/../repositories/customerRepository.php'; 
+require_once __DIR__ . '/../../config/database.php'; 
 
+// Überprüfen ob eine gültige ID als GET-Parameter übergeben wurde
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     $_SESSION['error'] = "Invalid user ID.";
     header("Location: site_manage_users.php");
     exit();
 }
 
+// Kunden-ID aus GET-Parameter holen und in Integer umwandeln
 $customerID = (int)$_GET['id'];
+// CustomerRepository instanziieren mit Datenbankverbindung
 $customerRepo = new CustomerRepository(new Database());
+// Kunden-Datensatz anhand der ID holen
 $customer = $customerRepo->getCustomerByID($customerID);
+// Benutzerrolle des Kunden holen
 $userType = $customerRepo->getUserRole($customerID);
 
+// Überprüfen ob Customer existiert
 if (!$customer) {
     $_SESSION['error'] = "User not found.";
     header("Location: site_manage_users.php");
     exit();
 }
 
+// Erfolgsmeldungen aus Session holen und aus Session löschen
 if (isset($_SESSION['success'])) {
     $success = $_SESSION['success'];
     unset($_SESSION['success']);
@@ -34,6 +44,7 @@ if (isset($_SESSION['success'])) {
     $success = '';
 }
 
+// Fehlermeldungen aus Session holen und aus Session löschen
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];
     unset($_SESSION['error']);
@@ -59,19 +70,22 @@ if (isset($_SESSION['error'])) {
             <a href="site_manage_users.php" class="btn btn-secondary">Back to Users</a>
         </div>
         
+        <!-- Erfolgsmeldung anzeigen falls vorhanden -->
         <?php if ($success) { ?>
             <div class="alert alert-success"><?php echo $success; ?></div>
         <?php } ?>
         
+        <!-- Fehlermeldung anzeigen falls vorhanden -->
         <?php if ($error) { ?>
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php } ?>
 
+        <!-- Formular zum Bearbeiten des Benutzers + Eingabevalidierung durch Regex pattern  -->
         <form action="../controllers/user_edit_process.php" method="POST">
             <input type="hidden" name="customerID" value="<?php echo $customerID; ?>">
             
             <div class="row mb-3">
-            <div class="col-md-6">
+                <div class="col-md-6">
                     <label for="firstName" class="form-label">First Name:</label>
                     <input type="text" class="form-control" id="firstName" name="firstName" pattern="^[A-Za-zäöüÄÖÜß]+$"
                            value="<?php echo $customer->getFirstName(); ?>" required>
@@ -93,7 +107,7 @@ if (isset($_SESSION['error'])) {
                 <div class="col-md-12">
                     <label for="address" class="form-label">Address:</label>
                     <input type="text" class="form-control" id="address" name="address" 
-                           value="<?php echo $customer->getAddress(); ?>">
+                           value="<?php echo $customer->getAddress(); ?>" required>
                 </div>
             </div>
             
@@ -118,7 +132,7 @@ if (isset($_SESSION['error'])) {
                 </div>
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Phone:</label>
-                    <input type="text" class="form-control" id="phone" name="phone"
+                    <input type="text" class="form-control" id="phone" name="phone" pattern="^\+?[0-9 ]+$"
                            value="<?php echo $customer->getPhone(); ?>">
                 </div>
             </div>
@@ -134,6 +148,7 @@ if (isset($_SESSION['error'])) {
                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
             </div>
             
+            <!-- Dropdown für Benutzerrolle -->
             <div class="mb-3">
                 <label for="userType" class="form-label">User Role:</label>
                 <select class="form-select" id="userType" name="userType" required>
@@ -146,7 +161,6 @@ if (isset($_SESSION['error'])) {
     </div>
 
     <?php include __DIR__ . '/components/footer.php'; ?>
-    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

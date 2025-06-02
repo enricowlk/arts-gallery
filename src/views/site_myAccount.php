@@ -1,32 +1,39 @@
 <?php
 session_start(); 
 
+// Überprüfen ob User eingeloggt ist
 if (!isset($_SESSION['user'])) {
-    header("Location: site_login.php"); 
+    header("Location: site_login.php"); // Wenn nicht, zum Login umleiten
     exit();
 }
 
-require_once __DIR__ . '/../services/global_exception_handler.php';
+// Required-Dateien einbinden
+require_once __DIR__ . '/../services/global_exception_handler.php'; 
 require_once __DIR__ . '/../repositories/customerRepository.php'; 
 require_once __DIR__ . '/../../config/database.php'; 
 
+// Customer Repository instanziieren
 $customerRepo = new CustomerRepository(new Database());
 
+// Aktuellen User aus Session holen und Daten aus DB laden
 $customerID = $_SESSION['user']['CustomerID']; 
 $customer = $customerRepo->getCustomerByID($customerID); 
 
+// Fehlermeldung aus Session holen
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];
 } else {
     $error = ''; 
 }
 
+// Erfolgsmeldung aus Session holen
 if (isset($_SESSION['success'])) {
     $success = $_SESSION['success'];
 } else {
     $success = ''; 
 }
 
+// Meldungen aus Session löschen nach dem Auslesen
 unset($_SESSION['error'], $_SESSION['success']);
 ?>
 
@@ -43,24 +50,29 @@ unset($_SESSION['error'], $_SESSION['success']);
 
     <div class="container mt-3">
         <h1 class="text-center">My Account</h1>
+        
+        <!-- Fehlermeldung anzeigen, falls vorhanden -->
         <?php if ($error) { ?>
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php } ?>
+        
+        <!-- Erfolgsmeldung anzeigen, falls vorhanden -->
         <?php if ($success) { ?>
             <div class="alert alert-success"><?php echo $success; ?></div>
         <?php } ?>
 
-        <form action="../controllers/myAccount_process.php" method="POST">
-        <div class="row mb-3">
+        <!-- Formular für Kontodaten + Eingabevalidierung mit Regex pattern -->
+        <form action="../controllers/user_edit_process.php" method="POST">
+            <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="firstName" class="form-label">First Name:</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" pattern="^[A-Za-zäöüÄÖÜß]+$"
-                           value="<?php echo $customer->getFirstName(); ?>" required>
+                    <input type="text" class="form-control" id="firstName" name="firstName" 
+                           pattern="^[A-Za-zäöüÄÖÜß]+$" value="<?php echo $customer->getFirstName(); ?>" required>
                 </div>
                 <div class="col-md-6">
                     <label for="lastName" class="form-label">Last Name:</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" pattern="^[A-Za-zäöüÄÖÜß]+$"
-                           value="<?php echo $customer->getLastName(); ?>" required>
+                    <input type="text" class="form-control" id="lastName" name="lastName" 
+                           pattern="^[A-Za-zäöüÄÖÜß]+$" value="<?php echo $customer->getLastName(); ?>" required>
                 </div>
             </div>
             
@@ -74,33 +86,33 @@ unset($_SESSION['error'], $_SESSION['success']);
                 <div class="col-md-12">
                     <label for="address" class="form-label">Address:</label>
                     <input type="text" class="form-control" id="address" name="address" 
-                           value="<?php echo $customer->getAddress(); ?>">
+                           value="<?php echo $customer->getAddress(); ?>" required>
                 </div>
             </div>
             
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="city" class="form-label">City:</label>
-                    <input type="text" class="form-control" id="city" name="city" pattern="^[A-Za-zäöüÄÖÜß ]+$"
-                           value="<?php echo $customer->getCity(); ?>">
+                    <input type="text" class="form-control" id="city" name="city" 
+                           pattern="^[A-Za-zäöüÄÖÜß ]+$" value="<?php echo $customer->getCity(); ?>" required>
                 </div>
                 <div class="col-md-6">
                     <label for="country" class="form-label">Country:</label>
-                    <input type="text" class="form-control" id="country" name="country" pattern="^[A-Za-zäöüÄÖÜß ]+$"
-                           value="<?php echo $customer->getCountry(); ?>">
+                    <input type="text" class="form-control" id="country" name="country" 
+                           pattern="^[A-Za-zäöüÄÖÜß ]+$" value="<?php echo $customer->getCountry(); ?>" required>
                 </div>
             </div>
             
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="postal" class="form-label">Postal Code:</label>
-                    <input type="text" class="form-control" id="postal" name="postal" pattern="^[0-9]+$"
-                           value="<?php echo $customer->getPostal(); ?>">
+                    <input type="text" class="form-control" id="postal" name="postal" 
+                           pattern="^[0-9]+$" value="<?php echo $customer->getPostal(); ?>" required>
                 </div>
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Phone:</label>
                     <input type="text" class="form-control" id="phone" name="phone"
-                           value="<?php echo $customer->getPhone(); ?>">
+                           pattern="^\+?[0-9 ]+$" value="<?php echo $customer->getPhone(); ?>">
                 </div>
             </div>
             
@@ -114,6 +126,7 @@ unset($_SESSION['error'], $_SESSION['success']);
                 <label for="confirmPassword" class="form-label">Confirm Password:</label>
                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
             </div>
+            
             <button type="submit" class="btn btn-secondary mb-3">Save Changes</button>
         </form>
     </div>

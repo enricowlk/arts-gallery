@@ -1,15 +1,31 @@
 <?php
+/**
+ * Klasse zur Darstellung einer Galerie/Museum
+ * Enthält Standortinformationen und Identifikationsdaten
+ */
 class Gallerie {
-    private $GalleryID;   
-    private $GalleryName;    
-    private $GalleryNativeName;          
-    private $GalleryCity; 
-    private $GalleryCountry;         
-    private $Latitude;        
-    private $Longitude;    
-    private $GalleryWebSite;     
+    // Private Eigenschaften
+    private $GalleryID;         
+    private $GalleryName;       
+    private $GalleryNativeName; 
+    private $GalleryCity;       
+    private $GalleryCountry;  
+    private $Latitude;          
+    private $Longitude;         
+    private $GalleryWebSite;    
 
-    public function __construct($GalleryID, $GalleryName, $GalleryNativeName, $GalleryCity, $GalleryCountry, $Latitude, $Longitude, $GalleryWebSite) {
+    
+     //Konstruktor für Galerie-Objekte
+    public function __construct(
+        $GalleryID, 
+        $GalleryName, 
+        $GalleryNativeName, 
+        $GalleryCity, 
+        $GalleryCountry, 
+        $Latitude, 
+        $Longitude, 
+        $GalleryWebSite
+    ) {
         $this->GalleryID = $GalleryID;
         $this->GalleryName = $GalleryName;
         $this->GalleryNativeName = $GalleryNativeName;
@@ -20,9 +36,12 @@ class Gallerie {
         $this->GalleryWebSite = $GalleryWebSite;
     }
 
+    // --- Getter-Methoden ---
+
     public function getGalleryID() {
         return $this->GalleryID;
     }
+    
     public function getGalleryName() {
         return $this->GalleryName;
     }

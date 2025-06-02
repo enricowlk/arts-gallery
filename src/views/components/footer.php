@@ -9,14 +9,16 @@
     <footer class="footer">
         <div class="container">
             <div class="row">
+                <!-- Erste Spalte: Über uns -->
                 <div class="col-md-4">
                     <h5>About Us</h5>
                     <p class="text-white">Discover the world of art through our curated collection of masterpieces. We bring you the best from classic and contemporary artists.</p>
                 </div>
 
+                <!-- Zweite Spalte: Navigationslinks -->
                 <div class="col-md-4">
                     <h5>Quick Links</h5>
-                    <ul class="list-unstyled">
+                    <ul class="list-unstyled"> 
                         <li><a href="index.php" class="text-white">Home</a></li>
                         <li><a href="browse_artists.php" class="text-white">Artists</a></li>
                         <li><a href="browse_artworks.php" class="text-white">Artworks</a></li>
@@ -24,9 +26,11 @@
                     </ul>
                 </div>
 
+                <!-- Dritte Spalte: Social Media -->
                 <div class="col-md-4">
                     <h5>Follow Us</h5>
                     <div>
+                        <!-- Social Media Icons mit Links -->
                         <a href="https://facebook.com" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
                         <a href="https://twitter.com" class="text-white me-3"><i class="fab fa-twitter"></i></a>
                         <a href="https://instagram.com" class="text-white me-3"><i class="fab fa-instagram"></i></a>
@@ -35,7 +39,8 @@
                 </div>
             </div>
 
-            <div class="text-center pt-3 border-top">
+            <!-- Copyright-Zeile mit dynamischem Jahr -->
+            <div class="text-center pt-3 border-top">  
                 <p class="text-white">&copy; <?php echo date("Y"); ?> Art Gallery. All rights reserved.</p>
             </div>
         </div>

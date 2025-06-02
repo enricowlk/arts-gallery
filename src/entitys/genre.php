@@ -1,12 +1,17 @@
 <?php
+/**
+ * Klasse zur Darstellung eines Kunstgenres/Stils
+ * Enthält Informationen über kunsthistorische Stilepochen
+ */
 class Genre {
-    private $GenreID;      
+    // Private Eigenschaften
+    private $GenreID;       
     private $GenreName;    
-    private $Era;         
-    private $Description;  
-    private $Link;        
+    private $Era;           
+    private $Description;   
+    private $Link;         
 
-    
+    // Konstruktor für Genre-Objekte
     public function __construct($GenreID, $GenreName, $Era, $Description, $Link) {
         $this->GenreID = $GenreID;
         $this->GenreName = $GenreName;
@@ -15,6 +20,7 @@ class Genre {
         $this->Link = $Link;
     }
 
+    // --- Getter-Methoden ---
     public function getGenreID() {
         return $this->GenreID;
     }
@@ -35,4 +41,3 @@ class Genre {
         return $this->Link;    
     }
 }
-?>

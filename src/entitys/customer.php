@@ -1,18 +1,31 @@
 <?php
 
+// Definition der Customer-Klasse zur Darstellung eines Kunden
 class Customer {
-    private $CustomerID; 
-    private $FirstName;  
+    // Private Eigenschaften - nur innerhalb der Klasse zugänglich
+    private $CustomerID;  
+    private $FirstName;   
     private $LastName;   
     private $Address;    
     private $City;       
-    private $Country;    
-    private $Postal;    
-    private $Phone;     
-    private $Email;      
+    private $Country;     
+    private $Postal;     
+    private $Phone;      
+    private $Email;       
 
-   
-    public function __construct($CustomerID, $FirstName, $LastName, $Address, $City, $Country, $Postal, $Phone, $Email) {
+    // Konstruktor zur Initialisierung eines neuen Customer-Objekts
+    public function __construct(
+        $CustomerID,
+        $FirstName,
+        $LastName,
+        $Address,
+        $City,
+        $Country,
+        $Postal,
+        $Phone,
+        $Email
+    ) {
+        // Zuweisung der Parameter zu den Klassen-Eigenschaften
         $this->CustomerID = $CustomerID;
         $this->FirstName = $FirstName;
         $this->LastName = $LastName;
@@ -24,6 +37,7 @@ class Customer {
         $this->Email = $Email;
     }
 
+    // --- Getter-Methoden ---
     public function getCustomerID() {
         return $this->CustomerID;
     }
@@ -60,4 +74,3 @@ class Customer {
         return $this->Email;
     }
 }
-?>

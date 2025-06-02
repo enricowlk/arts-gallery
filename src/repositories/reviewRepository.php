@@ -1,23 +1,37 @@
 <?php
-require_once __DIR__ . '/../entitys/reviews.php';
-require_once __DIR__ . '/../../config/database.php';
+// Einbindung der benötigten Klassen
+require_once __DIR__ . '/../entitys/reviews.php';    
+require_once __DIR__ . '/../../config/database.php'; 
 
+// Repository-Klasse für Review-Operationen
 class ReviewRepository {
-    private $db;
+    private $db;  
 
+    // Konstruktor mit Dependency Injection der Datenbank
     public function __construct($db) {
         $this->db = $db;
     }
 
+    // Holt die neuesten X Reviews (standardmäßig 3)
     public function get3RecentReviews($limit = 3) {
         try {
             $this->db->connect();
+            // SQL: Holt Reviews nach Datum absteigend sortiert mit Limit
             $sql = "SELECT * FROM reviews ORDER BY ReviewDate DESC LIMIT $limit";
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute();
+            
             $reviews = [];
             while ($row = $stmt->fetch()) {
-                $reviews[] = new Review($row['ReviewId'], $row['ArtWorkId'], $row['CustomerId'], $row['ReviewDate'], $row['Rating'], $row['Comment']);
+                // Erstellt Review-Objekte für jede gefundene Zeile
+                $reviews[] = new Review(
+                    $row['ReviewId'], 
+                    $row['ArtWorkId'], 
+                    $row['CustomerId'], 
+                    $row['ReviewDate'], 
+                    $row['Rating'], 
+                    $row['Comment']
+                );
             }
             return $reviews;
         } catch (PDOException $e) {
@@ -27,9 +41,11 @@ class ReviewRepository {
         }
     }
 
+    // Zählt alle Reviews für einen bestimmten Künstler
     public function getReviewCountForArtist($artistId) {
         try {
             $this->db->connect();
+            // SQL mit JOIN zwischen reviews und artworks Tabellen
             $sql = "SELECT COUNT(reviews.ReviewID) as ReviewCount 
                     FROM reviews 
                     INNER JOIN artworks ON reviews.ArtWorkID = artworks.ArtWorkID 
@@ -38,11 +54,8 @@ class ReviewRepository {
             $stmt->execute([$artistId]);
             $row = $stmt->fetch();
             
-            if (isset($row['ReviewCount']) && $row['ReviewCount'] !== null) {
-                return $row['ReviewCount'];
-            } else {
-                return 0;
-            }
+            // Gibt die Anzahl der Reviews oder 0 zurück
+            return $row['ReviewCount'] ?? 0;
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while counting artist reviews");
         } finally {
@@ -50,17 +63,32 @@ class ReviewRepository {
         }
     }
 
+    // Holt alle Reviews für ein bestimmtes Kunstwerk durch die ArtworkID
     public function getAllReviewsForOneArtworkByArtworkId($artworkId) {
         try {
             $this->db->connect();
             $sql = "SELECT * FROM reviews WHERE ArtWorkID = ? ORDER BY ReviewDate DESC";
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([$artworkId]);
+            
+            // Initialisiert ein leeres Array für die Review-Objekte
             $reviews = [];
+
+            // Durchläuft alle Ergebniszeilen der Datenbankabfrage
             while ($row = $stmt->fetch()) {
-                $reviews[] = new Review($row['ReviewId'], $row['ArtWorkId'], $row['CustomerId'], $row['ReviewDate'], $row['Rating'], $row['Comment']);
+                // Für jede Datenbankzeile wird ein neues Review-Objekt erstellt
+                // und dem $reviews-Array hinzugefügt
+                $reviews[] = new Review(
+                    $row['ReviewId'],     
+                    $row['ArtWorkId'],     
+                    $row['CustomerId'],    
+                    $row['ReviewDate'],   
+                    $row['Rating'],        
+                    $row['Comment']       
+                );
             }
             return $reviews;
+
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while fetching artwork reviews");
         } finally {
@@ -68,10 +96,13 @@ class ReviewRepository {
         }
     }
 
+    // Fügt ein neues Review in die Datenbank ein
     public function addReview($artworkId, $customerId, $rating, $comment) {
         try {
             $this->db->connect();
-            $sql = "INSERT INTO reviews (ArtWorkID, CustomerID, Rating, Comment, ReviewDate) VALUES (?, ?, ?, ?, NOW())";
+            // SQL: Insert mit aktueller Datumszeit (NOW())
+            $sql = "INSERT INTO reviews (ArtWorkID, CustomerID, Rating, Comment, ReviewDate) 
+                    VALUES (?, ?, ?, ?, NOW())";
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([$artworkId, $customerId, $rating, $comment]);
         } catch (PDOException $e) {
@@ -81,9 +112,11 @@ class ReviewRepository {
         }
     }
 
+    // Löscht ein Review anhand der Review-ID
     public function deleteReview($reviewId) {
         try {
             $this->db->connect();
+            // SQL: Löscht ein Review mit benanntem Parameter
             $sql = "DELETE FROM reviews WHERE ReviewID = :reviewId";
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute(['reviewId' => $reviewId]);
@@ -95,13 +128,17 @@ class ReviewRepository {
         }
     }
 
+    // Prüft, ob ein Benutzer bereits ein Review für ein Kunstwerk abgegeben hat
     public function hasUserReviewedArtwork($artworkId, $customerId) {
         try {
             $this->db->connect();
-            $sql = "SELECT COUNT(*) as review_count FROM reviews WHERE ArtWorkID = ? AND CustomerID = ?";
+            $sql = "SELECT COUNT(*) as review_count 
+                    FROM reviews 
+                    WHERE ArtWorkID = ? AND CustomerID = ?";
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([$artworkId, $customerId]);
             $row = $stmt->fetch();
+            // Gibt true zurück, wenn mindestens ein Review existiert
             return ($row['review_count'] > 0);
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while checking user reviews");

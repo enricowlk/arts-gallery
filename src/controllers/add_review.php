@@ -28,15 +28,6 @@ $customerId = $_SESSION['user']['CustomerID'];
 // ReviewRepository mit Datenbankverbindung initialisieren
 $reviewRepo = new ReviewRepository(new Database());
 
-// Prüfen ob der Benutzer das Kunstwerk bereits bewertet hat && Fehlermeldung in Session speichern
-if ($reviewRepo->hasUserReviewedArtwork($artworkId, $customerId)) {
-    $_SESSION['error_message'] = "You have already reviewed this artwork.";
-    
-    // Zurück zur Kunstwerk-Seite mit Fehlermeldung
-    header("Location: ../views/site_artwork.php?id=$artworkId");
-    exit();
-}
-
 // Neue Bewertung in Datenbank speichern
 $reviewRepo->addReview($artworkId, $customerId, $rating, $comment);
 

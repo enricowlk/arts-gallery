@@ -1,28 +1,34 @@
 <?php
+// Session starten
 session_start(); 
 
-require_once __DIR__ . '/../services/global_exception_handler.php';
+// Required-Dateien einbinden
+require_once __DIR__ . '/../services/global_exception_handler.php'; 
 require_once __DIR__ . '/../../config/database.php'; 
 require_once __DIR__ . '/../repositories/genreRepository.php'; 
 require_once __DIR__ . '/../repositories/artworkRepository.php'; 
 
+// Überprüfen, ob eine gültige Genre-ID übergeben wurde
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    header("Location: error.php?message=Invalid or missing genre ID");
+    header("Location: /components/error.php?message=Invalid or missing genre ID");
     exit();
 }
 
-$genreId = (int)$_GET['id'];
+$genreId = (int)$_GET['id']; // Genre-ID aus GET-Parameter holen
 
+// Repository-Instanzen erstellen
 $genreRepo = new GenreRepository(new Database());
 $artworkRepo = new ArtworkRepository(new Database());
 
-$genre = $genreRepo->getGenreById($genreId); 
+$genre = $genreRepo->getGenreById($genreId); // Genre-Daten abfragen
 
+// Überprüfen, ob Genre existiert
 if ($genre === null) {
-    header("Location: error.php?message=Genre not found");
+    header("Location: /components/error.php?message=Genre not found");
     exit();
 }
 
+// Kunstwerke für dieses Genre abfragen
 $artworks = $artworkRepo->getAllArtworksForOneGenreByGenreId($genreId);
 ?>
 
@@ -41,18 +47,20 @@ $artworks = $artworkRepo->getAllArtworksForOneGenreByGenreId($genreId);
         <div class="row">
             <div class="col-md-4">
                 <?php
+                // Pfad zum Genre-Bild erstellen und prüfen ob es existiert
                 $imagePath = "../../images/genres/square-medium/" . $genre->getGenreID() . ".jpg";
                 $imageExists = file_exists($imagePath);
 
                 if ($imageExists) {
                     $imageUrl = $imagePath;
                 } else {
-                    $imageUrl = "../../images/placeholder.png";
+                    $imageUrl = "../../images/placeholder.png"; // Platzhalter falls kein Bild existiert
                 }
                 ?>
                 <img src="<?php echo $imageUrl; ?>" class="genre-image shadow" alt="<?php echo $genre->getGenreName(); ?>">
             </div>
             <div class="col-md-8">
+                <!-- Informationen zum Genre -->
                 <div class="info">
                     <h1><?php echo $genre->getGenreName(); ?></h1>
                     <p>Era: <?php echo $genre->getEra(); ?></p>
@@ -64,23 +72,28 @@ $artworks = $artworkRepo->getAllArtworksForOneGenreByGenreId($genreId);
             </div>
         </div>
 
+        <!-- Abschnitt für Kunstwerke in diesem Genre -->
         <h2 class="mt-5">Artworks in <?php echo $genre->getGenreName(); ?></h2>
         <?php if (empty($artworks)){ ?>
             <p class="text-center">No artworks found in this genre.</p>
         <?php }else{ ?>
             <div class="row">
                 <?php foreach ($artworks as $artwork){ 
+                    // Durchschnittsbewertung für Kunstwerk holen
                     $averageRating = $artworkRepo->getAverageRatingForArtwork($artwork->getArtWorkID());
+                    
+                    // Pfad zum Kunstwerk-Bild erstellen und prüfen ob es existiert
                     $imagePath = "../../images/works/medium/" . $artwork->getImageFileName() . ".jpg";
                     $imageExists = file_exists($imagePath);
 
                     if ($imageExists) {
                         $imageUrl = $imagePath;
                     } else {
-                        $imageUrl = "../../images/placeholder.png";
+                        $imageUrl = "../../images/placeholder.png"; // Platzhalter falls kein Bild existiert
                     }
                 ?>
                     <div class="col-md-4 mb-4">
+                        <!-- Referenzierung und Infos über das Kunstwerk -->
                         <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                         <div class="card artwork-card">
                             <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">

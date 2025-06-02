@@ -1,40 +1,47 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../services/global_exception_handler.php';
+// Required-Dateien einbinden
+require_once __DIR__ . '/../services/global_exception_handler.php'; 
 require_once __DIR__ . '/../../config/database.php'; 
-require_once __DIR__ . '/../repositories/artistRepository.php';
+require_once __DIR__ . '/../repositories/artistRepository.php'; 
 require_once __DIR__ . '/../repositories/artworkRepository.php'; 
 
+// Query-Parameter aus GET-Request holen oder leeren String setzen
 if (isset($_GET['query'])) {
     $query = $_GET['query']; 
 } else {
     $query = ''; 
 }
 
+// Sortierreihenfolge für Künstler aus GET-Request holen oder Standardwert setzen
 if (isset($_GET['artistOrder'])) {
     $artistOrder = $_GET['artistOrder'];
 } else {
-    $artistOrder = 'ASC'; 
+    $artistOrder = 'ASC'; // Aufsteigend als Standard
 }
 
+// Sortierreihenfolge für Kunstwerke aus GET-Request holen oder Standardwert setzen
 if (isset($_GET['artworkOrder'])) {
     $artworkOrder = $_GET['artworkOrder'];
 } else {
-    $artworkOrder = 'ASC';
+    $artworkOrder = 'ASC'; // Aufsteigend als Standard
 }
 
+// Sortierkriterium für Kunstwerke aus GET-Request holen oder Standardwert setzen
 if (isset($_GET['artworkOrderBy'])) {
     $artworkOrderBy = $_GET['artworkOrderBy'];
 } else {
-    $artworkOrderBy = 'Title'; 
+    $artworkOrderBy = 'Title'; // Titel als Standard
 }
 
+// Repository-Instanzen erstellen
 $artistRepo = new ArtistRepository(new Database()); 
 $artworkRepo = new ArtworkRepository(new Database());
 
-$artists = $artistRepo->searchArtists($query, $artistOrder); 
-$artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder);
+// Daten aus den Repositories abfragen
+$artists = $artistRepo->searchArtists($query, $artistOrder); // Künstler suchen
+$artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder); // Kunstwerke suchen
 ?>
 
 <!DOCTYPE html>
@@ -57,11 +64,13 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
         <h1>Search Results for "<?php echo $query; ?>"</h1> 
 
         <div class="split-container">
+            <!-- Linke Spalte für Künstler -->
             <div class="left-column">
                 <h2>Artists</h2>
                 <?php if (empty($artists)){ ?>
                     <p>No artists found.</p> 
                 <?php }else{ ?>
+                    <!-- Sortierdropdown für Künstler -->
                     <div class="row mb-3">
                         <div>
                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -74,15 +83,17 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                         </div>
                     </div>
                     
+                    <!-- Künstler als Karten anzeigen -->
                     <div class="row g-2">
                         <?php foreach ($artists as $artist) { 
+                            // Bildpfad für Künstler erstellen
                             $imagePath = "../../images/artists/square-medium/" . $artist->getArtistID() . ".jpg";
                             $imageExists = file_exists($imagePath);
             
                             if ($imageExists) {
                                 $imageUrl = $imagePath;
                             } else {
-                                $imageUrl = "../../images/placeholder.png";
+                                $imageUrl = "../../images/placeholder.png"; // Platzhalter falls kein Bild existiert
                             } 
                         ?>
                             <div class="col">
@@ -100,11 +111,13 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                 <?php } ?>
             </div>
 
+            <!-- Rechte Spalte für Kunstwerke -->
             <div class="right-column">
                 <h2>Artworks</h2>
                 <?php if (empty($artworks)){ ?>
                     <p>No artworks found.</p> 
                 <?php }else{ ?>
+                    <!-- Sortierdropdowns für Kunstwerke -->
                     <div class="row mb-3">
                             <div>
                                 <div class="btn-group">
@@ -130,16 +143,19 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                             </div>
                     </div>
                     
+                    <!-- Kunstwerke als Karten anzeigen -->
                     <div class="row g-2">
                         <?php foreach ($artworks as $artwork) {  
+                            // Künstlerinformationen für das Kunstwerk holen
                             $artist = $artistRepo->getArtistByID($artwork->getArtistID()); 
+                            // Bildpfad für Kunstwerk erstellen
                             $imagePath = "../../images/works/square-medium/" . $artwork->getImageFileName() . ".jpg";
                             $imageExists = file_exists($imagePath);
 
                             if ($imageExists) {
                                 $imageUrl = $imagePath;
                             } else {
-                                $imageUrl = "../../images/placeholder.png";
+                                $imageUrl = "../../images/placeholder.png"; // Platzhalter falls kein Bild existiert
                             }
                         ?>
                             <div class="col">

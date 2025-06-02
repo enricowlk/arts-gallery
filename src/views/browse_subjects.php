@@ -1,11 +1,15 @@
 <?php
+// Session starten für Session-Variablen
 session_start(); 
 
-require_once __DIR__ . '/../services/global_exception_handler.php';
-require_once __DIR__ . '/../repositories/subjectRepository.php';
+// Einbinden benötigter Dateien
+require_once __DIR__ . '/../services/global_exception_handler.php'; 
+require_once __DIR__ . '/../repositories/subjectRepository.php'; 
 
+// SubjectRepository instanziieren
 $subjectRepo = new SubjectRepository(new Database()); 
 
+// Alle Subjects aus der Datenbank abrufen
 $subjects = $subjectRepo->getAllSubjects(); 
 ?>
 
@@ -21,23 +25,26 @@ $subjects = $subjectRepo->getAllSubjects();
     <?php include __DIR__ . '/components/navigation.php'; ?>
 
     <div class="container">
-        <h1 class="text-center">Subjects</h1> 
+        <h1 class="text-center">Subjects</h1>  
         <div class="row">
             <?php foreach ($subjects as $subject) {  
+                // Pfad zum Subject-Bild erstellen
                 $imagePath = "../../images/subjects/square-medium/" . $subject->getSubjectID() . ".jpg";
+                // Prüfen ob Bild existiert
                 $imageExists = file_exists($imagePath);
 
-                if ($imageExists) {
-                    $imageUrl = $imagePath;
-                } else {
-                    $imageUrl = "../../images/placeholder.png";
-                }
+                // Subject-Bild oder Platzhalter
+                $imageUrl = $imageExists ? $imagePath : "../../images/placeholder.png";
                 ?>
+                
                 <div class="col-md-4 mb-4">
+                    <!-- Link zur Subject-Detailseite -->
                     <a href="site_subject.php?id=<?php echo $subject->getSubjectID(); ?>">
                     <div class="card">
+                        <!-- Subject-Bild -->
                         <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $subject->getSubjectName(); ?>">
                         <div class="card-body">
+                            <!-- Subject-Name -->
                             <h5 class="card-title"><?php echo $subject->getSubjectName(); ?></h5>
                         </div>
                     </div>

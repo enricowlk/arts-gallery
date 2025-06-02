@@ -1,30 +1,38 @@
 <?php
+// Session starten, um auf Session-Variablen zugreifen zu können
 session_start(); 
 
-require_once __DIR__ . '/../services/global_exception_handler.php';
+// Einbinden von benötigten Dateien
+require_once __DIR__ . '/../services/global_exception_handler.php'; 
 require_once __DIR__ . '/../../config/database.php'; 
 require_once __DIR__ . '/../repositories/artistRepository.php'; 
 require_once __DIR__ . '/../repositories/artworkRepository.php'; 
 
+// Überprüfen, ob eine gültige Künstler-ID übergeben wurde
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    header("Location: error.php?message=Invalid or missing artist ID");
+    header("Location: /components/error.php?message=Invalid or missing artist ID");
     exit();
 }
 
-$artistId = (int)$_GET['id']; 
+$artistId = (int)$_GET['id']; // Künstler-ID aus GET-Parameter holen und in Integer umwandeln
 
+// Repository-Instanzen erstellen
 $artistRepo = new ArtistRepository(new Database());
 $artworkRepo = new ArtworkRepository(new Database());
 
+// Künstler-Daten aus der Datenbank holen
 $artist = $artistRepo->getArtistById($artistId); 
 
+// Überprüfen, ob Künstler existiert
 if ($artist === null) {
-    header("Location: error.php?message=Artist not found");
+    header("Location: /components/error.php?message=Artist not found");
     exit();
 }
 
+// Alle Kunstwerke des Künstlers holen
 $artworks = $artworkRepo->getAllArtworksForOneArtistByArtistId($artistId); 
 
+// Überprüfen, ob Künstler in Favoriten-Liste ist
 $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, $_SESSION['favorite_artists']);
 ?>
 
@@ -43,31 +51,36 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
         <div class="row">
             <div class="col-md-6">
                 <?php
+                // Pfad zum Künstlerbild erstellen und prüfen ob existiert
                 $imagePath = "../../images/artists/medium/" . $artist->getArtistID() . ".jpg";
                 $imageExists = file_exists($imagePath);
 
+                // Falls Bild nicht existiert, Platzhalter verwenden
                 if ($imageExists) {
                     $imageUrl = $imagePath;
                 } else {
                     $imageUrl = "../../images/placeholder.png";
                 }
                 ?>
+                <!-- Künstlerbild anzeigen -->
                 <img src="<?php echo $imageUrl; ?>" 
                 class="artist-image-small rounded border shadow" 
                 alt="Portrait of <?php echo $artist->getFirstName() . ' ' . $artist->getLastName(); ?>">
 
-
+                <!-- Formular für Favoriten-Button -->
                 <form action="../controllers/favorites_process.php" method="post" class="mt-3">
                     <input type="hidden" name="artist_id" value="<?php echo $artistId; ?>">
                     <button type="submit" class="btn 
                         <?php
+                            // Button-Farbe basierend auf Favoriten-Status setzen
                             if ($isFavoriteArtist) {
-                                echo 'btn-danger'; 
+                                echo 'btn-danger'; // für "Entfernen"
                             } else {
-                                echo 'btn-secondary'; 
+                                echo 'btn-secondary'; // für "Hinzufügen"
                             }
                         ?>">
                         <?php
+                            // Button-Text basierend auf Favoriten-Status setzen
                             if ($isFavoriteArtist) {
                                 echo 'Remove Artist from Favorites'; 
                             } else {
@@ -77,6 +90,8 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
                     </button>
                 </form>
             </div>
+            
+            <!-- Rechte Spalte: Künstlerinformationen -->
             <div class="col-md-6">
                 <div class="info">
                     <h1><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h1>
@@ -89,13 +104,17 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
             </div>
         </div>
 
+        <!-- Abschnitt für Kunstwerke des Künstlers -->
         <h2 class="mt-5">Artworks by <?php echo $artist->getLastName(); ?></h2>
+        <!-- Wenn für den Künstler keine Kunstwerke gefunden wurden -->
         <?php if (empty($artworks)){ ?>
-            <p class="text-center">No artworks found for this artist.</p>
+            <p class="text-center">No artworks found for this artist.</p> 
         <?php }else{ ?>
             <div class="row">
                 <?php foreach ($artworks as $artwork){ 
+                    // Durchschnittliche Bewertung für Kunstwerk holen
                     $averageRating = $artworkRepo->getAverageRatingForArtwork($artwork->getArtWorkID());
+                    // Pfad zum Kunstwerk-Bild erstellen und prüfen ob existiert
                     $imagePath = "../../images/works/medium/" . $artwork->getImageFileName() . ".jpg";
                     $imageExists = file_exists($imagePath);
 
@@ -105,6 +124,7 @@ $isFavoriteArtist = isset($_SESSION['favorite_artists']) && in_array($artistId, 
                         $imageUrl = "../../images/placeholder.png";
                     }
                 ?>
+                    <!-- Kunstwerk-Karte -->
                     <div class="col-md-4 mb-4">
                         <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                         <div class="card artwork-card">

@@ -1,23 +1,27 @@
 <?php
+// Session starten für Zugriff auf Favoriten-Daten
 session_start();
 
+// Einbinden benötigter Dateien
 require_once __DIR__ . '/../services/global_exception_handler.php';
 require_once __DIR__ . '/../repositories/artworkRepository.php'; 
 require_once __DIR__ . '/../repositories/artistRepository.php'; 
 
+// Repository-Instanzen erstellen
 $artworkRepo = new ArtworkRepository(new Database());
 $artistRepo = new ArtistRepository(new Database());
 
+// Favoriten aus Session laden oder leere Arrays erstellen
 if (isset($_SESSION['favorite_artworks'])) {
-    $favoriteArtworks = $_SESSION['favorite_artworks']; 
+    $favoriteArtworks = $_SESSION['favorite_artworks']; // Gelistete Kunstwerke
 } else {
-    $favoriteArtworks = []; 
+    $favoriteArtworks = []; // Leeres Array falls keine Favoriten
 }
 
 if (isset($_SESSION['favorite_artists'])) {
-    $favoriteArtists = $_SESSION['favorite_artists']; 
+    $favoriteArtists = $_SESSION['favorite_artists']; // Gelistete Künstler
 } else {
-    $favoriteArtists = []; 
+    $favoriteArtists = []; // Leeres Array falls keine Favoriten
 }
 ?>
 
@@ -39,16 +43,20 @@ if (isset($_SESSION['favorite_artists'])) {
         <?php if (!empty($favoriteArtists)){ ?>
             <div class="row">
                 <?php foreach ($favoriteArtists as $artistId){ 
+                    // Künstler-Daten laden
                     $artist = $artistRepo->getArtistById($artistId);
+                    // Bildpfad erstellen und prüfen
                     $imagePath = "../../images/artists/medium/" . $artist->getArtistID() . ".jpg";
                     $imageExists = file_exists($imagePath);
 
+                    // Künstlerbild oder Platzhalter
                     if ($imageExists) {
                         $imageUrl = $imagePath;
                     } else {
                         $imageUrl = "../../images/placeholder.png";
                     }
                 ?>
+                    <!-- Künstler-Karte -->
                     <div class="col-md-4 mb-4">
                         <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
                         <div class="card">
@@ -63,24 +71,31 @@ if (isset($_SESSION['favorite_artists'])) {
                 <?php } ?>
             </div>
         <?php }else{ ?>
+            <!-- Hinweis wenn keine Künstler-Favoriten vorhanden -->
             <p>You have no favorite artists yet.</p>
         <?php } ?>
+
 
         <h2 class="mt-4">Favorite Artworks</h2>
         <?php if (!empty($favoriteArtworks)){ ?>
             <div class="row">
                 <?php foreach ($favoriteArtworks as $artworkId){ 
+                    // Kunstwerk-Daten laden
                     $artwork = $artworkRepo->getArtworkById($artworkId);
+                    // Künstler-Daten laden
                     $artist = $artistRepo->getArtistById($artwork->getArtistID());
+                    // Bildpfad erstellen und prüfen
                     $imagePath = "../../images/works/medium/" . $artwork->getImageFileName() . ".jpg";
                     $imageExists = file_exists($imagePath);
 
+                    // Kunstwerkbild oder Platzhalter
                     if ($imageExists) {
                         $imageUrl = $imagePath;
                     } else {
                         $imageUrl = "../../images/placeholder.png";
                     }
                 ?>
+                    <!-- Kunstwerk-Karte -->
                     <div class="col-md-4 mb-4">
                         <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                         <div class="card">
@@ -95,6 +110,7 @@ if (isset($_SESSION['favorite_artists'])) {
                 <?php } ?>
             </div>
         <?php }else{ ?>
+            <!-- Hinweis wenn keine Kunstwerk-Favoriten vorhanden -->
             <p>You have no favorite artworks yet.</p>
         <?php } ?>
     </div>

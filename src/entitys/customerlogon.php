@@ -1,12 +1,18 @@
 <?php
+/**
+ * Klasse zur Verwaltung von Kunden-Login-Daten
+ * Enthält Authentifizierungsinformationen und Benutzerrechte
+ */
 class CustomerLogon {
-    private $LogonID;    
-    private $CustomerID;
+    // Private Eigenschaften
+    private $LogonID;     
+    private $CustomerID; 
     private $UserName;   
     private $Password;   
-    private $Type;      
+    private $Type;       
 
-    public function __construct($LogonID, $CustomerID, $UserName, $Password, $Type = 'user') {
+    //Konstruktor für Login-Daten
+    public function __construct($LogonID, $CustomerID, $UserName, $Password, $Type = 'user') { //Type standardmäßig auf user
         $this->LogonID = $LogonID;
         $this->CustomerID = $CustomerID;
         $this->UserName = $UserName;
@@ -14,6 +20,7 @@ class CustomerLogon {
         $this->Type = $Type;
     }
 
+    // --- Getter-Methoden ---
     public function getLogonID() {
         return $this->LogonID;
     }

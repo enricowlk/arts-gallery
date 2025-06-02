@@ -1,13 +1,18 @@
 <?php
+/**
+ * Klasse zur Darstellung einer Kunstwerk-Bewertung
+ * Enthält Kundenbewertungen für Kunstwerke im System
+ */
 class Review {
-    private $ReviewId;    
-    private $ArtWorkId;  
-    private $CustomerId;  
-    private $ReviewDate;  
+    // Private Eigenschaften
+    private $ReviewId;     
+    private $ArtWorkId;   
+    private $CustomerId;   
+    private $ReviewDate;
     private $Rating;      
-    private $Comment;    
+    private $Comment;     
 
-
+    //Konstruktor für Review-Objekte
     public function __construct($ReviewId, $ArtWorkId, $CustomerId, $ReviewDate, $Rating, $Comment) {
         $this->ReviewId = $ReviewId;
         $this->ArtWorkId = $ArtWorkId;
@@ -17,6 +22,7 @@ class Review {
         $this->Comment = $Comment;
     }
 
+    // --- Getter-Methoden ---
     public function getReviewId() {
         return $this->ReviewId;
     }
@@ -41,4 +47,3 @@ class Review {
         return $this->Comment;
     }
 }
-?>

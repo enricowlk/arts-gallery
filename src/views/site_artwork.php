@@ -1,26 +1,31 @@
 <?php
+// Session starten für Benutzerdaten
 session_start(); 
 
+// Einbinden aller benötigten Dateien
 require_once __DIR__ . '/../services/global_exception_handler.php';
 require_once __DIR__ . '/../../config/database.php'; 
 require_once __DIR__ . '/../repositories/artworkRepository.php'; 
 require_once __DIR__ . '/../repositories/artistRepository.php'; 
 require_once __DIR__ . '/../repositories/reviewRepository.php'; 
 require_once __DIR__ . '/../repositories/customerRepository.php'; 
-require_once __DIR__ . '/../repositories/genreRepository.php';
+require_once __DIR__ . '/../repositories/genreRepository.php'; 
 require_once __DIR__ . '/../repositories/subjectRepository.php'; 
-require_once __DIR__ . '/../repositories/gallerieRepository.php';
+require_once __DIR__ . '/../repositories/gallerieRepository.php'; 
 
+// Überprüfen ob Benutzer eingeloggt und Admin ist
 $isLoggedIn = isset($_SESSION['user']);
 $isAdmin = isset($_SESSION['user']['Type']) && $_SESSION['user']['Type'] == 1;
 
+// Prüfen ob gültige Artwork-ID übergeben wurde
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    header("Location: error.php?message=Invalid or missing artwork ID");
+    header("Location: /components/error.php?message=Invalid or missing artwork ID");
     exit();
 }
 
-$artworkId = (int)$_GET['id']; 
+$artworkId = (int)$_GET['id']; // Artwork-ID aus GET-Parameter
 
+// Repository-Instanzen erstellen
 $artworkRepo = new ArtworkRepository(new Database());
 $artistRepo = new ArtistRepository(new Database());
 $reviewRepo = new ReviewRepository(new Database());
@@ -29,32 +34,37 @@ $genreRepo = new GenreRepository(new Database());
 $subjectRepo = new SubjectRepository(new Database());
 $gallerieRepo = new GallerieRepository(new Database());
 
+// Kunstwerk-Daten laden
 $artwork = $artworkRepo->getArtworkById($artworkId); 
 if ($artwork === null) {
-    header("Location: error.php?message=Artwork not found");
+    header("Location: /components/error.php?message=Artwork not found");
     exit();
 }
 
-$artist = $artistRepo->getArtistById($artwork->getArtistID()); 
-$reviews = $reviewRepo->getAllReviewsForOneArtworkByArtworkId($artworkId);
+// Zusätzliche Daten laden
+$artist = $artistRepo->getArtistById($artwork->getArtistID()); // Künstler des Kunstwerks
+$reviews = $reviewRepo->getAllReviewsForOneArtworkByArtworkId($artworkId); // Bewertungen für das Artwork
+$genres = $artworkRepo->getGenreForOneArtworkByArtworkId($artworkId); // Genres die zum Artwork gehören
+$subjects = $artworkRepo->getSubjectForOneArtworkByArtworkId($artworkId); // Subjects die zum Artwork gehören
+$gallerie = $gallerieRepo->getGalleryByArtworkId($artworkId); // Galerie-Infos 
 
-$genres = $artworkRepo->getGenreForOneArtworkByArtworkId($artworkId);
-$subjects = $artworkRepo->getSubjectForOneArtworkByArtworkId($artworkId);
-
-$gallerie = $gallerieRepo->getGalleryByArtworkId($artworkId);
-
+// Durchschnittliche Bewertung des Kunstwerks laden && Bewertungsdaten berechnen
 $averageRating = $artworkRepo->getAverageRatingForArtwork($artworkId);
 $reviewCount = count($reviews);
 
+// Prüfen ob Kunstwerk in Favoriten
 $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkId, $_SESSION['favorite_artworks']);
 
-// Initialize $hasReviewed as false for non-logged-in users
+// Prüfen ob Benutzer bereits bewertet hat
 $hasReviewed = false;
-
 if ($isLoggedIn) {
     $hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']['CustomerID']);
 }
 
+// Bildpfad erstellen und prüfen
+$imagePath = "../../images/works/medium/" . $artwork->getImageFileName() . ".jpg";
+$imageExists = file_exists($imagePath);
+$imageUrl = $imageExists ? $imagePath : "../../images/placeholder.png";
 ?>
 
 <!DOCTYPE html>
@@ -70,119 +80,20 @@ if ($isLoggedIn) {
 
     <div class="container mt-4">
         <div class="row">
+            <!-- Linke Spalte: Kunstwerk-Bild und Aktionen -->
             <div class="col-md-6">
-                <?php
-                $imagePath = "../../images/works/medium/" . $artwork->getImageFileName() . ".jpg";
-                $imageExists = file_exists($imagePath);
-
-                if ($imageExists) {
-                    $imageUrl = $imagePath;
-                } else {
-                    $imageUrl = "../../images/placeholder.png";
-                }
-                ?>
                 <a data-bs-toggle="modal" data-bs-target="#imageModal">
-                <img src="<?php echo $imageUrl; ?>" 
-                    class="modal-artwork-image img-fluid rounded border border-secondary shadow" 
-                    alt="<?php echo $artwork->getTitle(); ?>">
+                    <img src="<?php echo $imageUrl; ?>" 
+                        class="modal-artwork-image img-fluid rounded border border-secondary shadow" 
+                        alt="<?php echo $artwork->getTitle(); ?>">
                 </a>
 
-                <div class="modal fade" id="imageModal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title"><?php echo $artwork->getTitle(); ?></h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div>
-                                <img src="<?php echo $imageUrl; ?>" alt="<?php echo $artwork->getTitle(); ?>">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="action-row"> 
-                    <form action="../controllers/favorites_process.php" method="post">
-                        <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
-                        <button type="submit" class="btn 
-                            <?php
-                                if ($isFavoriteArtwork) {
-                                    echo 'btn-danger'; 
-                                } else {
-                                    echo 'btn-secondary'; 
-                                }
-                            ?>">
-                            <?php
-                                if ($isFavoriteArtwork) {
-                                    echo 'Remove from Favorites'; 
-                                } else {
-                                    echo 'Add to Favorites'; 
-                                }
-                            ?>
-                        </button>
-                    </form>
-
-                    <div>
-                        <?php if ($reviewCount > 0){ ?>
-                            <span><strong><?php echo number_format($averageRating, 1); ?>/5 </strong></span>
-                            <img src="../../images/icon_gelberStern.png" alt="Star">
-                            <span>(<?php echo $reviewCount; ?> reviews)</span>
-                        <?php }else{ ?>
-                            <span>No ratings yet</span>
-                        <?php } ?>
-                    </div>
-                </div>
-
-                <?php if ($gallerie && $gallerie->getLatitude() && $gallerie->getLongitude()) { ?>
-                        <div class="accordion mt-4">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#galleryInfo">
-                                        <strong>Click me to see my Location!</strong>
-                                    </button>
-                                </h2>
-                                <div id="galleryInfo" class="collapse" data-bs-parent="#galleryAccordion">
-                                    <div class="accordion-body">
-                                        <p><strong>Name:</strong> <?php echo $gallerie->getGalleryName(); ?></p>
-                                        <?php if ($gallerie->getGalleryNativeName()) { ?>
-                                            <p><strong>Native Name:</strong> <?php echo $gallerie->getGalleryNativeName(); ?></p>
-                                        <?php } ?>
-                                        <p><strong>Location:</strong> <?php echo $gallerie->getGalleryCity(); ?>, <?php echo $gallerie->getGalleryCountry(); ?></p>
-                                        
-                                        <?php if ($gallerie->getGalleryWebSite()) { ?>
-                                            <p><strong>Website:</strong> 
-                                                <a class="btn btn-secondary" href="<?php echo $gallerie->getGalleryWebSite(); ?>">
-                                                    Visit Museum Website
-                                                </a>
-                                            </p>
-                                        <?php } ?>
-                                        
-                                        <div>
-                                            <strong>Location Map:</strong>
-                                            <div class="ratio ratio-16x9 mt-2">
-                                                <iframe 
-                                                    src="https://maps.google.com/maps?q=<?php echo $gallerie->getLatitude(); ?>,<?php echo $gallerie->getLongitude(); ?>&z=15&output=embed"
-                                                    width="100%" 
-                                                    height="300" 
-                                                    frameborder="0" 
-                                                    style="border:0"
-                                                    allowfullscreen>
-                                                </iframe>
-                                            </div>
-                                            
-                                            <div class="map-links mt-2">
-                                                <a href="https://www.google.com/maps?q=<?php echo $gallerie->getLatitude(); ?>,<?php echo $gallerie->getLongitude(); ?>" 
-                                                class="btn btn-secondary btn-sm">
-                                                    Open in Google Maps
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php } ?>
+                <?php include __DIR__ . '/components/artworkSite/image_modal.php'; ?>
+                <?php include __DIR__ . '/components/artworkSite/artwork_actions.php'; ?>
+                <?php include __DIR__ . '/components/artworkSite/gallery_info.php'; ?>
             </div>
+            
+            <!-- Rechte Spalte: Kunstwerk-Informationen -->
             <div class="col-md-6">
                 <div class="info">
                     <h1><?php echo $artwork->getTitle(); ?></h1>
@@ -192,6 +103,7 @@ if ($isLoggedIn) {
                     <p><strong>Excerpt:</strong> <?php echo $artwork->getExcerpt(); ?></p>
                     <p><strong>Description:</strong> <?php echo $artwork->getDescription(); ?></p>
                     
+                    <!-- Genres und Subjects des Kunstwerks mit Referenzierung zu deren Einzelseiten -->
                     <div class="artwork-links">
                         <p><strong>Genres:</strong> 
                             <?php 
@@ -209,7 +121,7 @@ if ($isLoggedIn) {
                             ?>
                         </p>
                             
-                        <p><strong>Subjects:</strong> 
+                        <p><strong>Subjects:</strong>
                             <?php 
                             if (!empty($subjects)) { 
                                 foreach ($subjects as $subject) { 
@@ -226,12 +138,14 @@ if ($isLoggedIn) {
                         </p>
                     </div>
 
+                    <!-- Externer Link für mehr Informationen über das Kunstwerk -->
                     <p> You want to know more about "<strong><?php echo $artwork->getTitle(); ?></strong>"?</p>
                     <a href="<?php echo $artwork->getArtWorkLink(); ?>" class="btn btn-secondary">Learn More</a>
                 </div>
             </div>
         </div>
 
+        <!-- Reviews -->
         <h2 class="mt-4">Reviews</h2>
         <?php 
         if(!$isLoggedIn) { 
@@ -241,35 +155,7 @@ if ($isLoggedIn) {
             </div>
         <?php 
         } elseif($isLoggedIn && !$hasReviewed) { 
-        ?>
-            <div>
-                <div>
-                    <h5>Add Your Review</h5>
-                    <form action="../controllers/add_review.php" method="post">
-                        <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
-                        <div>
-                            <div class="col-md-3">
-                                <label class="form-label">Rating</label>
-                                <select class="form-control" id="rating" name="rating" required>
-                                    <option value="1">1 - Poor</option>
-                                    <option value="2">2 - Fair</option>
-                                    <option value="3">3 - Good</option>
-                                    <option value="4">4 - Very Good</option>
-                                    <option value="5">5 - Excellent</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mt-2">
-                                <label for="comment" class="form-label">Comment</label>
-                                <textarea class="form-control" id="comment" name="comment" rows="2" required></textarea>
-                            </div>
-                        </div>
-                        <div class="mt-1">
-                                <button type="submit" class="btn btn-secondary">Submit Review</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        <?php 
+            include __DIR__ . '/components/artworkSite/review_form.php';
         } else { 
         ?>
             <div class="alert alert-success col-md-4">
@@ -279,57 +165,7 @@ if ($isLoggedIn) {
         } 
         ?>
 
-        <div>
-            <table class="table table-hover review-table">
-                <thead>
-                    <tr>
-                        <th>Customer</th>
-                        <th>Rating</th>
-                        <th>Comment</th>
-                        <th>Date</th>
-                        <th>City (Country)</th>
-                        <?php if ($isAdmin) { ?>
-                            <th> </th>
-                        <?php } ?>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($reviews)) { ?>
-                        <?php foreach ($reviews as $review) { ?>
-                            <?php
-                                $customer = $customerRepo->getCustomerByID($review->getCustomerId());
-                            ?>
-                            <tr>
-                                <td><?php echo $customer->getFirstName() . ' ' . $customer->getLastName(); ?></td>
-                                <td class="small">
-                                    <?php echo $review->getRating(); ?>/5 
-                                    <img src="../../images/icon_gelberStern.png" alt="Star" class="star-icon">
-                                </td>
-                                <td><?php echo $review->getComment(); ?></td>
-                                <td class="small"><?php echo $review->getReviewDate(); ?></td>
-                                <td><?php echo $customer->getCity(); ?> (<?php echo $customer->getCountry(); ?>)</td>
-                                <?php if ($isAdmin) { ?>
-                                    <td>
-                                        <form action="../controllers/delete_review.php" method="post">
-                                            <input type="hidden" name="review_id" value="<?php echo $review->getReviewID(); ?>">
-                                            <input type="hidden" name="artwork_id" value="<?php echo $artworkId; ?>">
-                                            <button type="submit" class="btn btn-danger btn-sm" 
-                                                    onclick="return confirm('Are you sure you want to delete this review? This action cannot be undone.')">
-                                                Delete
-                                            </button>
-                                        </form>
-                                    </td>
-                                <?php } ?>
-                            </tr>
-                        <?php } ?>
-                    <?php } else { ?>
-                        <tr>
-                            <td colspan="5" class="text-center">No reviews found for this artwork.</td>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-        </div>
+        <?php include __DIR__ . '/components/artworkSite/reviews_table.php'; ?>
     </div>
 
     <?php include __DIR__ . '/components/footer.php'; ?>

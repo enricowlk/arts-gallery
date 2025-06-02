@@ -1,16 +1,28 @@
 <?php 
+// Definition der Artist-Klasse zur Darstellung eines Künstlers
 class Artist {
-    private $ArtistID;        
-    private $FirstName;       
-    private $LastName;        
+    // Private Eigenschaften - nur innerhalb der Klasse zugänglich
+    private $ArtistID;       
+    private $FirstName;     
+    private $LastName;      
     private $Nationality;     
     private $YearOfBirth;     
-    private $YearOfDeath;     
-    private $Details;         
+    private $YearOfDeath;    
+    private $Details;       
     private $ArtistLink;      
 
-
-    public function __construct($ArtistID, $FirstName, $LastName, $Nationality, $YearOfBirth, $YearOfDeath, $Details, $ArtistLink) {
+    // Konstruktor zur Initialisierung eines neuen Artist-Objekts
+    public function __construct(
+        $ArtistID, 
+        $FirstName, 
+        $LastName, 
+        $Nationality, 
+        $YearOfBirth, 
+        $YearOfDeath, 
+        $Details, 
+        $ArtistLink
+    ) {
+        // Zuweisung der Parameter zu den Klassen-Eigenschaften
         $this->ArtistID = $ArtistID;
         $this->FirstName = $FirstName;
         $this->LastName = $LastName;
@@ -21,7 +33,7 @@ class Artist {
         $this->ArtistLink = $ArtistLink;
     }
 
-
+    // --- Getter-Methoden ---    
     public function getArtistID() {
         return $this->ArtistID;
     }

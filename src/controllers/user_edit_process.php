@@ -1,85 +1,81 @@
 <?php
-session_start(); 
+session_start();
 
-if (!isset($_SESSION['user']) || $_SESSION['user']['Type'] != 1) {
-    header("Location: index.php"); 
+// Prüfen ob User eingeloggt ist
+if (!isset($_SESSION['user'])) {
+    header("Location: site_login.php");
     exit();
 }
 
 require_once __DIR__ . '/../repositories/customerRepository.php';
 require_once __DIR__ . '/../../config/database.php';
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: ../views/site_manage_users.php");
-    exit();
-}
-
 $customerRepo = new CustomerRepository(new Database());
 
-$customerID = isset($_POST['customerID']) ? (int)$_POST['customerID'] : 0;
-$firstName = isset($_POST['firstName']) ? trim($_POST['firstName']) : '';
-$lastName = isset($_POST['lastName']) ? trim($_POST['lastName']) : '';
-$email = isset($_POST['email']) ? trim($_POST['email']) : '';
-$address = isset($_POST['address']) ? trim($_POST['address']) : '';
-$city = isset($_POST['city']) ? trim($_POST['city']) : '';
-$country = isset($_POST['country']) ? trim($_POST['country']) : '';
-$postal = isset($_POST['postal']) ? trim($_POST['postal']) : '';
-$phone = isset($_POST['phone']) ? trim($_POST['phone']) : '';
-$password = isset($_POST['password']) ? trim($_POST['password']) : '';
-$confirmPassword = isset($_POST['confirmPassword']) ? trim($_POST['confirmPassword']) : '';
+// Trimmen der POST-Daten
+$customerID = isset($_POST['customerID']) ? (int)$_POST['customerID'] : $_SESSION['user']['CustomerID'];
+$firstName = trim($_POST['firstName']);
+$lastName = trim($_POST['lastName']);
+$email = trim($_POST['email']);
+$password = trim($_POST['password'] ?? '');
+$confirmPassword = trim($_POST['confirmPassword'] ?? '');
+$address = trim($_POST['address'] ?? '');
+$city = trim($_POST['city'] ?? '');
+$country = trim($_POST['country'] ?? '');
+$postal = trim($_POST['postal'] ?? '');
+$phone = trim($_POST['phone'] ?? '');
 $userType = isset($_POST['userType']) ? (int)$_POST['userType'] : 0;
 
-if ($customerID <= 0) {
-    $_SESSION['error'] = "Invalid user ID.";
-    header("Location: ../views/site_manage_users.php");
-    exit();
-}
-
+// Validierung
 if (empty($firstName) || empty($lastName) || empty($email)) {
     $_SESSION['error'] = "First name, last name, and email are required.";
-    header("Location: ../views/site_user_edit.php?id=" . $customerID);
-    exit();
+    redirectBack($customerID);
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $_SESSION['error'] = "Invalid email format.";
-    header("Location: ../views/site_user_edit.php?id=" . $customerID);
-    exit();
+    redirectBack($customerID);
 }
 
-if ($customerRepo->emailExistsForOtherUser($email, $customerID)) {
+// Email-Prüfung nur wenn sich die Email geändert hat
+$currentCustomer = $customerRepo->getCustomerByID($customerID);
+if (strtolower($email) !== strtolower($currentCustomer->getEmail()) && 
+    $customerRepo->emailExistsForOtherUser($email, $customerID)) {
     $_SESSION['error'] = "This email is already in use by another user.";
-    header("Location: ../views/site_user_edit.php?id=" . $customerID);
-    exit();
+    redirectBack($customerID);
 }
 
-$errors = [];
-if (
-    strlen($password) < 8 ||  
-    !preg_match('/[a-z]/', $password) ||  
-    !preg_match('/[A-Z]/', $password) ||  
-    !preg_match('/[0-9]/', $password) ||  
-    !preg_match('/[\W_]/', $password)     
-) {
-    $errors[] = 'Password must be at least 8 characters long and contain uppercase, lowercase, a number, and a special character.';
-}
-
-if (!empty($password) && $password !== $confirmPassword) {
-    $_SESSION['error'] = "Passwords do not match.";
-    header("Location: ../views/site_user_edit.php?id=" . $customerID);
-    exit();
-}
-
-if ($_SESSION['user']['CustomerID'] == $customerID && $userType == 0) {
-    $adminCount = $customerRepo->countAdministrators();
+// Passwortvalidierung nur wenn Passwort geändert wird
+if (!empty($password)) {
+    if ($password !== $confirmPassword) {
+        $_SESSION['error'] = "Passwords do not match.";
+        redirectBack($customerID);
+    }
     
-    if ($adminCount <= 1) {
-        $_SESSION['error'] = "Cannot demote the last administrator account.";
-        header("Location: ../views/site_user_edit.php?id=" . $customerID);
-        exit();
+    if (strlen($password) < 8 || 
+        !preg_match('/[a-z]/', $password) || 
+        !preg_match('/[A-Z]/', $password) || 
+        !preg_match('/[0-9]/', $password) || 
+        !preg_match('/[\W_]/', $password)) {
+        $_SESSION['error'] = "Password must be at least 8 characters long and contain uppercase, lowercase, a number, and a special character.";
+        redirectBack($customerID);
     }
 }
 
+// Admin-spezifische Prüfungen (nur für user_edit)
+if (isset($_POST['userType'])) {
+    // Prüfen ob Admin sich selbst degradieren will
+    if ($_SESSION['user']['CustomerID'] == $customerID && $userType == 0) {
+        $adminCount = $customerRepo->countAdministrators();
+        
+        if ($adminCount <= 1) {
+            $_SESSION['error'] = "Cannot demote the last administrator account.";
+            redirectBack($customerID);
+        }
+    }
+}
+
+// Daten vorbereiten
 $userData = [
     'firstName' => $firstName,
     'lastName' => $lastName,
@@ -91,22 +87,41 @@ $userData = [
     'phone' => $phone
 ];
 
+// Update durchführen
 $success = $customerRepo->updateUserProfile($customerID, $userData, $password);
 
-$customerRepo->setUserRole($customerID, $userType);
+// Falls es sich um user_edit handelt, Rolle aktualisieren
+if (isset($_POST['userType'])) {
+    $customerRepo->setUserRole($customerID, $userType);
+}
 
+// Session-Daten aktualisieren wenn der eingeloggte User sein eigenes Profil bearbeitet
 if ($_SESSION['user']['CustomerID'] == $customerID) {
     $_SESSION['user']['FirstName'] = $firstName;
     $_SESSION['user']['LastName'] = $lastName;
     $_SESSION['user']['Email'] = $email;
-    $_SESSION['user']['Type'] = $userType;
+    if (isset($_POST['userType'])) {
+        $_SESSION['user']['Type'] = $userType;
+    }
 }
 
 if ($success) {
-    $_SESSION['success'] = "User updated successfully.";
+    $_SESSION['success'] = "Changes saved successfully.";
 } else {
-    $_SESSION['error'] = "There was an error updating the user.";
+    $_SESSION['error'] = "There was an error updating the profile.";
 }
 
-header("Location: ../views/site_user_edit.php?id=" . $customerID);
-exit();
+redirectBack($customerID);
+
+function redirectBack($customerID) {
+    // Entscheiden wohin zurückgeleitet wird basierend auf der Quelle
+    if (isset($_POST['userType'])) {
+        // Kommt von user_edit
+        header("Location: ../views/site_user_edit.php?id=" . $customerID);
+    } else {
+        // Kommt von myAccount
+        header("Location: ../views/site_myaccount.php?id=" . $customerID);
+    }
+    exit();
+}
+?>

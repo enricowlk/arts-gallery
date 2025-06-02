@@ -1,19 +1,34 @@
 <?php
+// Definition der Artwork-Klasse zur Darstellung eines Kunstwerks
 class Artwork {
-    private $ArtWorkID;      
+    // Private Eigenschaften - nur innerhalb der Klasse zugänglich
+    private $ArtWorkID;       
     private $Title;          
     private $YearOfWork;      
     private $ImageFileName;   
-    private $ArtistID;      
-    private $Description;     
+    private $ArtistID;       
+    private $Description;    
     private $Excerpt;         
-    private $Medium;          
+    private $Medium;         
     private $OriginalHome;   
-    private $ArtWorkLink;    
+    private $ArtWorkLink;     
     private $GoogleLink;      
 
-    
-    public function __construct($ArtWorkID, $Title, $YearOfWork, $ImageFileName, $ArtistID, $Description, $Excerpt, $Medium, $OriginalHome, $ArtWorkLink, $GoogleLink) {
+    // Konstruktor zur Initialisierung eines neuen Artwork-Objekts
+    public function __construct(
+        $ArtWorkID,
+        $Title,
+        $YearOfWork,
+        $ImageFileName,
+        $ArtistID,
+        $Description,
+        $Excerpt,
+        $Medium,
+        $OriginalHome,
+        $ArtWorkLink,
+        $GoogleLink
+    ) {
+        // Zuweisung der Parameter zu den Klassen-Eigenschaften
         $this->ArtWorkID = $ArtWorkID;
         $this->Title = $Title;
         $this->YearOfWork = $YearOfWork;
@@ -27,7 +42,7 @@ class Artwork {
         $this->GoogleLink = $GoogleLink;
     }
 
-   
+    // --- Getter-Methoden ---
     public function getArtWorkID() {
         return $this->ArtWorkID;
     }
