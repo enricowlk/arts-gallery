@@ -1,4 +1,5 @@
 <?php
+// Einbindung benötigter Klassen
 require_once __DIR__ . '/../entitys/customer.php';
 require_once __DIR__ . '/../entitys/customerLogon.php';
 require_once __DIR__ . '/../../config/database.php';
@@ -6,10 +7,12 @@ require_once __DIR__ . '/../../config/database.php';
 class CustomerRepository {
     private $db;
 
+    // Konstruktor mit Dependency Injection
     public function __construct($db) {
         $this->db = $db;
     }
 
+    // Holt alle Kunden mit Login-Daten
     public function getAllCustomers() {
         try {
             $this->db->connect();
@@ -27,6 +30,7 @@ class CustomerRepository {
         }
     }
 
+    // Holt Kunde per ID
     public function getCustomerByID($customerID) {
         try {
             $this->db->connect();
@@ -57,6 +61,7 @@ class CustomerRepository {
         }
     }
 
+    // Holt nur den Namen eines Kunden
     public function getCustomerNameById($customerId) {
         try {
             $this->db->connect();
@@ -77,6 +82,7 @@ class CustomerRepository {
         }
     }
 
+    // Holt Kunde per Email (für Login)
     public function getCustomerByEmail($db, $email) {
         try {
             $this->db->connect();
@@ -94,18 +100,20 @@ class CustomerRepository {
         }
     }
 
+    // Fügt neuen Kunden hinzu (mit Passwort-Hash)
     public function addCustomer($customer, $password) {
         try {
             $this->db->connect();
-            
             $this->db->beginTransaction();
             
+            // Zuerst Login-Daten anlegen
             $sql = 'INSERT INTO customerlogon (UserName, Pass, Type) VALUES (?, ?, 0)';
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([$customer->getEmail(), password_hash($password, PASSWORD_DEFAULT)]);
     
             $customerID = $this->db->lastInsertId();
             
+            // Dann Kundendaten anlegen
             $sql = 'INSERT INTO customers (CustomerID, FirstName, LastName, Address, City, Country, Postal, Phone, Email) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
             $stmt = $this->db->prepareStatement($sql);
@@ -122,7 +130,6 @@ class CustomerRepository {
             ]);
             
             $this->db->commit();
-            
             return $customerID;
         } catch (PDOException $e) {
             $this->db->rollback();
@@ -132,13 +139,14 @@ class CustomerRepository {
         }
     }
 
+    // Aktualisiert Kundendaten (optional mit Passwort)
     public function updateCustomer($customerID, $firstName, $lastName, $email, $password = null) {
         try {
             $this->db->connect();
-            
             $this->db->beginTransaction();
             
             if ($password) {
+                // Mit Passwort-Update
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $sql = "UPDATE customers SET FirstName = :firstName, LastName = :lastName, Email = :email WHERE CustomerID = :customerID";
                 $stmt = $this->db->prepareStatement($sql);
@@ -157,6 +165,7 @@ class CustomerRepository {
                     'customerID' => $customerID
                 ]);
             } else {
+                // Ohne Passwort-Update
                 $sql = "UPDATE customers SET FirstName = :firstName, LastName = :lastName, Email = :email WHERE CustomerID = :customerID";
                 $stmt = $this->db->prepareStatement($sql);
                 $stmt->execute([
@@ -183,10 +192,10 @@ class CustomerRepository {
         }
     }
     
+    // Aktualisiert vollständiges Profil (inkl. Adressdaten)
     public function updateUserProfile($customerID, $data, $password = null) {
         try {
             $this->db->connect();
-            
             $this->db->beginTransaction();
             
             $sql = "UPDATE customers SET 
@@ -220,6 +229,7 @@ class CustomerRepository {
             $stmt->execute(['email' => $data['email'], 'customerID' => $customerID]);
             
             if ($password) {
+                // Optionales Passwort-Update
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $sql = "UPDATE customerlogon SET Pass = :password WHERE CustomerID = :customerID";
                 $stmt = $this->db->prepareStatement($sql);
@@ -227,7 +237,6 @@ class CustomerRepository {
             }
             
             $this->db->commit();
-            
             return true;
         } catch (PDOException $e) {
             $this->db->rollback();
@@ -237,6 +246,7 @@ class CustomerRepository {
         }
     }
 
+    // Prüft ob Email bereits existiert
     public function emailExists($email) {
         try {
             $this->db->connect();
@@ -251,6 +261,7 @@ class CustomerRepository {
         }
     }
 
+    // Setzt neues Passwort
     public function resetPassword($customerID, $newPassword) {
         try {
             $this->db->connect();
@@ -268,6 +279,7 @@ class CustomerRepository {
         }
     }
     
+    // Setzt Benutzerrolle (Admin/User)
     public function setUserRole($customerID, $type) {
         try {
             $this->db->connect();
@@ -285,6 +297,7 @@ class CustomerRepository {
         }
     }
     
+    // Zählt Administratoren
     public function countAdministrators() {
         try {
             $this->db->connect();
@@ -299,10 +312,10 @@ class CustomerRepository {
         }
     }
     
+    // Deaktiviert Benutzer (markiert als inaktiv)
     public function deactivateUser($customerID) {
         try {
             $this->db->connect();
-            
             $this->db->beginTransaction();
             
             $sql = 'SELECT UserName FROM customerlogon WHERE CustomerID = :customerID';
@@ -331,7 +344,6 @@ class CustomerRepository {
             ]);
             
             $this->db->commit();
-            
             return true;
         } catch (PDOException $e) {
             $this->db->rollback();
@@ -341,10 +353,10 @@ class CustomerRepository {
         }
     }
     
+    // Reaktiviert Benutzer
     public function reactivateUser($customerID) {
         try {
             $this->db->connect();
-            
             $this->db->beginTransaction();
             
             $sql = 'SELECT UserName FROM customerlogon WHERE CustomerID = :customerID';
@@ -373,7 +385,6 @@ class CustomerRepository {
             ]);
             
             $this->db->commit();
-            
             return true;
         } catch (PDOException $e) {
             $this->db->rollback();
@@ -383,6 +394,7 @@ class CustomerRepository {
         }
     }
     
+    // Holt Benutzerrolle
     public function getUserRole($customerID) {
         try {
             $this->db->connect();
@@ -397,6 +409,7 @@ class CustomerRepository {
         }
     }
     
+    // Prüft ob Email für anderen Benutzer existiert
     public function emailExistsForOtherUser($email, $customerID) {
         try {
             $this->db->connect();
@@ -411,4 +424,3 @@ class CustomerRepository {
         }
     }
 }
-?>

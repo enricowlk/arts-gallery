@@ -1,14 +1,17 @@
 <?php
+// Einbindung der benötigten Klassen
 require_once __DIR__ .'/../entitys/artist.php';
 require_once __DIR__ . '/../../config/database.php';
 
 class ArtistRepository {
-    private $db;
+    private $db;  
 
+    // Konstruktor mit Dependency Injection der Datenbank
     public function __construct($db) {
         $this->db = $db;
     }
 
+    // Holt alle Künstler (sortierbar)
     public function getAllArtists($order = 'ASC') {
         try {
             $this->db->connect();
@@ -17,7 +20,9 @@ class ArtistRepository {
             $stmt->execute();
             $artists = [];
             while ($row = $stmt->fetch()) {
-                $artists[] = new Artist($row['ArtistID'], $row['FirstName'], $row['LastName'], $row['Nationality'], $row['YearOfBirth'], $row['YearOfDeath'], $row['Details'], $row['ArtistLink']);
+                $artists[] = new Artist($row['ArtistID'], $row['FirstName'], $row['LastName'], 
+                                      $row['Nationality'], $row['YearOfBirth'], $row['YearOfDeath'], 
+                                      $row['Details'], $row['ArtistLink']);
             }
             return $artists;
         } catch (PDOException $e) {
@@ -27,6 +32,7 @@ class ArtistRepository {
         }
     }
 
+    // Holt einen bestimmten Künstler per ID
     public function getArtistById($id) {
         try {
             $this->db->connect();
@@ -39,7 +45,9 @@ class ArtistRepository {
                 throw new Exception("Artist not found with ID: $id");
             }
             
-            return new Artist($row['ArtistID'], $row['FirstName'], $row['LastName'], $row['Nationality'], $row['YearOfBirth'], $row['YearOfDeath'], $row['Details'], $row['ArtistLink']);
+            return new Artist($row['ArtistID'], $row['FirstName'], $row['LastName'], 
+                            $row['Nationality'], $row['YearOfBirth'], $row['YearOfDeath'], 
+                            $row['Details'], $row['ArtistLink']);
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while fetching artist");
         } finally {
@@ -47,6 +55,7 @@ class ArtistRepository {
         }
     }
 
+    // Sucht Künstler nach Namen (Vorname/Nachname/Kombination)
     public function searchArtists($query, $order = 'ASC') {
         try {
             $this->db->connect();
@@ -60,7 +69,9 @@ class ArtistRepository {
             $stmt->execute(['query' => "%$query%"]);
             $artists = [];
             while ($row = $stmt->fetch()) {
-                $artists[] = new Artist($row['ArtistID'], $row['FirstName'], $row['LastName'], $row['Nationality'], $row['YearOfBirth'], $row['YearOfDeath'], $row['Details'], $row['ArtistLink']);
+                $artists[] = new Artist($row['ArtistID'], $row['FirstName'], $row['LastName'], 
+                                      $row['Nationality'], $row['YearOfBirth'], $row['YearOfDeath'], 
+                                      $row['Details'], $row['ArtistLink']);
             }
             return $artists;
         } catch (PDOException $e) {
@@ -70,6 +81,7 @@ class ArtistRepository {
         }
     }
 
+    // Holt die Top 3 Künstler basierend auf Bewertungen
     public function getTop3Artists($limit = 3) {
         try {
             $this->db->connect();
@@ -85,7 +97,9 @@ class ArtistRepository {
             $artists = [];
             while ($row = $stmt->fetch()) {
                 $artists[] = [
-                    'artist' => new Artist($row['ArtistID'], $row['FirstName'], $row['LastName'], $row['Nationality'], $row['YearOfBirth'], $row['YearOfDeath'], $row['Details'], $row['ArtistLink']),
+                    'artist' => new Artist($row['ArtistID'], $row['FirstName'], $row['LastName'], 
+                                         $row['Nationality'], $row['YearOfBirth'], $row['YearOfDeath'], 
+                                         $row['Details'], $row['ArtistLink']),
                     'reviewCount' => $row['ReviewCount']
                 ];
             }

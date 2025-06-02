@@ -1,15 +1,18 @@
 <?php
+// Einbindung benötigter Klassen
 require_once __DIR__ . '/../entitys/artwork.php';
 require_once __DIR__ . '/../entitys/reviews.php';
 require_once __DIR__ . '/../../config/database.php';
 
 class ArtworkRepository {
-    private $db;
+    private $db; 
 
+    // Konstruktor mit Dependency Injection
     public function __construct($db) {
         $this->db = $db;
     }
 
+    // Holt alle Kunstwerke (sortierbar)
     public function getAllArtworks($orderBy = 'Title', $order = 'ASC') {
         try {
             $this->db->connect();
@@ -18,7 +21,10 @@ class ArtworkRepository {
             $stmt->execute();
             $artworks = [];
             while ($row = $stmt->fetch()) {
-                $artworks[] = new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], $row['ImageFileName'], $row['ArtistID'], $row['Description'], $row['Excerpt'], $row['Medium'], $row['OriginalHome'], $row['ArtWorkLink'], $row['GoogleLink']);
+                $artworks[] = new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], 
+                                        $row['ImageFileName'], $row['ArtistID'], $row['Description'], 
+                                        $row['Excerpt'], $row['Medium'], $row['OriginalHome'], 
+                                        $row['ArtWorkLink'], $row['GoogleLink']);
             }
             return $artworks;
         } catch (PDOException $e) {
@@ -28,6 +34,7 @@ class ArtworkRepository {
         }
     }
 
+    // Holt ein bestimmtes Kunstwerk per ID
     public function getArtworkById($id) {
         try {
             $this->db->connect();
@@ -40,7 +47,10 @@ class ArtworkRepository {
                 throw new Exception("Artwork not found with ID: $id");
             }
             
-            return new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], $row['ImageFileName'], $row['ArtistID'], $row['Description'], $row['Excerpt'], $row['Medium'], $row['OriginalHome'], $row['ArtWorkLink'], $row['GoogleLink']);
+            return new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], 
+                             $row['ImageFileName'], $row['ArtistID'], $row['Description'], 
+                             $row['Excerpt'], $row['Medium'], $row['OriginalHome'], 
+                             $row['ArtWorkLink'], $row['GoogleLink']);
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while fetching artwork");
         } finally {
@@ -48,6 +58,7 @@ class ArtworkRepository {
         }
     }
 
+    // Holt alle Kunstwerke eines Künstlers
     public function getAllArtworksForOneArtistByArtistId($id) {
         try {
             $this->db->connect();
@@ -56,7 +67,10 @@ class ArtworkRepository {
             $stmt->execute([$id]);
             $artworks = [];
             while ($row = $stmt->fetch()) {
-                $artworks[] = new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], $row['ImageFileName'], $row['ArtistID'], $row['Description'], $row['Excerpt'], $row['Medium'], $row['OriginalHome'], $row['ArtWorkLink'], $row['GoogleLink']);
+                $artworks[] = new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], 
+                                        $row['ImageFileName'], $row['ArtistID'], $row['Description'], 
+                                        $row['Excerpt'], $row['Medium'], $row['OriginalHome'], 
+                                        $row['ArtWorkLink'], $row['GoogleLink']);
             }
             return $artworks;
         } catch (PDOException $e) {
@@ -66,17 +80,22 @@ class ArtworkRepository {
         }
     }
 
+    // Holt Kunstwerke nach Genre
     public function getAllArtworksForOneGenreByGenreId($genreId) {
         try {
             $this->db->connect();
             $sql = "SELECT * FROM artworks 
-                    INNER JOIN (genres INNER JOIN artworkgenres ON genres.GenreID = artworkgenres.GenreID) ON artworks.ArtWorkID = artworkgenres.ArtWorkID
+                    INNER JOIN (genres INNER JOIN artworkgenres ON genres.GenreID = artworkgenres.GenreID) 
+                    ON artworks.ArtWorkID = artworkgenres.ArtWorkID
                     WHERE genres.GenreID = ?";
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([$genreId]);
             $artworks = [];
             while ($row = $stmt->fetch()) {
-                $artworks[] = new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], $row['ImageFileName'], $row['ArtistID'], $row['Description'], $row['Excerpt'], $row['Medium'], $row['OriginalHome'], $row['ArtWorkLink'], $row['GoogleLink']);
+                $artworks[] = new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], 
+                                        $row['ImageFileName'], $row['ArtistID'], $row['Description'], 
+                                        $row['Excerpt'], $row['Medium'], $row['OriginalHome'], 
+                                        $row['ArtWorkLink'], $row['GoogleLink']);
             }
             return $artworks;
         } catch (PDOException $e) {
@@ -86,17 +105,21 @@ class ArtworkRepository {
         }
     }
 
+    // Holt Genre eines Kunstwerks
     public function getGenreForOneArtworkByArtworkId($id) {
         try {
             $this->db->connect();
-            $sql = "SELECT * FROM genres INNER JOIN artworkgenres ON genres.GenreID = artworkgenres.GenreID WHERE ArtWorkID = ?";
+            $sql = "SELECT * FROM genres 
+                    INNER JOIN artworkgenres ON genres.GenreID = artworkgenres.GenreID 
+                    WHERE ArtWorkID = ?";
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([$id]);
-            $artworks = [];
+            $genres = [];
             while ($row = $stmt->fetch()) {
-                $artworks[] = new Genre($row['GenreID'], $row['GenreName'], $row['Era'], $row['Description'], $row['Link']);
+                $genres[] = new Genre($row['GenreID'], $row['GenreName'], 
+                                    $row['Era'], $row['Description'], $row['Link']);
             }
-            return $artworks;
+            return $genres;
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while fetching artwork genres");
         } finally {
@@ -104,17 +127,22 @@ class ArtworkRepository {
         }
     }
 
+    // Holt Kunstwerke nach Subject
     public function getAllArtworksForOneSubjectBySubjectId($id) {
         try {
             $this->db->connect();
             $sql = "SELECT * FROM artworks 
-                    INNER JOIN (subjects INNER JOIN artworksubjects ON subjects.SubjectId = artworksubjects.SubjectID) ON artworks.ArtWorkID = artworksubjects.ArtWorkID
+                    INNER JOIN (subjects INNER JOIN artworksubjects ON subjects.SubjectId = artworksubjects.SubjectID) 
+                    ON artworks.ArtWorkID = artworksubjects.ArtWorkID
                     WHERE subjects.SubjectId = ?";
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([$id]);
             $artworks = [];
             while ($row = $stmt->fetch()) {
-                $artworks[] = new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], $row['ImageFileName'], $row['ArtistID'], $row['Description'], $row['Excerpt'], $row['Medium'], $row['OriginalHome'], $row['ArtWorkLink'], $row['GoogleLink']);
+                $artworks[] = new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], 
+                                        $row['ImageFileName'], $row['ArtistID'], $row['Description'], 
+                                        $row['Excerpt'], $row['Medium'], $row['OriginalHome'], 
+                                        $row['ArtWorkLink'], $row['GoogleLink']);
             }
             return $artworks;
         } catch (PDOException $e) {
@@ -124,17 +152,20 @@ class ArtworkRepository {
         }
     }
 
+    // Holt Subject eines Kunstwerks
     public function getSubjectForOneArtworkByArtworkId($id) {
         try {
             $this->db->connect();
-            $sql = "SELECT * FROM subjects INNER JOIN artworksubjects ON subjects.SubjectId = artworksubjects.SubjectID WHERE ArtWorkID = ?";
+            $sql = "SELECT * FROM subjects 
+                    INNER JOIN artworksubjects ON subjects.SubjectId = artworksubjects.SubjectID 
+                    WHERE ArtWorkID = ?";
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([$id]);
-            $artworks = [];
+            $subjects = [];
             while ($row = $stmt->fetch()) {
-                $artworks[] = new Subject($row['SubjectId'], $row['SubjectName']);
+                $subjects[] = new Subject($row['SubjectId'], $row['SubjectName']);
             }
-            return $artworks;
+            return $subjects;
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while fetching artwork subjects");
         } finally {
@@ -142,6 +173,7 @@ class ArtworkRepository {
         }
     }
 
+    // Sucht Kunstwerke nach Titel/Künstler
     public function searchArtworks($query, $orderBy = 'Title', $order = 'ASC') {
         try {
             $this->db->connect();
@@ -171,7 +203,10 @@ class ArtworkRepository {
             $stmt->execute(['query' => "%$query%"]);
             $artworks = [];
             while ($row = $stmt->fetch()) {
-                $artworks[] = new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], $row['ImageFileName'], $row['ArtistID'], $row['Description'], $row['Excerpt'], $row['Medium'], $row['OriginalHome'], $row['ArtWorkLink'], $row['GoogleLink']);
+                $artworks[] = new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], 
+                                        $row['ImageFileName'], $row['ArtistID'], $row['Description'], 
+                                        $row['Excerpt'], $row['Medium'], $row['OriginalHome'], 
+                                        $row['ArtWorkLink'], $row['GoogleLink']);
             }
             return $artworks;
         } catch (PDOException $e) {
@@ -181,6 +216,7 @@ class ArtworkRepository {
         }
     }
 
+    // Holt 3 zufällige Kunstwerke
     public function get3RandomArtworks($limit = 3) {
         try {
             $this->db->connect();
@@ -189,7 +225,10 @@ class ArtworkRepository {
             $stmt->execute();
             $artworks = [];
             while ($row = $stmt->fetch()) {
-                $artworks[] = new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], $row['ImageFileName'], $row['ArtistID'], $row['Description'], $row['Excerpt'], $row['Medium'], $row['OriginalHome'], $row['ArtWorkLink'], $row['GoogleLink']);
+                $artworks[] = new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], 
+                                        $row['ImageFileName'], $row['ArtistID'], $row['Description'], 
+                                        $row['Excerpt'], $row['Medium'], $row['OriginalHome'], 
+                                        $row['ArtWorkLink'], $row['GoogleLink']);
             }
             return $artworks;
         } catch (PDOException $e) {
@@ -199,6 +238,7 @@ class ArtworkRepository {
         }
     }
 
+    // Holt die 3 bestbewerteten Kunstwerke (3 Bewertungen)
     public function get3TopArtworks($limit = 3) {
         try {
             $this->db->connect();
@@ -214,7 +254,10 @@ class ArtworkRepository {
             $artworks = [];
             while ($row = $stmt->fetch()) {
                 $artworks[] = [
-                    'artwork' => new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], $row['ImageFileName'], $row['ArtistID'], $row['Description'], $row['Excerpt'], $row['Medium'], $row['OriginalHome'], $row['ArtWorkLink'], $row['GoogleLink']),
+                    'artwork' => new Artwork($row['ArtWorkID'], $row['Title'], $row['YearOfWork'], 
+                                           $row['ImageFileName'], $row['ArtistID'], $row['Description'], 
+                                           $row['Excerpt'], $row['Medium'], $row['OriginalHome'], 
+                                           $row['ArtWorkLink'], $row['GoogleLink']),
                     'averageRating' => $row['AverageRating']
                 ];
             }
@@ -226,6 +269,7 @@ class ArtworkRepository {
         }
     }
 
+    // Berechnet und gibt Durchschnittsbewertung für ein Kunstwerk
     public function getAverageRatingForArtwork($artworkId) {
         try {
             $this->db->connect();
@@ -234,11 +278,7 @@ class ArtworkRepository {
             $stmt->execute([$artworkId]);
             $row = $stmt->fetch();
             
-            if (isset($row['AverageRating']) && $row['AverageRating'] !== null) {
-                return $row['AverageRating'];
-            } else {
-                return 0;
-            }
+            return $row['AverageRating'] ?? 0; // Rückgabe 0 falls keine Bewertungen
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while fetching artwork rating");
         } finally {
@@ -246,4 +286,3 @@ class ArtworkRepository {
         }
     }
 }
-?>
