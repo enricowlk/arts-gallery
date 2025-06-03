@@ -5,29 +5,10 @@
  * Represents login credentials and access rights for a customer.
  */
 class CustomerLogon {
-    /**
-     * @var int Logon ID (primary key)
-     */
     private $LogonID;
-
-    /**
-     * @var int ID of the associated customer
-     */
     private $CustomerID;
-
-    /**
-     * @var string Username (email address)
-     */
     private $UserName;
-
-    /**
-     * @var string Hashed password
-     */
     private $Password;
-
-    /**
-     * @var string User role (e.g., 'user' or 'admin')
-     */
     private $Type;
 
     /**

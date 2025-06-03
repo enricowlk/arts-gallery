@@ -5,44 +5,13 @@
  * Represents an artist entity.
  */
 class Artist {
-    /**
-     * @var int Artist ID
-     */
     private $ArtistID;
-
-    /**
-     * @var string|null First name of the artist
-     */
     private $FirstName;
-
-    /**
-     * @var string Last name of the artist
-     */
     private $LastName;
-
-    /**
-     * @var string|null Nationality of the artist
-     */
     private $Nationality;
-
-    /**
-     * @var int|null Year of birth
-     */
     private $YearOfBirth;
-
-    /**
-     * @var int|null Year of death
-     */
     private $YearOfDeath;
-
-    /**
-     * @var string|null Additional details about the artist
-     */
     private $Details;
-
-    /**
-     * @var string|null Link to artist-related information
-     */
     private $ArtistLink;
 
     /**

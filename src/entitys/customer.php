@@ -5,49 +5,14 @@
  * Represents a customer entity.
  */
 class Customer {
-    /**
-     * @var int Customer ID
-     */
     private $CustomerID;
-
-    /**
-     * @var string First name of the customer
-     */
     private $FirstName;
-
-    /**
-     * @var string Last name of the customer
-     */
     private $LastName;
-
-    /**
-     * @var string Street address
-     */
     private $Address;
-
-    /**
-     * @var string City of residence
-     */
     private $City;
-
-    /**
-     * @var string Country of residence
-     */
     private $Country;
-
-    /**
-     * @var string Postal/ZIP code
-     */
     private $Postal;
-
-    /**
-     * @var string Phone number
-     */
     private $Phone;
-
-    /**
-     * @var string Email address
-     */
     private $Email;
 
     /**

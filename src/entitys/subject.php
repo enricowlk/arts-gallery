@@ -4,14 +4,7 @@
  * Represents the thematic content of artworks.
  */
 class Subject {
-    /**
-     * @var int Unique identifier for the subject
-     */
     private $SubjectID;
-
-    /**
-     * @var string Name or title of the subject
-     */
     private $SubjectName;
 
     /**

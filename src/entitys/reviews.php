@@ -4,34 +4,11 @@
  * Contains customer reviews for artworks in the system.
  */
 class Review {
-    /**
-     * @var int Unique identifier for the review
-     */
     private $ReviewId;     
-
-    /**
-     * @var int Identifier of the reviewed artwork
-     */
     private $ArtWorkId;   
-
-    /**
-     * @var int Identifier of the customer who wrote the review
-     */
     private $CustomerId;   
-
-    /**
-     * @var string Date when the review was created (e.g. YYYY-MM-DD)
-     */
     private $ReviewDate;
-
-    /**
-     * @var int Rating given in the review (e.g. 1 to 5)
-     */
     private $Rating;      
-
-    /**
-     * @var string Comment or text content of the review
-     */
     private $Comment;     
 
     /**

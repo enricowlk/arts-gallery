@@ -4,29 +4,10 @@
  * Contains information about art historical styles and epochs.
  */
 class Genre {
-    /**
-     * @var int Unique identifier for the genre
-     */
     private $GenreID;       
-
-    /**
-     * @var string Name of the genre
-     */
     private $GenreName;    
-
-    /**
-     * @var string Era or period of the genre
-     */
     private $Era;           
-
-    /**
-     * @var string Description of the genre
-     */
     private $Description;   
-
-    /**
-     * @var string Link to more information about the genre
-     */
     private $Link;         
 
     /**

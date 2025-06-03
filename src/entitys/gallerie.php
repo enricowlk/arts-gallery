@@ -3,44 +3,13 @@
  * Represents a gallery/museum entity with location and identification data.
  */
 class Gallerie {
-    /**
-     * @var int Unique identifier for the gallery.
-     */
     private $GalleryID;         
-    
-    /**
-     * @var string Name of the gallery in English.
-     */
     private $GalleryName;       
-    
-    /**
-     * @var string Native name of the gallery in its local language.
-     */
     private $GalleryNativeName; 
-    
-    /**
-     * @var string City where the gallery is located.
-     */
     private $GalleryCity;       
-    
-    /**
-     * @var string Country where the gallery is located.
-     */
     private $GalleryCountry;  
-    
-    /**
-     * @var float Geographical latitude coordinate of the gallery.
-     */
     private $Latitude;          
-    
-    /**
-     * @var float Geographical longitude coordinate of the gallery.
-     */
     private $Longitude;         
-    
-    /**
-     * @var string|null Website URL of the gallery (optional).
-     */
     private $GalleryWebSite;    
 
     /**

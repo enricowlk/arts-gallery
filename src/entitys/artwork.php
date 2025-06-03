@@ -5,59 +5,16 @@
  * Represents an artwork entity.
  */
 class Artwork {
-    /**
-     * @var int Artwork ID
-     */
     private $ArtWorkID;
-
-    /**
-     * @var string Title of the artwork
-     */
     private $Title;
-
-    /**
-     * @var int|null Year the artwork was created
-     */
     private $YearOfWork;
-
-    /**
-     * @var string Image file name for the artwork
-     */
     private $ImageFileName;
-
-    /**
-     * @var int ID of the artist who created the artwork
-     */
     private $ArtistID;
-
-    /**
-     * @var string|null Full description of the artwork
-     */
     private $Description;
-
-    /**
-     * @var string|null Short excerpt or summary
-     */
     private $Excerpt;
-
-    /**
-     * @var string|null Medium used in the artwork
-     */
     private $Medium;
-
-    /**
-     * @var string|null Original location or museum
-     */
     private $OriginalHome;
-
-    /**
-     * @var string|null Link to more information about the artwork
-     */
     private $ArtWorkLink;
-
-    /**
-     * @var string|null Google Maps link to the artwork's location
-     */
     private $GoogleLink;
 
     /**

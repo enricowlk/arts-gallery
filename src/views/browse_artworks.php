@@ -41,8 +41,8 @@ $artworks = $artworkRepo->getAllArtworks($orderBy, $order);
 
     <?php include __DIR__ . '/components/navigation.php'; ?>
 
-    <div class="container py-4">
-        <h1 class="text-center mb-4">Artworks</h1>
+    <div class="container">
+        <h1 class="text-center">Artworks</h1>
 
         <!-- Sort controls -->
         <div class="d-flex justify-content-between mb-4 flex-wrap gap-2">

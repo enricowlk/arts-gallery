@@ -29,7 +29,7 @@ session_start();
         <?php include __DIR__ . '/src/views/components/top_artist.php'; ?>
 
         <!-- Section for the most recent reviews -->
-        <h2>Recent Reviews</h2>
+        <h2 class="text-center">Recent Reviews</h2>
         <?php include __DIR__ . '/src/views/components/recent_reviews.php'; ?>
     </div>
 

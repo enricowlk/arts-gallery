@@ -33,8 +33,8 @@ $artists = $artistRepo->getAllArtists($order);
 
     <?php include __DIR__ . '/components/navigation.php'; ?>
 
-    <div class="container py-4">
-        <h1 class="text-center mb-4">Artists</h1>
+    <div class="container">
+        <h1 class="text-center">Artists</h1>
 
         <!-- Sort dropdown -->
         <div class="d-flex justify-content-end mb-3">
