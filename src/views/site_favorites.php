@@ -1,27 +1,27 @@
 <?php
-// Session starten für Zugriff auf Favoriten-Daten
+// Start session to access favorites data
 session_start();
 
-// Einbinden benötigter Dateien
+// Include required files
 require_once __DIR__ . '/../services/global_exception_handler.php';
 require_once __DIR__ . '/../repositories/artworkRepository.php'; 
 require_once __DIR__ . '/../repositories/artistRepository.php'; 
 
-// Repository-Instanzen erstellen
+// Create repository instances
 $artworkRepo = new ArtworkRepository(new Database());
 $artistRepo = new ArtistRepository(new Database());
 
-// Favoriten aus Session laden oder leere Arrays erstellen
+// Load favorites from session or initialize empty arrays
 if (isset($_SESSION['favorite_artworks'])) {
-    $favoriteArtworks = $_SESSION['favorite_artworks']; // Gelistete Kunstwerke
+    $favoriteArtworks = $_SESSION['favorite_artworks']; // Listed artworks
 } else {
-    $favoriteArtworks = []; // Leeres Array falls keine Favoriten
+    $favoriteArtworks = []; // Empty array if no favorites
 }
 
 if (isset($_SESSION['favorite_artists'])) {
-    $favoriteArtists = $_SESSION['favorite_artists']; // Gelistete Künstler
+    $favoriteArtists = $_SESSION['favorite_artists']; // Listed artists
 } else {
-    $favoriteArtists = []; // Leeres Array falls keine Favoriten
+    $favoriteArtists = []; // Empty array if no favorites
 }
 ?>
 
@@ -43,20 +43,20 @@ if (isset($_SESSION['favorite_artists'])) {
         <?php if (!empty($favoriteArtists)){ ?>
             <div class="row">
                 <?php foreach ($favoriteArtists as $artistId){ 
-                    // Künstler-Daten laden
+                    // Load artist data
                     $artist = $artistRepo->getArtistById($artistId);
-                    // Bildpfad erstellen und prüfen
+                    // Create and check image path
                     $imagePath = "../../images/artists/medium/" . $artist->getArtistID() . ".jpg";
                     $imageExists = file_exists($imagePath);
 
-                    // Künstlerbild oder Platzhalter
+                    // Artist image or placeholder
                     if ($imageExists) {
                         $imageUrl = $imagePath;
                     } else {
                         $imageUrl = "../../images/placeholder.png";
                     }
                 ?>
-                    <!-- Künstler-Karte -->
+                    <!-- Artist card -->
                     <div class="col-md-4 mb-4">
                         <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
                         <div class="card">
@@ -71,7 +71,7 @@ if (isset($_SESSION['favorite_artists'])) {
                 <?php } ?>
             </div>
         <?php }else{ ?>
-            <!-- Hinweis wenn keine Künstler-Favoriten vorhanden -->
+            <!-- Message if no artist favorites available -->
             <p>You have no favorite artists yet.</p>
         <?php } ?>
 
@@ -80,22 +80,22 @@ if (isset($_SESSION['favorite_artists'])) {
         <?php if (!empty($favoriteArtworks)){ ?>
             <div class="row">
                 <?php foreach ($favoriteArtworks as $artworkId){ 
-                    // Kunstwerk-Daten laden
+                    // Load artwork data
                     $artwork = $artworkRepo->getArtworkById($artworkId);
-                    // Künstler-Daten laden
+                    // Load artist data
                     $artist = $artistRepo->getArtistById($artwork->getArtistID());
-                    // Bildpfad erstellen und prüfen
+                    // Create and check image path
                     $imagePath = "../../images/works/medium/" . $artwork->getImageFileName() . ".jpg";
                     $imageExists = file_exists($imagePath);
 
-                    // Kunstwerkbild oder Platzhalter
+                    // Artwork image or placeholder
                     if ($imageExists) {
                         $imageUrl = $imagePath;
                     } else {
                         $imageUrl = "../../images/placeholder.png";
                     }
                 ?>
-                    <!-- Kunstwerk-Karte -->
+                    <!-- Artwork card -->
                     <div class="col-md-4 mb-4">
                         <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
                         <div class="card">
@@ -110,7 +110,7 @@ if (isset($_SESSION['favorite_artists'])) {
                 <?php } ?>
             </div>
         <?php }else{ ?>
-            <!-- Hinweis wenn keine Kunstwerk-Favoriten vorhanden -->
+            <!-- Message if no artwork favorites available -->
             <p>You have no favorite artworks yet.</p>
         <?php } ?>
     </div>
