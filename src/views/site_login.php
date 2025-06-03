@@ -1,16 +1,16 @@
 <?php
-// Session starten
+// Start session
 session_start();
 
-// Fehlermeldung aus Session holen und danach aus Session löschen
+// Retrieve error message from session and then remove it
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error']; 
 } else {
-    $error = ''; // Standardwert falls keine Fehlermeldung vorhanden
+    $error = ''; // Default value if no error message exists
 }
-unset($_SESSION['error']); // Fehlermeldung aus Session entfernen
+unset($_SESSION['error']); // Remove error message from session
 
-// Globalen Exception Handler einbinden
+// Include global exception handler
 require_once __DIR__ . '/../services/global_exception_handler.php';
 ?>
 
@@ -28,12 +28,12 @@ require_once __DIR__ . '/../services/global_exception_handler.php';
     <div class="container mt-4">
         <h1 class="text-center">Login</h1>
 
-        <!-- Fehlermeldung anzeigen, falls vorhanden -->
+        <!-- Show error message if available -->
         <?php if ($error){ ?>
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php } ?>
 
-        <!-- Login-Formular -->
+        <!-- Login form -->
         <form action="../controllers/login_process.php" method="POST">
             <div>
                 <label for="username" class="form-label">E-Mail:</label>

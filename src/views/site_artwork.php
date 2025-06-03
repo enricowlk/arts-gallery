@@ -1,8 +1,8 @@
 <?php
-// Session starten für Benutzerdaten
+// Start session for user data
 session_start(); 
 
-// Einbinden aller benötigten Dateien
+// Include all required files
 require_once __DIR__ . '/../services/global_exception_handler.php';
 require_once __DIR__ . '/../../config/database.php'; 
 require_once __DIR__ . '/../repositories/artworkRepository.php'; 
@@ -13,19 +13,19 @@ require_once __DIR__ . '/../repositories/genreRepository.php';
 require_once __DIR__ . '/../repositories/subjectRepository.php'; 
 require_once __DIR__ . '/../repositories/gallerieRepository.php'; 
 
-// Überprüfen ob Benutzer eingeloggt und Admin ist
+// Check if user is logged in and is an admin
 $isLoggedIn = isset($_SESSION['user']);
 $isAdmin = isset($_SESSION['user']['Type']) && $_SESSION['user']['Type'] == 1;
 
-// Prüfen ob gültige Artwork-ID übergeben wurde
+// Check if a valid artwork ID was provided
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header("Location: /components/error.php?message=Invalid or missing artwork ID");
     exit();
 }
 
-$artworkId = (int)$_GET['id']; // Artwork-ID aus GET-Parameter
+$artworkId = (int)$_GET['id']; // Get artwork ID from GET parameter
 
-// Repository-Instanzen erstellen
+// Create repository instances
 $artworkRepo = new ArtworkRepository(new Database());
 $artistRepo = new ArtistRepository(new Database());
 $reviewRepo = new ReviewRepository(new Database());
@@ -34,34 +34,34 @@ $genreRepo = new GenreRepository(new Database());
 $subjectRepo = new SubjectRepository(new Database());
 $gallerieRepo = new GallerieRepository(new Database());
 
-// Kunstwerk-Daten laden
+// Load artwork data
 $artwork = $artworkRepo->getArtworkById($artworkId); 
 if ($artwork === null) {
     header("Location: /components/error.php?message=Artwork not found");
     exit();
 }
 
-// Zusätzliche Daten laden
-$artist = $artistRepo->getArtistById($artwork->getArtistID()); // Künstler des Kunstwerks
-$reviews = $reviewRepo->getAllReviewsForOneArtworkByArtworkId($artworkId); // Bewertungen für das Artwork
-$genres = $artworkRepo->getGenreForOneArtworkByArtworkId($artworkId); // Genres die zum Artwork gehören
-$subjects = $artworkRepo->getSubjectForOneArtworkByArtworkId($artworkId); // Subjects die zum Artwork gehören
-$gallerie = $gallerieRepo->getGalleryByArtworkId($artworkId); // Galerie-Infos 
+// Load additional data
+$artist = $artistRepo->getArtistById($artwork->getArtistID()); // Artist of the artwork
+$reviews = $reviewRepo->getAllReviewsForOneArtworkByArtworkId($artworkId); // Reviews for the artwork
+$genres = $artworkRepo->getGenreForOneArtworkByArtworkId($artworkId); // Genres assigned to the artwork
+$subjects = $artworkRepo->getSubjectForOneArtworkByArtworkId($artworkId); // Subjects assigned to the artwork
+$gallerie = $gallerieRepo->getGalleryByArtworkId($artworkId); // Gallery info
 
-// Durchschnittliche Bewertung des Kunstwerks laden && Bewertungsdaten berechnen
+// Load average rating of the artwork & calculate review count
 $averageRating = $artworkRepo->getAverageRatingForArtwork($artworkId);
 $reviewCount = count($reviews);
 
-// Prüfen ob Kunstwerk in Favoriten
+// Check if artwork is in favorites
 $isFavoriteArtwork = isset($_SESSION['favorite_artworks']) && in_array($artworkId, $_SESSION['favorite_artworks']);
 
-// Prüfen ob Benutzer bereits bewertet hat
+// Check if user has already reviewed the artwork
 $hasReviewed = false;
 if ($isLoggedIn) {
     $hasReviewed = $reviewRepo->hasUserReviewedArtwork($artworkId, $_SESSION['user']['CustomerID']);
 }
 
-// Bildpfad erstellen und prüfen
+// Build and validate image path
 $imagePath = "../../images/works/medium/" . $artwork->getImageFileName() . ".jpg";
 $imageExists = file_exists($imagePath);
 $imageUrl = $imageExists ? $imagePath : "../../images/placeholder.png";
@@ -80,7 +80,7 @@ $imageUrl = $imageExists ? $imagePath : "../../images/placeholder.png";
 
     <div class="container mt-4">
         <div class="row">
-            <!-- Linke Spalte: Kunstwerk-Bild und Aktionen -->
+            <!-- Left column: Artwork image and actions -->
             <div class="col-md-6">
                 <a data-bs-toggle="modal" data-bs-target="#imageModal">
                     <img src="<?php echo $imageUrl; ?>" 
@@ -93,7 +93,7 @@ $imageUrl = $imageExists ? $imagePath : "../../images/placeholder.png";
                 <?php include __DIR__ . '/components/artworkSite/gallery_info.php'; ?>
             </div>
             
-            <!-- Rechte Spalte: Kunstwerk-Informationen -->
+            <!-- Right column: Artwork information -->
             <div class="col-md-6">
                 <div class="info">
                     <h1><?php echo $artwork->getTitle(); ?></h1>
@@ -103,7 +103,7 @@ $imageUrl = $imageExists ? $imagePath : "../../images/placeholder.png";
                     <p><strong>Excerpt:</strong> <?php echo $artwork->getExcerpt(); ?></p>
                     <p><strong>Description:</strong> <?php echo $artwork->getDescription(); ?></p>
                     
-                    <!-- Genres und Subjects des Kunstwerks mit Referenzierung zu deren Einzelseiten -->
+                    <!-- Genres and subjects of the artwork with links to their pages -->
                     <div class="artwork-links">
                         <p><strong>Genres:</strong> 
                             <?php 
@@ -138,8 +138,8 @@ $imageUrl = $imageExists ? $imagePath : "../../images/placeholder.png";
                         </p>
                     </div>
 
-                    <!-- Externer Link für mehr Informationen über das Kunstwerk -->
-                    <p> You want to know more about "<strong><?php echo $artwork->getTitle(); ?></strong>"?</p>
+                    <!-- External link for more information about the artwork -->
+                    <p>You want to know more about "<strong><?php echo $artwork->getTitle(); ?></strong>"?</p>
                     <a href="<?php echo $artwork->getArtWorkLink(); ?>" class="btn btn-secondary">Learn More</a>
                 </div>
             </div>

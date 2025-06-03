@@ -1,23 +1,24 @@
 <?php
-// Session starten für Session-Variablen
-session_start(); 
+/**
+ * Artist browse Page
+ * 
+ * This script fetches all artists from the database, allowing sorting by name (ASC/DESC).
+ * It also includes fallback logic for missing artist images and renders a responsive grid.
+ */
 
-// Einbinden des globalen Exception Handlers und Artist-Repository
+session_start();
+
+// Required dependencies
 require_once __DIR__ . '/../services/global_exception_handler.php';
-require_once __DIR__ . '/../repositories/artistRepository.php'; 
+require_once __DIR__ . '/../repositories/artistRepository.php';
 
-// ArtistRepository instanziieren
-$artistRepo = new ArtistRepository(new Database()); 
+$artistRepo = new ArtistRepository(new Database());
 
-// Sortierparameter aus URL auslesen (falls vorhanden), Standard ist ASC (aufsteigend)
-if (isset($_GET['order'])) {
-    $order = $_GET['order'];
-} else {
-    $order = 'ASC'; 
-}
+// Determine sort order from query string (default to ASC)
+$order = (isset($_GET['order']) && $_GET['order'] === 'DESC') ? 'DESC' : 'ASC';
 
-// Alle Künstler mit Sortierreihenfolge aus der Datenbank holen
-$artists = $artistRepo->getAllArtists($order); 
+// Fetch artists from database with selected sort order
+$artists = $artistRepo->getAllArtists($order);
 ?>
 
 <!DOCTYPE html>
@@ -29,53 +30,48 @@ $artists = $artistRepo->getAllArtists($order);
     <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
-    <?php include __DIR__ . '/components/navigation.php'; ?> 
 
-    <div class="container">
-        <h1 class="text-center">Artists</h1> 
-        
-        <!-- Sortier-Dropdown -->
-        <div class="mb-3">
-            <div class="btn-group">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    Order: <?php echo $order; ?> <!-- Aktuelle Sortierreihenfolge anzeigen -->
+    <?php include __DIR__ . '/components/navigation.php'; ?>
+
+    <div class="container py-4">
+        <h1 class="text-center mb-4">Artists</h1>
+
+        <!-- Sort dropdown -->
+        <div class="d-flex justify-content-end mb-3">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    Order: <?php echo $order; ?>
                 </button>
                 <ul class="dropdown-menu">
-                    <!-- Optionen für auf- und absteigende Sortierung -->
                     <li><a class="dropdown-item" href="?order=ASC">Ascending</a></li>
                     <li><a class="dropdown-item" href="?order=DESC">Descending</a></li>
                 </ul>
             </div>
         </div>
-        
-        <!-- Künstler-Grid -->
-        <div class="row">
-            <?php foreach ($artists as $artist) { 
-                // Bildpfad erstellen und prüfen ob Bild existiert
-                $imagePath = "../../images/artists/square-medium/" . $artist->getArtistID() . ".jpg";
-                $imageExists = file_exists($imagePath);
 
-                // Platzhalter falls kein Bild existiert
-                $imageUrl = $imageExists ? $imagePath : "../../images/placeholder.png";
+        <!-- Artist grid -->
+        <div class="row g-4">
+            <?php foreach ($artists as $artist): 
+                $imagePath = "../../images/artists/square-medium/" . $artist->getArtistID() . ".jpg";
+                $imageUrl = file_exists($imagePath) ? $imagePath : "../../images/placeholder.png";
             ?>
-                <div class="col-md-4 mb-3">
-                    <!-- Link zur Künstler-Detailseite -->
-                    <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
-                    <div class="card">
-                        <!-- Künstlerbild -->
-                        <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
-                        <div class="card-body">
-                            <!-- Künstlername (Nachname, Vorname) -->
-                            <h5 class="card-title"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h5>
+                <div class="col-md-4">
+                    <a href="site_artist.php?id=<?php echo $artist->getArtistID(); ?>" class="text-decoration-none text-dark">
+                        <div class="card h-100 shadow-sm">
+                            <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    <?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?>
+                                </h5>
+                            </div>
                         </div>
-                    </div>
                     </a>
                 </div>
-            <?php } ?>
+            <?php endforeach; ?>
         </div>
     </div>
 
-    <?php include __DIR__ . '/components/footer.php'; ?> 
+    <?php include __DIR__ . '/components/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -2,6 +2,9 @@
 /**
  * Handles all database operations related to artworks including retrieval, searching, and rating calculations.
  */
+
+require_once __DIR__ . '/../entitys/artwork.php';
+require_once __DIR__ . '/../../config/database.php';
 class ArtworkRepository {
     /**
      * @var Database The database connection instance.

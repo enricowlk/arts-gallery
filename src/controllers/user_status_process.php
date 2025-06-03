@@ -1,38 +1,44 @@
 <?php
-session_start(); // Session starten
+/**
+ * Admin-only script to deactivate or reactivate users.
+ * Validates request parameters, prevents deactivation of self or the last administrator,
+ * and executes the corresponding action.
+ */
 
-// Prüfen ob User eingeloggt und Admin ist (Type = 1)
+session_start(); // Start the session
+
+// Check if user is logged in and is an administrator
 if (!isset($_SESSION['user']) || $_SESSION['user']['Type'] != 1) {
-    header("Location: index.php"); // Wenn nicht Admin, zur Startseite
+    header("Location: index.php");
     exit();
 }
 
-// Dateien einbinden
+// Include required classes
 require_once __DIR__ . '/../repositories/customerRepository.php';
 require_once __DIR__ . '/../../config/database.php';
 
-// Repository initialisieren
+// Initialize repository with database connection
 $customerRepo = new CustomerRepository(new Database());
 
-// Parameter-Validierung: ID muss numerisch sein und Action muss gesetzt sein
+// Validate input parameters
 if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['action'])) {
     $_SESSION['error'] = "Invalid request parameters.";
     header("Location: ../views/site_manage_users.php");
     exit();
 }
 
-// Parameter sichern bzw. speichern
+// Sanitize inputs
 $customerID = (int)$_GET['id'];
 $action = $_GET['action'];
 
-// Nur deactivate/reactivate Aktionen erlauben
+// Allow only 'deactivate' or 'reactivate' actions
 if ($action !== 'deactivate' && $action !== 'reactivate') {
     $_SESSION['error'] = "Invalid action.";
     header("Location: ../views/site_manage_users.php");
     exit();
 }
 
-// Existenz des Users prüfen
+// Check if the user exists
 $user = $customerRepo->getCustomerByID($customerID);
 if (!$user) {
     $_SESSION['error'] = "User not found.";
@@ -40,20 +46,20 @@ if (!$user) {
     exit();
 }
 
-// Verhindern dass Admin sich selbst deaktiviert
+// Prevent deactivation of oneself
 if ($_SESSION['user']['CustomerID'] == $customerID) {
     $_SESSION['error'] = "You cannot deactivate yourself.";
     header("Location: ../views/site_manage_users.php");
     exit();
 }
 
-// Aktuelle Rolle des Users holen
+// For Check if the user is an administrator
 $userType = $customerRepo->getUserRole($customerID);
 
-// Verhindern dass letzter Admin deaktiviert wird
+// Prevent deactivation of the last administrator
 if ($userType === 1) {
     $adminCount = $customerRepo->countAdministrators();
-    
+
     if ($adminCount <= 1) {
         $_SESSION['error'] = "Cannot deactivate the last administrator.";
         header("Location: ../views/site_manage_users.php");
@@ -61,20 +67,18 @@ if ($userType === 1) {
     }
 }
 
-// Deaktivierungsaktion durchführen
+// Execute deactivate or reactivate action
 if ($action === 'deactivate') {
     $success = $customerRepo->deactivateUser($customerID);
-    
+
     if ($success) {
         $_SESSION['success'] = "User deactivated successfully.";
     } else {
         $_SESSION['error'] = "There was an error deactivating the user.";
     }
-} 
-// Reaktivierungsaktion durchführen
-else if ($action === 'reactivate') {
+} elseif ($action === 'reactivate') {
     $success = $customerRepo->reactivateUser($customerID);
-    
+
     if ($success) {
         $_SESSION['success'] = "User reactivated successfully.";
     } else {
@@ -82,6 +86,6 @@ else if ($action === 'reactivate') {
     }
 }
 
-// Zurück zur ManageUsers Seite
+// Redirect back to the Manage Users page
 header("Location: ../views/site_manage_users.php");
 exit();

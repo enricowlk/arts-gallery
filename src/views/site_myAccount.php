@@ -1,39 +1,39 @@
 <?php
 session_start(); 
 
-// Überprüfen ob User eingeloggt ist
+// Check if user is logged in
 if (!isset($_SESSION['user'])) {
-    header("Location: site_login.php"); // Wenn nicht, zum Login umleiten
+    header("Location: site_login.php"); // If not, redirect to login
     exit();
 }
 
-// Required-Dateien einbinden
+// Include required files
 require_once __DIR__ . '/../services/global_exception_handler.php'; 
 require_once __DIR__ . '/../repositories/customerRepository.php'; 
 require_once __DIR__ . '/../../config/database.php'; 
 
-// Customer Repository instanziieren
+// Instantiate Customer Repository
 $customerRepo = new CustomerRepository(new Database());
 
-// Aktuellen User aus Session holen und Daten aus DB laden
+// Get current user from session and load data from DB
 $customerID = $_SESSION['user']['CustomerID']; 
 $customer = $customerRepo->getCustomerByID($customerID); 
 
-// Fehlermeldung aus Session holen
+// Get error message from session
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];
 } else {
     $error = ''; 
 }
 
-// Erfolgsmeldung aus Session holen
+// Get success message from session
 if (isset($_SESSION['success'])) {
     $success = $_SESSION['success'];
 } else {
     $success = ''; 
 }
 
-// Meldungen aus Session löschen nach dem Auslesen
+// Clear messages from session after reading
 unset($_SESSION['error'], $_SESSION['success']);
 ?>
 
@@ -51,17 +51,17 @@ unset($_SESSION['error'], $_SESSION['success']);
     <div class="container mt-3">
         <h1 class="text-center">My Account</h1>
         
-        <!-- Fehlermeldung anzeigen, falls vorhanden -->
+        <!-- Display error message if present -->
         <?php if ($error) { ?>
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php } ?>
         
-        <!-- Erfolgsmeldung anzeigen, falls vorhanden -->
+        <!-- Display success message if present -->
         <?php if ($success) { ?>
             <div class="alert alert-success"><?php echo $success; ?></div>
         <?php } ?>
 
-        <!-- Formular für Kontodaten + Eingabevalidierung mit Regex pattern -->
+        <!-- Form for account data + input validation with regex pattern -->
         <form action="../controllers/user_edit_process.php" method="POST">
             <div class="row mb-3">
                 <div class="col-md-6">
@@ -112,7 +112,7 @@ unset($_SESSION['error'], $_SESSION['success']);
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Phone:</label>
                     <input type="text" class="form-control" id="phone" name="phone"
-                           pattern="^\+?[0-9 ]+$" value="<?php echo $customer->getPhone(); ?>">
+                           pattern="^\+?[0-9 ()-]+$" value="<?php echo $customer->getPhone(); ?>">
                 </div>
             </div>
             

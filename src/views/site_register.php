@@ -1,27 +1,27 @@
 <?php
 session_start(); 
 
-// Required-Dateien einbinden
+// Include required files
 require_once __DIR__ . '/../services/global_exception_handler.php'; 
 require_once __DIR__ . '/../entitys/customer.php'; 
 require_once __DIR__ . '/../repositories/customerRepository.php'; 
 require_once __DIR__ . '/../../config/database.php'; 
 
-// Fehlermeldung aus Session holen
+// Get error message from session
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error']; 
 } else {
     $error = '';
 }
 
-// Erfolgsmeldung aus Session holen
+// Get success message from session
 if (isset($_SESSION['success'])) {
     $success = $_SESSION['success'];
 } else {
     $success = '';
 }
 
-// Meldungen aus Session löschen nach dem Auslesen
+// Clear messages from session after reading
 unset($_SESSION['error'], $_SESSION['success']); 
 ?>
 
@@ -39,17 +39,17 @@ unset($_SESSION['error'], $_SESSION['success']);
     <div class="container mt-3">
         <h1 class="text-center">Registration</h1>
         
-        <!-- Fehlermeldung anzeigen, falls vorhanden -->
+        <!-- Display error message if present -->
         <?php if ($error){ ?>
             <div class="alert alert-danger"><?php echo $error; ?></div> 
         <?php } ?>
         
-        <!-- Erfolgsmeldung anzeigen, falls vorhanden -->
+        <!-- Display success message if present -->
         <?php if ($success){ ?>
             <div class="alert alert-success"><?php echo $success; ?></div> 
         <?php } ?>
         
-        <!-- Registrierungsformular + Eingabevalidierung mit Regex pattern -->
+        <!-- Registration form + input validation with regex pattern -->
         <form method="POST" action="../controllers/register_process.php">
             <div class="row mb-3">
                 <div class="col-md-6">
@@ -93,7 +93,7 @@ unset($_SESSION['error'], $_SESSION['success']);
                 <div class="col-md-6">
                     <label for="postal" class="form-label">Postal Code:</label>
                     <input type="text" class="form-control" id="postal" name="postal" 
-                           pattern="^[0-9]+$">
+                           pattern="^\+?[0-9 ()-]+$">
                 </div>
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Phone:</label>
@@ -107,7 +107,7 @@ unset($_SESSION['error'], $_SESSION['success']);
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
             
-            <div class="mt-3">
+            <div class="mt-3 mb-2">
                 <button type="submit" class="btn btn-secondary">Register</button> 
             </div>
         </form>

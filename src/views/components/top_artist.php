@@ -1,12 +1,25 @@
 <?php
-// Einbinden der benötigten Dateien für Datenbankverbindung und Artist-Repository
-require_once __DIR__ . '/../../../config/database.php'; 
-require_once __DIR__ . '/../../repositories/artistRepository.php'; 
+/**
+ * Displays the top 3 artists based on user reviews.
+ * 
+ * This script fetches artist data and review counts using the ArtistRepository.
+ * If no artist image is found, a placeholder image is used.
+ */
 
-// Instanziierung des ArtistRepository
+// Include necessary files for database connection and the artist repository
+require_once __DIR__ . '/../../../config/database.php';
+require_once __DIR__ . '/../../repositories/artistRepository.php';
+
+// Instantiate the ArtistRepository
 $artistRepo = new ArtistRepository(new Database());
 
-// Abruf der Top 3 Künstler basierend auf Bewertungen
+/**
+ * Retrieves top 3 artists ranked by review count or average rating.
+ * 
+ * @var array $topArtists Each item contains:
+ *  - 'artist' => Artist object
+ *  - 'reviewCount' => int
+ */
 $topArtists = $artistRepo->getTop3Artists();
 ?>
 
@@ -14,48 +27,47 @@ $topArtists = $artistRepo->getTop3Artists();
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Top Artists</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Container für die Top-Künstler -->
-    <div class="top-artist-container">
-        <h2>Top Artists</h2>
+
+    <!-- Container for the top artists display -->
+    <div class="top-artist-container container py-4">
+        <h2 class="mb-4 text-center">Top Artists</h2>
+
         <?php if (!empty($topArtists)) { ?>
-            <div class="row">
-                <?php foreach ($topArtists as $artistData) { 
-                    // Extrahiere Künstlerobjekt und Bewertungsanzahl aus den Daten
+            <div class="row g-4">
+                <?php foreach ($topArtists as $artistData) {
+                    // Extract artist object and review count
                     $artist = $artistData['artist'];
                     $reviewCount = $artistData['reviewCount'];
-                    
-                    // Pfad zum Künstlerbild erstellen und prüfen ob es existiert
+
+                    // Determine artist image path and fallback
                     $imagePath = "images/artists/medium/" . $artist->getArtistID() . ".jpg";
-                    $imageExists = file_exists($imagePath);
-                    
-                    // falls kein Bild existiert, Platzhalter verwenden
-                    $imageUrl = $imageExists ? $imagePath : "images/placeholder.png";
+                    $imageUrl = file_exists($imagePath) ? $imagePath : "images/placeholder.png";
                 ?>
                     <div class="col-md-4">
-                        <!-- Link zur Künstler-Detailseite -->
-                        <a href="../arts-gallery/src/views/site_artist.php?id=<?php echo $artist->getArtistID(); ?>">
-                        <div class="card">
-                            <!-- Künstlerbild -->
-                            <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
-                            <div class="mt-2">
-                                <!-- Künstlername (Nachname, Vorname) -->
-                                <h5 class="card-title"><?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?></h5>
-                                <!-- Anzahl der Bewertungen -->
-                                <p class="small">(<?php echo $reviewCount; ?> reviews)</p>
+                        <a href="../arts-gallery/src/views/site_artist.php?id=<?php echo $artist->getArtistID(); ?>" class="text-decoration-none text-dark">
+                            <div class="card h-100 shadow-sm">
+                                <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artist->getLastName(); ?>">
+                                <div class="mt-3 text-center">
+                                    <h5 class="card-title">
+                                        <?php echo $artist->getLastName(); ?>, <?php echo $artist->getFirstName(); ?>
+                                    </h5>
+                                    <p class="text-muted small">(<?php echo $reviewCount; ?> reviews)</p>
+                                </div>
                             </div>
-                        </div>
                         </a>
                     </div>
                 <?php } ?>
             </div>
         <?php } else { ?>
-            <!-- Fallback, wenn keine Top-Künstler gefunden wurden -->
-            <p class="text-center">No top artists found.</p>
+            <!-- Message displayed when no artists are found -->
+            <p class="text-center text-muted">No top artists found.</p>
         <?php } ?>
     </div>
+
 </body>
 </html>

@@ -1,31 +1,32 @@
 <?php
-// Session starten für Session-Variablen
+/**
+ * Artworks browse Page
+ * 
+ * Displays all artworks with options to sort by title, artist, or year
+ * in ascending or descending order.
+ */
+
 session_start();
 
-// Einbinden benötigter Services und Repositories
+// Dependencies
 require_once __DIR__ . '/../services/global_exception_handler.php';
-require_once __DIR__ . '/../repositories/artistRepository.php'; 
+require_once __DIR__ . '/../repositories/artistRepository.php';
 require_once __DIR__ . '/../repositories/artworkRepository.php';
 
-// Repositories instanziieren
-$artworkRepo = new ArtworkRepository(new Database()); 
-$artistRepo = new ArtistRepository(new Database()); 
+$database = new Database();
+$artworkRepo = new ArtworkRepository($database);
+$artistRepo = new ArtistRepository($database);
 
-// Sortierparameter aus URL auslesen oder Standardwerte setzen
-if (isset($_GET['orderBy'])) {
-    $orderBy = $_GET['orderBy']; // Titel, Künstler oder Jahr
-} else {
-    $orderBy = 'Title'; // Standard: nach Titel sortieren
-}
+// Define valid sort options
+$validOrderBy = ['Title', 'ArtistID', 'YearOfWork'];
+$validOrder = ['ASC', 'DESC'];
 
-if (isset($_GET['order'])) {
-    $order = $_GET['order']; // Auf- oder Absteigend
-} else {
-    $order = 'ASC'; // Standard: aufsteigend
-}
+// Validate and assign sort parameters from GET
+$orderBy = in_array($_GET['orderBy'] ?? '', $validOrderBy) ? $_GET['orderBy'] : 'Title';
+$order = in_array($_GET['order'] ?? '', $validOrder) ? $_GET['order'] : 'ASC';
 
-// Kunstwerke mit Sortierparametern aus Datenbank holen
-$artworks = $artworkRepo->getAllArtworks($orderBy, $order); 
+// Fetch artworks
+$artworks = $artworkRepo->getAllArtworks($orderBy, $order);
 ?>
 
 <!DOCTYPE html>
@@ -37,69 +38,65 @@ $artworks = $artworkRepo->getAllArtworks($orderBy, $order);
     <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
-    <?php include __DIR__ . '/components/navigation.php'; ?> 
 
-    <div class="container">
-        <h1 class="text-center">Artworks</h1> 
-        <div class="mb-3">
-            <!-- Dropdown für Sortierkriterium -->
-            <div class="btn-group">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    Sort by: <?php echo ucfirst(strtolower($orderBy)); ?>
+    <?php include __DIR__ . '/components/navigation.php'; ?>
+
+    <div class="container py-4">
+        <h1 class="text-center mb-4">Artworks</h1>
+
+        <!-- Sort controls -->
+        <div class="d-flex justify-content-between mb-4 flex-wrap gap-2">
+            <!-- Sort by -->
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    Sort by: <?php echo $orderBy; ?>
                 </button>
                 <ul class="dropdown-menu">
-                    <!-- Optionen für Sortierung nach Titel, Künstler oder Jahr -->
-                    <li><a class="dropdown-item" href="?orderBy=Title&order=<?php echo $order; ?>">Title</a></li>
-                    <li><a class="dropdown-item" href="?orderBy=ArtistID&order=<?php echo $order; ?>">Artist</a></li>
-                    <li><a class="dropdown-item" href="?orderBy=YearOfWork&order=<?php echo $order; ?>">Year</a></li>
+                    <?php foreach ($validOrderBy as $sortKey): ?>
+                        <li>
+                            <a class="dropdown-item" href="?orderBy=<?php echo $sortKey; ?>&order=<?php echo $order; ?>">
+                                <?php echo $sortKey; ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
-            
-            <!-- Dropdown für Sortierreihenfolge -->
-            <div class="btn-group">
-                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+
+            <!-- Order -->
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
                     Order: <?php echo $order; ?>
                 </button>
                 <ul class="dropdown-menu">
-                    <!-- Optionen für auf- oder absteigende Sortierung -->
                     <li><a class="dropdown-item" href="?orderBy=<?php echo $orderBy; ?>&order=ASC">Ascending</a></li>
                     <li><a class="dropdown-item" href="?orderBy=<?php echo $orderBy; ?>&order=DESC">Descending</a></li>
                 </ul>
             </div>
         </div>
 
-        <div class="row">
-            <?php foreach ($artworks as $artwork) { 
-                // Künstlerinformationen für das aktuelle Kunstwerk holen
+        <!-- Artwork grid -->
+        <div class="row g-4">
+            <?php foreach ($artworks as $artwork): 
                 $artist = $artistRepo->getArtistByID($artwork->getArtistID());
-                
-                // Bildpfad erstellen und prüfen ob Bild existiert
-                $imagePath = "../../images/works/square-medium/" . $artwork->getImageFileName() .".jpg";
-                $imageExists = file_exists($imagePath);
-
-                // Platzhalter falls kein Bild existiert
-                $imageUrl = $imageExists ? $imagePath : "../../images/placeholder.png";
-                ?>
-                <div class="col-md-4 mb-4">
-                    <!-- Link zur Kunstwerk-Detailseite -->
-                    <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>">
-                    <div class="card">
-                        <!-- Kunstwerkbild -->
-                        <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
-                        <div class="card-body">
-                            <!-- Titel des Kunstwerks -->
-                            <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>
-                            <!-- Name des Künstlers -->
-                            <p class = "small"> By <?php echo $artist->getFirstName(); ?> <?php echo $artist->getLastName(); ?></p>
+                $imagePath = "../../images/works/square-medium/" . $artwork->getImageFileName() . ".jpg";
+                $imageUrl = file_exists($imagePath) ? $imagePath : "../../images/placeholder.png";
+            ?>
+                <div class="col-md-4">
+                    <a href="site_artwork.php?id=<?php echo $artwork->getArtWorkID(); ?>" class="text-decoration-none text-dark">
+                        <div class="card h-100 shadow-sm">
+                            <img src="<?php echo $imageUrl; ?>" class="card-img-top" alt="<?php echo $artwork->getTitle(); ?>">
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo $artwork->getTitle(); ?></h5>
+                                <p class="small mb-0">By <?php echo $artist->getFirstName() . ' ' . $artist->getLastName(); ?></p>
+                            </div>
                         </div>
-                    </div>
                     </a>
                 </div>
-            <?php } ?>
+            <?php endforeach; ?>
         </div>
     </div>
 
-    <?php include __DIR__ . '/components/footer.php'; ?> 
+    <?php include __DIR__ . '/components/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

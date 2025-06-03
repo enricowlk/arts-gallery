@@ -1,42 +1,42 @@
 <?php
-// Session starten - notwendig für Session-Variablen
+// Start session – required for session variables
 session_start();
 
-// Überprüfen ob User eingeloggt ist und Admin-Rechte hat (Type=1)
+// Check if user is logged in and has admin rights (Type = 1)
 if (!isset($_SESSION['user']) || $_SESSION['user']['Type'] != 1) {
     header("Location: index.php");
     exit();
 }
 
-// Einbinden benötigter Dateien
+// Include required files
 require_once __DIR__ . '/../services/global_exception_handler.php'; 
 require_once __DIR__ . '/../repositories/customerRepository.php'; 
 require_once __DIR__ . '/../../config/database.php'; 
 
-// Überprüfen ob eine gültige ID als GET-Parameter übergeben wurde
+// Check if a valid ID was passed via GET parameter
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     $_SESSION['error'] = "Invalid user ID.";
     header("Location: site_manage_users.php");
     exit();
 }
 
-// Kunden-ID aus GET-Parameter holen und in Integer umwandeln
+// Get customer ID from GET parameter and cast to integer
 $customerID = (int)$_GET['id'];
-// CustomerRepository instanziieren mit Datenbankverbindung
+// Instantiate CustomerRepository with database connection
 $customerRepo = new CustomerRepository(new Database());
-// Kunden-Datensatz anhand der ID holen
+// Retrieve customer record by ID
 $customer = $customerRepo->getCustomerByID($customerID);
-// Benutzerrolle des Kunden holen
+// Get user's role type
 $userType = $customerRepo->getUserRole($customerID);
 
-// Überprüfen ob Customer existiert
+// Check if customer exists
 if (!$customer) {
     $_SESSION['error'] = "User not found.";
     header("Location: site_manage_users.php");
     exit();
 }
 
-// Erfolgsmeldungen aus Session holen und aus Session löschen
+// Get success message from session and unset it
 if (isset($_SESSION['success'])) {
     $success = $_SESSION['success'];
     unset($_SESSION['success']);
@@ -44,7 +44,7 @@ if (isset($_SESSION['success'])) {
     $success = '';
 }
 
-// Fehlermeldungen aus Session holen und aus Session löschen
+// Get error message from session and unset it
 if (isset($_SESSION['error'])) {
     $error = $_SESSION['error'];
     unset($_SESSION['error']);
@@ -70,17 +70,17 @@ if (isset($_SESSION['error'])) {
             <a href="site_manage_users.php" class="btn btn-secondary">Back to Users</a>
         </div>
         
-        <!-- Erfolgsmeldung anzeigen falls vorhanden -->
+        <!-- Display success message if available -->
         <?php if ($success) { ?>
             <div class="alert alert-success"><?php echo $success; ?></div>
         <?php } ?>
         
-        <!-- Fehlermeldung anzeigen falls vorhanden -->
+        <!-- Display error message if available -->
         <?php if ($error) { ?>
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php } ?>
 
-        <!-- Formular zum Bearbeiten des Benutzers + Eingabevalidierung durch Regex pattern  -->
+        <!-- Form to edit the user + input validation via regex pattern -->
         <form action="../controllers/user_edit_process.php" method="POST">
             <input type="hidden" name="customerID" value="<?php echo $customerID; ?>">
             
@@ -132,7 +132,7 @@ if (isset($_SESSION['error'])) {
                 </div>
                 <div class="col-md-6">
                     <label for="phone" class="form-label">Phone:</label>
-                    <input type="text" class="form-control" id="phone" name="phone" pattern="^\+?[0-9 ]+$"
+                    <input type="text" class="form-control" id="phone" name="phone" pattern="^\+?[0-9 ()-]+$"
                            value="<?php echo $customer->getPhone(); ?>">
                 </div>
             </div>
@@ -148,7 +148,7 @@ if (isset($_SESSION['error'])) {
                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
             </div>
             
-            <!-- Dropdown für Benutzerrolle -->
+            <!-- Dropdown for user role -->
             <div class="mb-3">
                 <label for="userType" class="form-label">User Role:</label>
                 <select class="form-select" id="userType" name="userType" required>

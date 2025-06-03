@@ -74,7 +74,7 @@ class GlobalExceptionHandler {
      */
     private static function redirectToErrorPage($message) {
         $encodedMessage = urlencode($message);
-        $errorPage = '../views/components/error.php';
+        $errorPage = '/arts-gallery/src/view/components/error.php';
 
         if (!headers_sent()) {
             header("HTTP/1.1 500 Internal Server Error");

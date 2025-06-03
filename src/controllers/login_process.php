@@ -1,21 +1,36 @@
 <?php
-session_start(); // Session starten für Daten aus der Session
+/**
+ * Handles user authentication and login process
+ * 
+ * This controller processes POST requests for user login functionality.
+ * Implements parts of Use Case 22 - Login as user.
+ */
 
-// Datenbank und Repository einbinden
+// Start session for storing authentication data
+session_start();
+
+// Include required dependencies
 require_once __DIR__ . '/../repositories/customerRepository.php'; 
 require_once __DIR__ . '/../../config/database.php'; 
 
-// Nur POST-Requests erlauben
+/**
+ * Process login request
+ * Only handles POST requests for security
+ */
 if ($_SERVER['REQUEST_METHOD'] === 'POST') { 
-    // Login-Daten säubern, um unnötige Leerzeichen zu vermeiden
+    // Sanitize login credentials by trimming whitespace
     $email = trim($_POST['username']);
     $password = trim($_POST['password']);
     
-    // User aus DB holen
+    /**
+     * Attempt user authentication
+     * - Retrieves user from database by email
+     * - Verifies password against stored hash
+     */
     $customerRepo = new CustomerRepository(new Database());
     $user = $customerRepo->getCustomerByEmail($db, $email);
 
-    // Wenn Login erfolgreich, dann User-Daten in Session speichern && weiterleitung zur Homepage
+    // Verify credentials and create user session if valid
     if ($user && password_verify($password, $user['Pass'])) { 
         $_SESSION['user'] = [
             'CustomerID' => $user['CustomerID'],
@@ -23,14 +38,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'LastName' => $user['LastName'],
             'Email' => $user['UserName'],
             'Type' => (int)$user['Type'], 
-            'is_admin' => ($user['Type'] == 1) // Admin-Check
+            'is_admin' => ($user['Type'] == 1) // Admin status flag
         ];
         
+        // Redirect to homepage after successful login
         header("Location: ../../index.php");
         exit();
-    } else { // Login fehlgeschlagen
+    } else { 
+        // Failed login handling
         $_SESSION['error'] = "Wrong Password or E-Mail!";
-        header("Location: ../views/site_login.php"); // Zurück zum Login
+        header("Location: ../views/site_login.php"); // Redirect back to login
         exit();
     }
 }
+?>

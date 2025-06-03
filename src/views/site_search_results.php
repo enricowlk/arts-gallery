@@ -1,47 +1,47 @@
 <?php
 session_start();
 
-// Required-Dateien einbinden
+// Include required files
 require_once __DIR__ . '/../services/global_exception_handler.php'; 
 require_once __DIR__ . '/../../config/database.php'; 
 require_once __DIR__ . '/../repositories/artistRepository.php'; 
 require_once __DIR__ . '/../repositories/artworkRepository.php'; 
 
-// Query-Parameter aus GET-Request holen oder leeren String setzen
+// Get query parameter from GET request or set to empty string
 if (isset($_GET['query'])) {
     $query = $_GET['query']; 
 } else {
     $query = ''; 
 }
 
-// Sortierreihenfolge für Künstler aus GET-Request holen oder Standardwert setzen
+// Get artist sort order from GET request or set default
 if (isset($_GET['artistOrder'])) {
     $artistOrder = $_GET['artistOrder'];
 } else {
-    $artistOrder = 'ASC'; // Aufsteigend als Standard
+    $artistOrder = 'ASC'; // Default is ascending
 }
 
-// Sortierreihenfolge für Kunstwerke aus GET-Request holen oder Standardwert setzen
+// Get artwork sort order from GET request or set default
 if (isset($_GET['artworkOrder'])) {
     $artworkOrder = $_GET['artworkOrder'];
 } else {
-    $artworkOrder = 'ASC'; // Aufsteigend als Standard
+    $artworkOrder = 'ASC'; // Default is ascending
 }
 
-// Sortierkriterium für Kunstwerke aus GET-Request holen oder Standardwert setzen
+// Get artwork sort criterion from GET request or set default
 if (isset($_GET['artworkOrderBy'])) {
     $artworkOrderBy = $_GET['artworkOrderBy'];
 } else {
-    $artworkOrderBy = 'Title'; // Titel als Standard
+    $artworkOrderBy = 'Title'; // Default is Title
 }
 
-// Repository-Instanzen erstellen
+// Create repository instances
 $artistRepo = new ArtistRepository(new Database()); 
 $artworkRepo = new ArtworkRepository(new Database());
 
-// Daten aus den Repositories abfragen
-$artists = $artistRepo->searchArtists($query, $artistOrder); // Künstler suchen
-$artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder); // Kunstwerke suchen
+// Query data from repositories
+$artists = $artistRepo->searchArtists($query, $artistOrder); // Search artists
+$artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder); // Search artworks
 ?>
 
 <!DOCTYPE html>
@@ -64,13 +64,13 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
         <h1>Search Results for "<?php echo $query; ?>"</h1> 
 
         <div class="split-container">
-            <!-- Linke Spalte für Künstler -->
+            <!-- Left column for artists -->
             <div class="left-column">
                 <h2>Artists</h2>
                 <?php if (empty($artists)){ ?>
                     <p>No artists found.</p> 
                 <?php }else{ ?>
-                    <!-- Sortierdropdown für Künstler -->
+                    <!-- Sort dropdown for artists -->
                     <div class="row mb-3">
                         <div>
                             <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -83,17 +83,17 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                         </div>
                     </div>
                     
-                    <!-- Künstler als Karten anzeigen -->
+                    <!-- Display artists as cards -->
                     <div class="row g-2">
                         <?php foreach ($artists as $artist) { 
-                            // Bildpfad für Künstler erstellen
+                            // Create image path for artist
                             $imagePath = "../../images/artists/square-medium/" . $artist->getArtistID() . ".jpg";
                             $imageExists = file_exists($imagePath);
             
                             if ($imageExists) {
                                 $imageUrl = $imagePath;
                             } else {
-                                $imageUrl = "../../images/placeholder.png"; // Platzhalter falls kein Bild existiert
+                                $imageUrl = "../../images/placeholder.png"; // Placeholder if image does not exist
                             } 
                         ?>
                             <div class="col">
@@ -111,13 +111,13 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                 <?php } ?>
             </div>
 
-            <!-- Rechte Spalte für Kunstwerke -->
+            <!-- Right column for artworks -->
             <div class="right-column">
                 <h2>Artworks</h2>
                 <?php if (empty($artworks)){ ?>
                     <p>No artworks found.</p> 
                 <?php }else{ ?>
-                    <!-- Sortierdropdowns für Kunstwerke -->
+                    <!-- Sort dropdowns for artworks -->
                     <div class="row mb-3">
                             <div>
                                 <div class="btn-group">
@@ -143,19 +143,19 @@ $artworks = $artworkRepo->searchArtworks($query, $artworkOrderBy, $artworkOrder)
                             </div>
                     </div>
                     
-                    <!-- Kunstwerke als Karten anzeigen -->
+                    <!-- Display artworks as cards -->
                     <div class="row g-2">
                         <?php foreach ($artworks as $artwork) {  
-                            // Künstlerinformationen für das Kunstwerk holen
+                            // Get artist info for the artwork
                             $artist = $artistRepo->getArtistByID($artwork->getArtistID()); 
-                            // Bildpfad für Kunstwerk erstellen
+                            // Create image path for artwork
                             $imagePath = "../../images/works/square-medium/" . $artwork->getImageFileName() . ".jpg";
                             $imageExists = file_exists($imagePath);
 
                             if ($imageExists) {
                                 $imageUrl = $imagePath;
                             } else {
-                                $imageUrl = "../../images/placeholder.png"; // Platzhalter falls kein Bild existiert
+                                $imageUrl = "../../images/placeholder.png"; // Placeholder if image does not exist
                             }
                         ?>
                             <div class="col">

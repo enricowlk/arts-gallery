@@ -2,6 +2,10 @@
 /**
  * Handles all database operations related to artists.
  */
+
+require_once __DIR__ . '/../entitys/artist.php';
+require_once __DIR__ . '/../../config/database.php';
+
 class ArtistRepository {
     /**
      * @var Database The database connection instance.
