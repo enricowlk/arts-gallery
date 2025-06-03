@@ -1,19 +1,68 @@
 <?php
-
-// Definition der Customer-Klasse zur Darstellung eines Kunden
+/**
+ * Class Customer
+ *
+ * Represents a customer entity.
+ */
 class Customer {
-    // Private Eigenschaften - nur innerhalb der Klasse zugänglich
-    private $CustomerID;  
-    private $FirstName;   
-    private $LastName;   
-    private $Address;    
-    private $City;       
-    private $Country;     
-    private $Postal;     
-    private $Phone;      
-    private $Email;       
+    /**
+     * @var int Customer ID
+     */
+    private $CustomerID;
 
-    // Konstruktor zur Initialisierung eines neuen Customer-Objekts
+    /**
+     * @var string First name of the customer
+     */
+    private $FirstName;
+
+    /**
+     * @var string Last name of the customer
+     */
+    private $LastName;
+
+    /**
+     * @var string Street address
+     */
+    private $Address;
+
+    /**
+     * @var string City of residence
+     */
+    private $City;
+
+    /**
+     * @var string Country of residence
+     */
+    private $Country;
+
+    /**
+     * @var string Postal/ZIP code
+     */
+    private $Postal;
+
+    /**
+     * @var string Phone number
+     */
+    private $Phone;
+
+    /**
+     * @var string Email address
+     */
+    private $Email;
+
+    /**
+     * Customer constructor.
+     *
+     * @param int $CustomerID Customer ID
+     * @param string $FirstName First name
+     * @param string $LastName Last name
+     * @param string $Address Street address
+     * @param string $City City
+     * @param string $Country Country
+     * @param string $Postal Postal code
+     * @param string $Phone Phone number
+     * @param string $Email Email address
+     */
     public function __construct(
         $CustomerID,
         $FirstName,
@@ -25,7 +74,6 @@ class Customer {
         $Phone,
         $Email
     ) {
-        // Zuweisung der Parameter zu den Klassen-Eigenschaften
         $this->CustomerID = $CustomerID;
         $this->FirstName = $FirstName;
         $this->LastName = $LastName;
@@ -37,39 +85,65 @@ class Customer {
         $this->Email = $Email;
     }
 
-    // --- Getter-Methoden ---
+    /**
+     * @return int Customer ID
+     */
     public function getCustomerID() {
         return $this->CustomerID;
     }
 
+    /**
+     * @return string First name
+     */
     public function getFirstName() {
         return $this->FirstName;
     }
 
+    /**
+     * @return string Last name
+     */
     public function getLastName() {
         return $this->LastName;
     }
 
+    /**
+     * @return string Address
+     */
     public function getAddress() {
         return $this->Address;
     }
 
+    /**
+     * @return string City
+     */
     public function getCity() {
         return $this->City;
     }
 
+    /**
+     * @return string Country
+     */
     public function getCountry() {
         return $this->Country;
     }
 
+    /**
+     * @return string Postal code
+     */
     public function getPostal() {
         return $this->Postal;
     }
 
+    /**
+     * @return string Phone number
+     */
     public function getPhone() {
         return $this->Phone;
     }
 
+    /**
+     * @return string Email address
+     */
     public function getEmail() {
         return $this->Email;
     }

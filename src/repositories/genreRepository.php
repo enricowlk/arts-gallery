@@ -1,30 +1,42 @@
 <?php
-// Einbinden der benötigten Klassen
-require_once __DIR__ . '/../entitys/genre.php';     
-require_once __DIR__ . '/../../config/database.php'; 
+// Include required classes
+require_once __DIR__ . '/../entitys/genre.php';
+require_once __DIR__ . '/../../config/database.php';
 
-// Repository-Klasse für Genre-Operationen
+/**
+ * Repository class for accessing genres from the database.
+ */
 class GenreRepository {
-    private $db;  
+    /**
+     * @var Database $db Database connection instance
+     */
+    private $db;
 
-    // Konstruktor mit Dependency Injection der Datenbank
+    /**
+     * Constructor for GenreRepository.
+     *
+     * @param Database $db An instance of the database connection
+     */
     public function __construct($db) {
         $this->db = $db;
     }
 
-    // Methode zum Abrufen aller Genres, sortiert nach Epoche und Name
+    /**
+     * Retrieves all genres from the database, ordered by era and genre name.
+     *
+     * @return Genre[] Array of Genre objects
+     * @throws Exception If a database error occurs
+     */
     public function getAllGenres() {
         try {
-            $this->db->connect();  
-            $sql = "SELECT * FROM genres ORDER BY Era, GenreName";  // SQL mit Sortierung
-            $stmt = $this->db->prepareStatement($sql);  
-            $stmt->execute();  
-            
-            $genres = [];  // Array für die Ergebnisse
-            
-            // Ergebnisse zeilenweise verarbeiten
+            $this->db->connect();
+            $sql = "SELECT * FROM genres ORDER BY Era, GenreName";
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute();
+
+            $genres = [];
+
             while ($row = $stmt->fetch()) {
-                // Genre-Objekte erstellen und zum Array hinzufügen
                 $genres[] = new Genre(
                     $row['GenreID'],
                     $row['GenreName'],
@@ -33,31 +45,35 @@ class GenreRepository {
                     $row['Link']
                 );
             }
-            
-            return $genres; 
-            
+
+            return $genres;
+
         } catch (PDOException $e) {
             throw new Exception("Could not retrieve all genres.");
         } finally {
-            $this->db->close(); 
+            $this->db->close();
         }
     }
 
-    // Methode zum Abrufen eines spezifischen Genres anhand der ID
+    /**
+     * Retrieves a single genre by its ID.
+     *
+     * @param int $id The ID of the genre
+     * @return Genre The corresponding Genre object
+     * @throws Exception If the genre is not found or a database error occurs
+     */
     public function getGenreById($id) {
         try {
-            $this->db->connect();  
-            $sql = "SELECT * FROM genres WHERE GenreID = ?"; 
-            $stmt = $this->db->prepareStatement($sql);  
-            $stmt->execute([$id]);  
-            $row = $stmt->fetch(); 
-            
-            // Wenn kein Genre gefunden wurde, Exception werfen
+            $this->db->connect();
+            $sql = "SELECT * FROM genres WHERE GenreID = ?";
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute([$id]);
+            $row = $stmt->fetch();
+
             if (!$row) {
                 throw new Exception("Genre not found");
             }
-            
-            // Genre-Objekt erstellen und zurückgeben
+
             return new Genre(
                 $row['GenreID'],
                 $row['GenreName'],
@@ -65,11 +81,11 @@ class GenreRepository {
                 $row['Description'],
                 $row['Link']
             );
-            
+
         } catch (PDOException $e) {
             throw new Exception("Could not retrieve genre details.");
         } finally {
-            $this->db->close();  
+            $this->db->close();
         }
     }
 }

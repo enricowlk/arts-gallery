@@ -1,17 +1,29 @@
 <?php
-// Einbindung der benötigten Klassen
-require_once __DIR__ .'/../entitys/artist.php';
-require_once __DIR__ . '/../../config/database.php';
-
+/**
+ * Handles all database operations related to artists.
+ */
 class ArtistRepository {
+    /**
+     * @var Database The database connection instance.
+     */
     private $db;  
 
-    // Konstruktor mit Dependency Injection der Datenbank
+    /**
+     * Constructor with dependency injection of the database.
+     *
+     * @param Database $db The database connection instance.
+     */
     public function __construct($db) {
         $this->db = $db;
     }
 
-    // Holt alle Künstler (sortierbar)
+    /**
+     * Retrieves all artists from the database with optional sorting.
+     *
+     * @param string $order Sorting direction ('ASC' or 'DESC').
+     * @return Artist[] An array of Artist objects.
+     * @throws Exception If a database error occurs.
+     */
     public function getAllArtists($order = 'ASC') {
         try {
             $this->db->connect();
@@ -32,7 +44,13 @@ class ArtistRepository {
         }
     }
 
-    // Holt einen bestimmten Künstler per ID
+    /**
+     * Retrieves a single artist by their ID.
+     *
+     * @param int $id The ID of the artist to retrieve.
+     * @return Artist The requested Artist object.
+     * @throws Exception If the artist is not found or a database error occurs.
+     */
     public function getArtistById($id) {
         try {
             $this->db->connect();
@@ -55,7 +73,14 @@ class ArtistRepository {
         }
     }
 
-    // Sucht Künstler nach Namen (Vorname/Nachname/Kombination)
+    /**
+     * Searches for artists by name (first name, last name, or combination).
+     *
+     * @param string $query The search term.
+     * @param string $order Sorting direction ('ASC' or 'DESC').
+     * @return Artist[] An array of matching Artist objects.
+     * @throws Exception If a database error occurs.
+     */
     public function searchArtists($query, $order = 'ASC') {
         try {
             $this->db->connect();
@@ -81,7 +106,13 @@ class ArtistRepository {
         }
     }
 
-    // Holt die Top 3 Künstler basierend auf Bewertungen
+    /**
+     * Retrieves the top 3 artists based on review count.
+     *
+     * @param int $limit The maximum number of artists to return (default: 3).
+     * @return array An array of associative arrays containing Artist objects and their review counts.
+     * @throws Exception If a database error occurs.
+     */
     public function getTop3Artists($limit = 3) {
         try {
             $this->db->connect();

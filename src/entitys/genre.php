@@ -1,17 +1,43 @@
 <?php
 /**
- * Klasse zur Darstellung eines Kunstgenres/Stils
- * Enthält Informationen über kunsthistorische Stilepochen
+ * Class representing an art genre/style.
+ * Contains information about art historical styles and epochs.
  */
 class Genre {
-    // Private Eigenschaften
+    /**
+     * @var int Unique identifier for the genre
+     */
     private $GenreID;       
+
+    /**
+     * @var string Name of the genre
+     */
     private $GenreName;    
+
+    /**
+     * @var string Era or period of the genre
+     */
     private $Era;           
+
+    /**
+     * @var string Description of the genre
+     */
     private $Description;   
+
+    /**
+     * @var string Link to more information about the genre
+     */
     private $Link;         
 
-    // Konstruktor für Genre-Objekte
+    /**
+     * Genre constructor.
+     *
+     * @param int $GenreID Unique identifier for the genre
+     * @param string $GenreName Name of the genre
+     * @param string $Era Era or period of the genre
+     * @param string $Description Description of the genre
+     * @param string $Link Link to more information about the genre
+     */
     public function __construct($GenreID, $GenreName, $Era, $Description, $Link) {
         $this->GenreID = $GenreID;
         $this->GenreName = $GenreName;
@@ -20,23 +46,47 @@ class Genre {
         $this->Link = $Link;
     }
 
-    // --- Getter-Methoden ---
+    /**
+     * Get the genre ID.
+     *
+     * @return int Genre unique identifier
+     */
     public function getGenreID() {
         return $this->GenreID;
     }
     
+    /**
+     * Get the genre name.
+     *
+     * @return string Name of the genre
+     */
     public function getGenreName() {
         return $this->GenreName;
     }
 
+    /**
+     * Get the era or period of the genre.
+     *
+     * @return string Era or period
+     */
     public function getEra() {
         return $this->Era;
     }
     
+    /**
+     * Get the description of the genre.
+     *
+     * @return string Description text
+     */
     public function getDescription() {
         return $this->Description;
     }
 
+    /**
+     * Get the link to more information about the genre.
+     *
+     * @return string URL link
+     */
     public function getLink() {
         return $this->Link;    
     }

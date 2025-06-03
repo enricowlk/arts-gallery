@@ -1,18 +1,30 @@
 <?php
-// Einbindung benötigter Klassen
-require_once __DIR__ . '/../entitys/artwork.php';
-require_once __DIR__ . '/../entitys/reviews.php';
-require_once __DIR__ . '/../../config/database.php';
-
+/**
+ * Handles all database operations related to artworks including retrieval, searching, and rating calculations.
+ */
 class ArtworkRepository {
+    /**
+     * @var Database The database connection instance.
+     */
     private $db; 
 
-    // Konstruktor mit Dependency Injection
+    /**
+     * Constructor with dependency injection of the database.
+     *
+     * @param Database $db The database connection instance.
+     */
     public function __construct($db) {
         $this->db = $db;
     }
 
-    // Holt alle Kunstwerke (sortierbar)
+    /**
+     * Retrieves all artworks with optional sorting.
+     *
+     * @param string $orderBy The column to sort by (default: 'Title').
+     * @param string $order Sorting direction ('ASC' or 'DESC', default: 'ASC').
+     * @return Artwork[] An array of Artwork objects.
+     * @throws Exception If a database error occurs.
+     */
     public function getAllArtworks($orderBy = 'Title', $order = 'ASC') {
         try {
             $this->db->connect();
@@ -34,7 +46,13 @@ class ArtworkRepository {
         }
     }
 
-    // Holt ein bestimmtes Kunstwerk per ID
+    /**
+     * Retrieves a single artwork by its ID.
+     *
+     * @param int $id The ID of the artwork to retrieve.
+     * @return Artwork The requested Artwork object.
+     * @throws Exception If the artwork is not found or a database error occurs.
+     */
     public function getArtworkById($id) {
         try {
             $this->db->connect();
@@ -58,7 +76,13 @@ class ArtworkRepository {
         }
     }
 
-    // Holt alle Kunstwerke eines Künstlers
+    /**
+     * Retrieves all artworks for a specific artist.
+     *
+     * @param int $id The ID of the artist.
+     * @return Artwork[] An array of Artwork objects by the specified artist.
+     * @throws Exception If a database error occurs.
+     */
     public function getAllArtworksForOneArtistByArtistId($id) {
         try {
             $this->db->connect();
@@ -80,7 +104,13 @@ class ArtworkRepository {
         }
     }
 
-    // Holt Kunstwerke nach Genre
+    /**
+     * Retrieves all artworks for a specific genre.
+     *
+     * @param int $genreId The ID of the genre.
+     * @return Artwork[] An array of Artwork objects in the specified genre.
+     * @throws Exception If a database error occurs.
+     */
     public function getAllArtworksForOneGenreByGenreId($genreId) {
         try {
             $this->db->connect();
@@ -105,7 +135,13 @@ class ArtworkRepository {
         }
     }
 
-    // Holt Genre eines Kunstwerks
+    /**
+     * Retrieves the genre(s) for a specific artwork.
+     *
+     * @param int $id The ID of the artwork.
+     * @return Genre[] An array of Genre objects associated with the artwork.
+     * @throws Exception If a database error occurs.
+     */
     public function getGenreForOneArtworkByArtworkId($id) {
         try {
             $this->db->connect();
@@ -127,7 +163,13 @@ class ArtworkRepository {
         }
     }
 
-    // Holt Kunstwerke nach Subject
+    /**
+     * Retrieves all artworks for a specific subject.
+     *
+     * @param int $id The ID of the subject.
+     * @return Artwork[] An array of Artwork objects with the specified subject.
+     * @throws Exception If a database error occurs.
+     */
     public function getAllArtworksForOneSubjectBySubjectId($id) {
         try {
             $this->db->connect();
@@ -152,7 +194,13 @@ class ArtworkRepository {
         }
     }
 
-    // Holt Subject eines Kunstwerks
+    /**
+     * Retrieves the subject(s) for a specific artwork.
+     *
+     * @param int $id The ID of the artwork.
+     * @return Subject[] An array of Subject objects associated with the artwork.
+     * @throws Exception If a database error occurs.
+     */
     public function getSubjectForOneArtworkByArtworkId($id) {
         try {
             $this->db->connect();
@@ -173,15 +221,22 @@ class ArtworkRepository {
         }
     }
 
-    // Sucht Kunstwerke nach Titel/Künstler
+    /**
+     * Searches for artworks by title or artist name with optional sorting.
+     *
+     * @param string $query The search term.
+     * @param string $orderBy The column to sort by (default: 'Title').
+     * @param string $order Sorting direction ('ASC' or 'DESC', default: 'ASC').
+     * @return Artwork[] An array of matching Artwork objects.
+     * @throws Exception If a database error occurs.
+     */
     public function searchArtworks($query, $orderBy = 'Title', $order = 'ASC') {
         try {
             $this->db->connect();
             
-            // Sicherstellen, dass nur gültige Spalten für ORDER BY verwendet werden
             $validOrderColumns = ['Title', 'ArtistID', 'YearOfWork'];
             if (!in_array($orderBy, $validOrderColumns)) {
-                $orderBy = 'Title'; // Fallback auf Standardwert
+                $orderBy = 'Title';
             }
             
             $sql = "SELECT artworks.* FROM artworks
@@ -192,7 +247,6 @@ class ArtworkRepository {
                     OR CONCAT(artists.FirstName, ' ', artists.LastName) LIKE :query
                     OR CONCAT(artists.LastName, ' ', artists.FirstName) LIKE :query";
             
-            // Spezielle Behandlung für ArtistID-Sortierung
             if ($orderBy === 'ArtistID') {
                 $sql .= " ORDER BY artists.LastName $order, artists.FirstName $order";
             } else {
@@ -216,7 +270,13 @@ class ArtworkRepository {
         }
     }
 
-    // Holt 3 zufällige Kunstwerke
+    /**
+     * Retrieves a specified number of random artworks.
+     *
+     * @param int $limit The number of random artworks to retrieve (default: 3).
+     * @return Artwork[] An array of randomly selected Artwork objects.
+     * @throws Exception If a database error occurs.
+     */
     public function get3RandomArtworks($limit = 3) {
         try {
             $this->db->connect();
@@ -238,7 +298,13 @@ class ArtworkRepository {
         }
     }
 
-    // Holt die 3 bestbewerteten Kunstwerke (3 Bewertungen)
+    /**
+     * Retrieves the top-rated artworks (minimum 3 reviews required).
+     *
+     * @param int $limit The number of top artworks to retrieve (default: 3).
+     * @return array An array of associative arrays containing Artwork objects and their average ratings.
+     * @throws Exception If a database error occurs.
+     */
     public function get3TopArtworks($limit = 3) {
         try {
             $this->db->connect();
@@ -269,7 +335,13 @@ class ArtworkRepository {
         }
     }
 
-    // Berechnet und gibt Durchschnittsbewertung für ein Kunstwerk
+    /**
+     * Calculates the average rating for a specific artwork.
+     *
+     * @param int $artworkId The ID of the artwork.
+     * @return float The average rating (returns 0 if no reviews exist).
+     * @throws Exception If a database error occurs.
+     */
     public function getAverageRatingForArtwork($artworkId) {
         try {
             $this->db->connect();
@@ -278,7 +350,7 @@ class ArtworkRepository {
             $stmt->execute([$artworkId]);
             $row = $stmt->fetch();
             
-            return $row['AverageRating'] ?? 0; // Rückgabe 0 falls keine Bewertungen
+            return $row['AverageRating'] ?? 0;
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while fetching artwork rating");
         } finally {

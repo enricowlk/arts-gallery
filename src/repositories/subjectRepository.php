@@ -1,63 +1,79 @@
 <?php
-// Einbindung der benötigten Klassen
-require_once __DIR__ . '/../entitys/subject.php';    
+// Include required classes
+require_once __DIR__ . '/../entitys/subject.php';
 require_once __DIR__ . '/../../config/database.php';
 
-// Repository-Klasse für Datenbankoperationen mit Subjects
+/**
+ * Repository class for accessing subjects from the database.
+ */
 class SubjectRepository {
-    private $db; 
+    /**
+     * @var Database $db Database connection instance
+     */
+    private $db;
 
-    // Konstruktor mit Dependency Injection der Datenbankverbindung
+    /**
+     * Constructor for SubjectRepository.
+     *
+     * @param Database $db An instance of the database connection
+     */
     public function __construct($db) {
         $this->db = $db;
     }
 
-    // Holt alle Subjects aus der Datenbank, sortiert nach Namen
+    /**
+     * Retrieves all subjects from the database, ordered by subject name.
+     *
+     * @return Subject[] Array of Subject objects
+     * @throws Exception If a database error occurs
+     */
     public function getAllSubjects() {
         try {
-            $this->db->connect();  
-            $sql = "SELECT * FROM subjects ORDER BY SubjectName";  // SQL mit Sortierung
-            $stmt = $this->db->prepareStatement($sql);  
-            $stmt->execute();  
-            
-            $subjects = [];  // Initialisiert leeres Array für Subjects
-            
-            // Verarbeitet jede Ergebniszeile der Abfrage
+            $this->db->connect();
+            $sql = "SELECT * FROM subjects ORDER BY SubjectName";
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute();
+
+            $subjects = [];
+
             while ($row = $stmt->fetch()) {
-                // Erstellt Subject-Objekte und fügt sie dem Array hinzu
                 $subjects[] = new Subject($row['SubjectId'], $row['SubjectName']);
             }
-            
-            return $subjects;  
-            
+
+            return $subjects;
+
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while fetching subjects");
         } finally {
-            $this->db->close();  
+            $this->db->close();
         }
     }
 
-    // Holt ein bestimmtes Subject anhand seiner ID
+    /**
+     * Retrieves a single subject by its ID.
+     *
+     * @param int $id The ID of the subject
+     * @return Subject The matching Subject object
+     * @throws Exception If the subject is not found or a database error occurs
+     */
     public function getSubjectById($id) {
         try {
-            $this->db->connect();  
-            $sql = "SELECT * FROM subjects WHERE SubjectId = ?";  
-            $stmt = $this->db->prepareStatement($sql);  
-            $stmt->execute([$id]);  
-            $row = $stmt->fetch();  
-            
-            // Wenn kein Subject gefunden wurde
+            $this->db->connect();
+            $sql = "SELECT * FROM subjects WHERE SubjectId = ?";
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute([$id]);
+            $row = $stmt->fetch();
+
             if (!$row) {
                 throw new Exception("Subject not found with ID: $id");
             }
-            
-            // Gibt das gefundene Subject als Objekt zurück
+
             return new Subject($row['SubjectId'], $row['SubjectName']);
-            
+
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while fetching subject");
         } finally {
-            $this->db->close(); 
+            $this->db->close();
         }
     }
 }

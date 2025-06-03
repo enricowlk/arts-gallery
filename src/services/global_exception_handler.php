@@ -1,59 +1,91 @@
 <?php
-// Zentrale Klasse zur Behandlung aller unerwarteten Fehler und Exceptions
+/**
+ * Central class for handling all unexpected errors and exceptions.
+ * Registers custom handlers for exceptions, PHP errors, and fatal shutdown errors.
+ */
 class GlobalExceptionHandler {
-    
-    // Registriert alle Handler beim Aufruf
+
+    /**
+     * Registers all custom error and exception handlers.
+     *
+     * This method sets up handlers for:
+     * - Uncaught exceptions
+     * - PHP runtime errors
+     * - Fatal shutdown errors
+     *
+     * @return void
+     */
     public static function register() {
-        set_exception_handler([self::class, 'handleException']);  // Für Exceptions
-        set_error_handler([self::class, 'handleError']);         // Für PHP-Fehler
-        register_shutdown_function([self::class, 'handleShutdown']); // Für Fatal Errors
+        set_exception_handler([self::class, 'handleException']);
+        set_error_handler([self::class, 'handleError']);
+        register_shutdown_function([self::class, 'handleShutdown']);
     }
 
-    // Behandlung von ungefangenen Exceptions
+    /**
+     * Handles uncaught exceptions.
+     *
+     * @param Throwable $exception The uncaught exception
+     * @return void
+     */
     public static function handleException(Throwable $exception) {
-        self::redirectToErrorPage($exception->getMessage());  // Weiterleitung mit Fehlermeldung
+        self::redirectToErrorPage($exception->getMessage());
     }
 
-    // Behandlung von PHP-Fehlern
+    /**
+     * Handles PHP runtime errors.
+     *
+     * @param int $errno The level of the error raised
+     * @param string $errstr The error message
+     * @param string $errfile The filename that the error was raised in
+     * @param int $errline The line number the error was raised at
+     * @return bool Whether the error was handled
+     */
     public static function handleError($errno, $errstr, $errfile, $errline) {
-        // Ignoriere @-unterdrückte Fehler
         if (error_reporting() === 0) return false;
 
-        // Nur schwere Fehler weiterleiten
         if (in_array($errno, [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR])) {
             self::redirectToErrorPage($errstr);
         }
 
-        return true;  // Andere Fehler werden normal behandelt
+        return true;
     }
 
-    // Behandlung von fatalen Shutdown-Fehlern
+    /**
+     * Handles fatal shutdown errors (e.g., out of memory, syntax errors).
+     *
+     * @return void
+     */
     public static function handleShutdown() {
-        $error = error_get_last();  // Holt letzten Fehler
-        // Prüft auf fatale Fehler
+        $error = error_get_last();
+
         if ($error && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
             self::redirectToErrorPage($error['message']);
         }
     }
 
-    // Private Hilfsmethode für die Weiterleitung
+    /**
+     * Redirects the user to a generic error page with a message.
+     *
+     * If headers have not been sent, performs a server-side redirect.
+     * If headers have already been sent, uses a JavaScript-based redirect as fallback.
+     *
+     * @param string $message Error message to display on the error page
+     * @return void
+     */
     private static function redirectToErrorPage($message) {
-        $encodedMessage = urlencode($message);  // URL-kodierte Fehlermeldung
-        $errorPage = '../views/components/error.php'; // Pfad zur Fehlerseite
+        $encodedMessage = urlencode($message);
+        $errorPage = '../views/components/error.php';
 
-        // Header-basierte Weiterleitung wenn möglich
         if (!headers_sent()) {
-            header("HTTP/1.1 500 Internal Server Error");  // HTTP Statuscode
+            header("HTTP/1.1 500 Internal Server Error");
             header("Location: $errorPage?message=$encodedMessage");
         } else {
-            // JavaScript-Fallback wenn Header schon gesendet
             echo "<script>window.location.href = '$errorPage?message=$encodedMessage';</script>";
         }
 
-        exit();  // Skriptausführung beenden
+        exit();
     }
 }
 
-// Automatische Registrierung beim Einbinden der Datei
+// Automatically register the error handlers when the file is included
 GlobalExceptionHandler::register();
-?>

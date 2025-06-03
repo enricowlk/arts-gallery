@@ -1,35 +1,48 @@
 <?php
-// Einbindung der benötigten Klassen
-require_once __DIR__ . '/../entitys/reviews.php';    
-require_once __DIR__ . '/../../config/database.php'; 
+// Include required classes
+require_once __DIR__ . '/../entitys/reviews.php';
+require_once __DIR__ . '/../../config/database.php';
 
-// Repository-Klasse für Review-Operationen
+/**
+ * Repository class for accessing review data from the database.
+ */
 class ReviewRepository {
-    private $db;  
+    /**
+     * @var Database $db Database connection instance
+     */
+    private $db;
 
-    // Konstruktor mit Dependency Injection der Datenbank
+    /**
+     * Constructor for ReviewRepository.
+     *
+     * @param Database $db An instance of the database connection
+     */
     public function __construct($db) {
         $this->db = $db;
     }
 
-    // Holt die neuesten X Reviews (standardmäßig 3)
+    /**
+     * Retrieves the most recent reviews from the database.
+     *
+     * @param int $limit The maximum number of reviews to return (default is 3)
+     * @return Review[] Array of Review objects
+     * @throws Exception If a database error occurs
+     */
     public function get3RecentReviews($limit = 3) {
         try {
             $this->db->connect();
-            // SQL: Holt Reviews nach Datum absteigend sortiert mit Limit
             $sql = "SELECT * FROM reviews ORDER BY ReviewDate DESC LIMIT $limit";
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute();
-            
+
             $reviews = [];
             while ($row = $stmt->fetch()) {
-                // Erstellt Review-Objekte für jede gefundene Zeile
                 $reviews[] = new Review(
-                    $row['ReviewId'], 
-                    $row['ArtWorkId'], 
-                    $row['CustomerId'], 
-                    $row['ReviewDate'], 
-                    $row['Rating'], 
+                    $row['ReviewId'],
+                    $row['ArtWorkId'],
+                    $row['CustomerId'],
+                    $row['ReviewDate'],
+                    $row['Rating'],
                     $row['Comment']
                 );
             }
@@ -41,11 +54,16 @@ class ReviewRepository {
         }
     }
 
-    // Zählt alle Reviews für einen bestimmten Künstler
+    /**
+     * Counts the number of reviews for a given artist.
+     *
+     * @param int $artistId The artist's ID
+     * @return int Number of reviews
+     * @throws Exception If a database error occurs
+     */
     public function getReviewCountForArtist($artistId) {
         try {
             $this->db->connect();
-            // SQL mit JOIN zwischen reviews und artworks Tabellen
             $sql = "SELECT COUNT(reviews.ReviewID) as ReviewCount 
                     FROM reviews 
                     INNER JOIN artworks ON reviews.ArtWorkID = artworks.ArtWorkID 
@@ -53,8 +71,7 @@ class ReviewRepository {
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([$artistId]);
             $row = $stmt->fetch();
-            
-            // Gibt die Anzahl der Reviews oder 0 zurück
+
             return $row['ReviewCount'] ?? 0;
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while counting artist reviews");
@@ -63,28 +80,30 @@ class ReviewRepository {
         }
     }
 
-    // Holt alle Reviews für ein bestimmtes Kunstwerk durch die ArtworkID
+    /**
+     * Retrieves all reviews for a specific artwork.
+     *
+     * @param int $artworkId The artwork's ID
+     * @return Review[] Array of Review objects
+     * @throws Exception If a database error occurs
+     */
     public function getAllReviewsForOneArtworkByArtworkId($artworkId) {
         try {
             $this->db->connect();
             $sql = "SELECT * FROM reviews WHERE ArtWorkID = ? ORDER BY ReviewDate DESC";
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([$artworkId]);
-            
-            // Initialisiert ein leeres Array für die Review-Objekte
+
             $reviews = [];
 
-            // Durchläuft alle Ergebniszeilen der Datenbankabfrage
             while ($row = $stmt->fetch()) {
-                // Für jede Datenbankzeile wird ein neues Review-Objekt erstellt
-                // und dem $reviews-Array hinzugefügt
                 $reviews[] = new Review(
-                    $row['ReviewId'],     
-                    $row['ArtWorkId'],     
-                    $row['CustomerId'],    
-                    $row['ReviewDate'],   
-                    $row['Rating'],        
-                    $row['Comment']       
+                    $row['ReviewId'],
+                    $row['ArtWorkId'],
+                    $row['CustomerId'],
+                    $row['ReviewDate'],
+                    $row['Rating'],
+                    $row['Comment']
                 );
             }
             return $reviews;
@@ -96,11 +115,18 @@ class ReviewRepository {
         }
     }
 
-    // Fügt ein neues Review in die Datenbank ein
+    /**
+     * Adds a new review to the database.
+     *
+     * @param int $artworkId The ID of the artwork being reviewed
+     * @param int $customerId The ID of the user submitting the review
+     * @param int $rating Rating value (1–5)
+     * @param string $comment The review comment
+     * @throws Exception If a database error occurs
+     */
     public function addReview($artworkId, $customerId, $rating, $comment) {
         try {
             $this->db->connect();
-            // SQL: Insert mit aktueller Datumszeit (NOW())
             $sql = "INSERT INTO reviews (ArtWorkID, CustomerID, Rating, Comment, ReviewDate) 
                     VALUES (?, ?, ?, ?, NOW())";
             $stmt = $this->db->prepareStatement($sql);
@@ -112,11 +138,16 @@ class ReviewRepository {
         }
     }
 
-    // Löscht ein Review anhand der Review-ID
+    /**
+     * Deletes a review by its ID.
+     *
+     * @param int $reviewId The review's ID
+     * @return PDOStatement The executed statement
+     * @throws Exception If a database error occurs
+     */
     public function deleteReview($reviewId) {
         try {
             $this->db->connect();
-            // SQL: Löscht ein Review mit benanntem Parameter
             $sql = "DELETE FROM reviews WHERE ReviewID = :reviewId";
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute(['reviewId' => $reviewId]);
@@ -128,7 +159,14 @@ class ReviewRepository {
         }
     }
 
-    // Prüft, ob ein Benutzer bereits ein Review für ein Kunstwerk abgegeben hat
+    /**
+     * Checks if a user has already submitted a review for a specific artwork.
+     *
+     * @param int $artworkId The ID of the artwork
+     * @param int $customerId The ID of the user
+     * @return bool true if a review exists, false otherwise
+     * @throws Exception If a database error occurs
+     */
     public function hasUserReviewedArtwork($artworkId, $customerId) {
         try {
             $this->db->connect();
@@ -138,7 +176,6 @@ class ReviewRepository {
             $stmt = $this->db->prepareStatement($sql);
             $stmt->execute([$artworkId, $customerId]);
             $row = $stmt->fetch();
-            // Gibt true zurück, wenn mindestens ein Review existiert
             return ($row['review_count'] > 0);
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while checking user reviews");

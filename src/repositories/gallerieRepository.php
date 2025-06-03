@@ -1,30 +1,42 @@
 <?php
-// Einbinden der benötigten Klassen
-require_once __DIR__ . '/../entitys/gallerie.php';  
-require_once __DIR__ . '/../../config/database.php'; 
+// Include required classes
+require_once __DIR__ . '/../entitys/gallerie.php';
+require_once __DIR__ . '/../../config/database.php';
 
-// Repository-Klasse für Gallerie-Operationen
+/**
+ * Repository class for accessing gallery data from the database.
+ */
 class GallerieRepository {
-    private $db;  
+    /**
+     * @var Database $db Database connection instance
+     */
+    private $db;
 
-    // Konstruktor mit Dependency Injection der Datenbank
+    /**
+     * Constructor for the GallerieRepository.
+     *
+     * @param Database $db An instance of the database connection
+     */
     public function __construct($db) {
         $this->db = $db;
     }
 
-    // Methode zum Abrufen aller Galerien aus der Datenbank
+    /**
+     * Retrieves all galleries from the database.
+     *
+     * @return Gallerie[] Array of Gallerie objects
+     * @throws Exception If a database error occurs
+     */
     public function getAllGalleries() {
         try {
-            $this->db->connect();  // Verbindung zur Datenbank herstellen
-            $sql = "SELECT * FROM galleries";  // SQL-Abfrage
-            $stmt = $this->db->prepareStatement($sql);  // Statement vorbereiten
-            $stmt->execute();  // Statement ausführen
-            
-            $galleries = [];  // Array für die Ergebnisse
-            
-            // Ergebnisse zeilenweise verarbeiten
+            $this->db->connect();
+            $sql = "SELECT * FROM galleries";
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute();
+
+            $galleries = [];
+
             while ($row = $stmt->fetch()) {
-                // Gallerie-Objekte erstellen und zum Array hinzufügen
                 $galleries[] = new Gallerie(
                     $row['GalleryID'],
                     $row['GalleryName'],
@@ -36,29 +48,33 @@ class GallerieRepository {
                     $row['GalleryWebSite']
                 );
             }
-            return $galleries; 
-            
+            return $galleries;
+
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while fetching galleries");
         } finally {
-            $this->db->close();  
+            $this->db->close();
         }
     }
 
-    // Methode zum Abrufen einer Galerie anhand einer Kunstwerk-ID
+    /**
+     * Retrieves a gallery by a related artwork ID.
+     *
+     * @param int $artworkId The ID of the artwork
+     * @return Gallerie|null A Gallerie object or null if not found
+     * @throws Exception If a database error occurs
+     */
     public function getGalleryByArtworkId($artworkId) {
         try {
-            $this->db->connect();  
-            // SQL mit JOIN zwischen galleries und artworks
+            $this->db->connect();
             $sql = "SELECT galleries.* FROM galleries  
                     INNER JOIN artworks ON galleries.GalleryID = artworks.GalleryID 
                     WHERE artworks.ArtWorkID = ?";
-            $stmt = $this->db->prepareStatement($sql);  
-            $stmt->execute([$artworkId]);  
-            $row = $stmt->fetch();  
-            
+            $stmt = $this->db->prepareStatement($sql);
+            $stmt->execute([$artworkId]);
+            $row = $stmt->fetch();
+
             if ($row) {
-                // Gallerie-Objekt erstellen und zurückgeben
                 return new Gallerie(
                     $row['GalleryID'],
                     $row['GalleryName'],
@@ -70,12 +86,12 @@ class GallerieRepository {
                     $row['GalleryWebSite']
                 );
             }
-            return null;  // Falls keine Galerie gefunden wurde
-            
+            return null;
+
         } catch (PDOException $e) {
             throw new Exception("Database error occurred while fetching gallery");
         } finally {
-            $this->db->close(); 
+            $this->db->close();
         }
     }
 }
