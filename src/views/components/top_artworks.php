@@ -33,7 +33,7 @@ $topArtworks = $artworkRepo->get3TopArtworks();
 <body>
 
     <!-- Container for top artworks -->
-    <div class="top-artworks-container container py-4">
+    <div class="top-artworks-container container py-4 mt-3">
         <h2 class="mb-4 text-center">Top Artworks</h2>
 
         <?php if (!empty($topArtworks)) { ?>
