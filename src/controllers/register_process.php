@@ -10,6 +10,7 @@ session_start();
 // Include required classes and configurations
 require_once __DIR__ . '/../entitys/customer.php';
 require_once __DIR__ . '/../repositories/customerRepository.php';
+require_once __DIR__ . '/../repositories/customerServiceRepository.php';
 require_once __DIR__ . '/../../config/database.php';
 
 /**
@@ -41,8 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Instantiate CustomerRepository with database connection
+    // Instantiate CustomerRepository and CustomerServiceRepository with database connection
     $customerRepo = new CustomerRepository(new Database());
+    $customerServiceRepo = new CustomerServiceRepository(new Database());
 
     try {
         // Check if email already exists in the system
@@ -63,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
 
             // Save the new customer and hashed password
-            $customerRepo->addCustomer($customer, $data['password']);
+            $customerServiceRepo->addCustomer($customer, $data['password']);
 
             // Set success message
             $_SESSION['success'] = 'Registration successful! You can now log in.';

@@ -35,12 +35,13 @@ if (isset($_SESSION['error'])) {
 }
 
 // Count number of admins
-$adminCount = 0;
-foreach ($users as $user) {
-    if ($user['Type'] == 1) {
-        $adminCount++;
-    }
-}
+$adminCount = $customerRepo->countAdministrators();
+//$adminCount = 0;
+//foreach ($users as $user) {
+   // if ($user['Type'] == 1) {
+  //      $adminCount++;
+  //  }
+//}
 ?>
 
 <!DOCTYPE html>

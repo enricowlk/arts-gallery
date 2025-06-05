@@ -15,10 +15,13 @@ if (!isset($_SESSION['user']) || $_SESSION['user']['Type'] != 1) {
 
 // Include required classes
 require_once __DIR__ . '/../repositories/customerRepository.php';
+require_once __DIR__ . '/../repositories/customerServiceRepository.php';
 require_once __DIR__ . '/../../config/database.php';
 
 // Initialize repository with database connection
 $customerRepo = new CustomerRepository(new Database());
+// Initialize customer service repository
+$customerServiceRepo = new CustomerServiceRepository(new Database());
 
 // Validate input parameters
 if (!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($_GET['action'])) {
@@ -69,7 +72,7 @@ if ($userType === 1) {
 
 // Execute deactivate or reactivate action
 if ($action === 'deactivate') {
-    $success = $customerRepo->deactivateUser($customerID);
+    $success = $customerServiceRepo->deactivateUser($customerID);
 
     if ($success) {
         $_SESSION['success'] = "User deactivated successfully.";
@@ -77,7 +80,7 @@ if ($action === 'deactivate') {
         $_SESSION['error'] = "There was an error deactivating the user.";
     }
 } elseif ($action === 'reactivate') {
-    $success = $customerRepo->reactivateUser($customerID);
+    $success = $customerServiceRepo->reactivateUser($customerID);
 
     if ($success) {
         $_SESSION['success'] = "User reactivated successfully.";

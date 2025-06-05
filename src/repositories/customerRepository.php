@@ -468,4 +468,5 @@ class CustomerRepository {
             $this->db->close();
         }
     }
+    
 }

@@ -15,9 +15,11 @@ if (!isset($_SESSION['user'])) {
 
 // Include dependencies
 require_once __DIR__ . '/../repositories/customerRepository.php';
+require_once __DIR__ . '/../repositories/customerServiceRepository.php';
 require_once __DIR__ . '/../../config/database.php';
 
 $customerRepo = new CustomerRepository(new Database());
+$customerServiceRepo = new CustomerServiceRepository(new Database());
 
 // Extract and trim POST data
 $customerID = isset($_POST['customerID']) ? (int)$_POST['customerID'] : $_SESSION['user']['CustomerID'];
@@ -95,11 +97,11 @@ $userData = [
 ];
 
 // Perform update
-$success = $customerRepo->updateUserProfile($customerID, $userData, $password);
+$success = $customerServiceRepo->updateUserProfile($customerID, $userData, $password);
 
 // Update user role if admin edited another user
 if (isset($_POST['userType'])) {
-    $customerRepo->setUserRole($customerID, $userType);
+    $customerServiceRepo->setUserRole($customerID, $userType);
 }
 
 // Update session if the logged-in user edited their own profile
