@@ -45,7 +45,7 @@ require_once __DIR__ . '/../services/global_exception_handler.php';
             <li><strong>Paul Lorenz</strong>: Significant contribution to core functionality and multiple user interface features. </li>
             <li><strong>Niels Grosche</strong>: Focused on specific user management and advanced UI functionality.</li>
             <li><strong>Natalie Danner</strong>: Focused on user interaction and frontend views.</li>
-            <li><strong>Enrico Wölck</strong>: Worked on backend logic, database-driven features and contribution multiple user interface features. </li>
+            <li><strong>Enrico Wölck</strong>: Worked on backend logic, database-driven features and contribution to multiple user interface features. </li>
         </ul>
     </div>
 
