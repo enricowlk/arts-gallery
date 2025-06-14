@@ -39,13 +39,13 @@ require_once __DIR__ . '/../services/global_exception_handler.php';
         </p>
 
         <!-- Team section -->
-        <h2 class="mt-4">Our Team</h2>
+        <h2 class="mt-5">Our Team</h2>
         <p>Below are the team members and their contributions to this project:</p>
         <ul>
-            <li><strong>Paul Lorenz</strong>: </li>
-            <li><strong>Niels Grosche</strong>: </li>
-            <li><strong>Natalie Danner</strong>: </li>
-            <li><strong>Enrico Wölck</strong>: </li>
+            <li><strong>Paul Lorenz</strong>: Significant contribution to core functionality and multiple user interface features. </li>
+            <li><strong>Niels Grosche</strong>: Focused on specific user management and advanced UI functionality.</li>
+            <li><strong>Natalie Danner</strong>: Focused on user interaction and frontend views.</li>
+            <li><strong>Enrico Wölck</strong>: Worked on backend logic, database-driven features and contribution multiple user interface features. </li>
         </ul>
     </div>
 
