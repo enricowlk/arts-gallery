@@ -74,7 +74,6 @@ $isAdmin = isset($_SESSION['user']['Type']) && $_SESSION['user']['Type'] == 1;
                     </li>
                 <?php } else { ?>
                     <!-- Links for guests (not logged in) -->
-                    <li class="me-2 border-end"><a class="nav-link" href="/arts-gallery/src/views/site_favorites.php">Favorites</a></li>
                     <li><a class="nav-link" href="/arts-gallery/src/views/site_login.php">Login</a></li>
                     <li><a class="nav-link" href="/arts-gallery/src/views/site_register.php">Register</a></li>
                 <?php } ?>
