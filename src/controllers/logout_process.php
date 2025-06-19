@@ -7,7 +7,7 @@
  */
 
 /**
- * Invalidate session cookie because of: https://chatgpt.com/c/683d5c5e-14ac-8013-8fdf-dabb08b4609f
+ * Invalidate session cookie because of: https://chatgpt.com/s/t_685447f7062481919e5f82455020c539
  * Sets expiration to past time to ensure browser deletes it
  */
 setcookie(session_name(), '', time() - 3600, '/');
